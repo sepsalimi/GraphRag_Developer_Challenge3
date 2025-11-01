@@ -1,0 +1,499 @@
+[
+  {
+    "question": "What is the time period to submit an objection for company registration changes?",
+    "type": "objective",
+    "category": "factual",
+    "difficulty": 3,
+    "question_id": "q001"
+  },
+  {
+    "question": "Where should objections to company registration be submitted?",
+    "type": "objective",
+    "category": "factual",
+    "difficulty": 3,
+    "question_id": "q002"
+  },
+  {
+    "question": "What types of legal entities are mentioned in company registration announcements?",
+    "type": "objective",
+    "category": "factual",
+    "difficulty": 5,
+    "question_id": "q003"
+  },
+  {
+    "question": "What happens to joint partner obligations when an objection is filed for company registration?",
+    "type": "complex",
+    "category": "procedural",
+    "difficulty": 6,
+    "question_id": "q004"
+  },
+  {
+    "question": "What is the scheduled closing date for the Public Authority for Sport tender to purchase and maintain an X-ray machine for the Sports Medicine Center?",
+    "type": "objective",
+    "category": "factual",
+    "difficulty": 2,
+    "question_id": "q005"
+  },
+  {
+    "question": "What is the agency registration number for R&B United General Trading Company’s agency with Octane Furniture (India)?",
+    "type": "objective",
+    "category": "factual",
+    "difficulty": 2,
+    "question_id": "q006"
+  },
+  {
+    "question": "Under Decree-Law No. 61 of 2025, what additional period was granted for withdrawals authorized by Law No. 3 of 2016?",
+    "type": "objective",
+    "category": "factual",
+    "difficulty": 3,
+    "question_id": "q007"
+  },
+  {
+    "question": "For Practice No. 1-2026/2025 (Ministry of Awqaf and Islamic Affairs), what is the bid closing time and date?",
+    "type": "objective",
+    "category": "factual",
+    "difficulty": 3,
+    "question_id": "q008"
+  },
+  {
+    "question": "For National Medical Company’s agency with Top Glove (Malaysia), what is the duration (from and to dates)?",
+    "type": "objective",
+    "category": "factual",
+    "difficulty": 3,
+    "question_id": "q009"
+  },
+  {
+    "question": "In the Amiri Diwan auction announced on 27/4/2025, how long must a bid remain valid from the submission date?",
+    "type": "objective",
+    "category": "factual",
+    "difficulty": 3,
+    "question_id": "q010"
+  },
+  {
+    "question": "How long must a bid remain valid from the submission date?",
+    "type": "objective",
+    "category": "factual",
+    "difficulty": 5,
+    "question_id": "q011"
+  },
+  {
+    "question": "For Kuwait Oil Company Tender No. 2125611-RFP (Well Testing and Associated Services), what is the value of the preliminary bond?",
+    "type": "objective",
+    "category": "factual",
+    "difficulty": 3,
+    "question_id": "q012"
+  },
+  {
+    "question": "In the Ministry of Health (Medical Stores Dept.) table, what fee is listed for Practice No. 5DX003?",
+    "type": "objective",
+    "category": "factual",
+    "difficulty": 3,
+    "question_id": "q013"
+  },
+  {
+    "question": "For Al-Shifa Medical and Supplies Company’s agency registration, state the registration number and the duration (from and to).",
+    "type": "objective",
+    "category": "factual",
+    "difficulty": 4,
+    "question_id": "q014"
+  },
+  {
+    "question": "For Ministry of Health Practice No. 5DXK10 (Radiology consumables for Kuwait Cancer Control Hospital), what are the fee and the closing period stated?",
+    "type": "objective",
+    "category": "factual",
+    "difficulty": 4,
+    "question_id": "q015"
+  },
+  {
+    "question": "According to CAPT Meeting No. 40/2025, within how many days must the concerned authority issue recommendations after tender documents are referred?",
+    "type": "objective",
+    "category": "procedural",
+    "difficulty": 4,
+    "question_id": "q016"
+  },
+  {
+    "question": "When an individual commercial license is converted into a general partnership, what form must an objection take and what happens if it is not submitted during the announcement period?",
+    "type": "complex",
+    "category": "procedural",
+    "difficulty": 5,
+    "question_id": "q017"
+  },
+  {
+    "question": "For Kuwait Oil Company Tender No. 2125611-RFP, provide the closing date, the cost of tender documents, and the value of the preliminary bond.",
+    "type": "complex",
+    "category": "factual",
+    "difficulty": 5,
+    "question_id": "q018"
+  },
+  {
+    "question": "When a company is being dissolved and liquidated through the Partnerships Department, where must objections be submitted and within what time limit?",
+    "type": "complex",
+    "category": "procedural",
+    "difficulty": 6,
+    "question_id": "q019"
+  },
+  {
+    "question": "For Amiri Diwan Practice A/M/804 (announced 11/5/2025), what initial security deposit percentage is required and name two other submission requirements stated?",
+    "type": "complex",
+    "category": "procedural",
+    "difficulty": 6,
+    "question_id": "q020"
+  },
+  {
+    "question": "According to the latest correction for RFP-2113556, on what date was the earlier (incorrect) announcement published?",
+    "type": "objective",
+    "category": "factual",
+    "difficulty": 6,
+    "question_id": "q021"
+  },
+  {
+    "question": "According to the latest correction, what is the corrected legal entity in the Ministry of Commerce and Industry announcement that previously mis-stated it as a One-Person Company?",
+    "type": "complex",
+    "category": "factual",
+    "difficulty": 7,
+    "question_id": "q022"
+  },
+  {
+    "question": "Across the Amiri Diwan auction (27/4/2025) and Practice A/M/804 (11/5/2025), what consistent rule is stated regarding alternative offers?",
+    "type": "complex",
+    "category": "procedural",
+    "difficulty": 7,
+    "question_id": "q023"
+  },
+  {
+    "question": "According to the latest correction, what is the correct company name listed for Tender RFP-2113556 (Rig Site Preparation for Drilling and Workover Wells)?",
+    "type": "complex",
+    "category": "factual",
+    "difficulty": 8,
+    "question_id": "q024"
+  },
+  {
+    "question": "How many fiscal years did Decree-Law No. 61 of 2025 extend the withdrawal period authorized by Law No. 3 of 2016?",
+    "type": "objective",
+    "category": "factual",
+    "difficulty": 2,
+    "question_id": "q025"
+  },
+  {
+    "question": "What is the bid closing time and date for Practice No. 1-2026/2025 (Ministry of Awqaf and Islamic Affairs)?",
+    "type": "objective",
+    "category": "factual",
+    "difficulty": 2,
+    "question_id": "q026"
+  },
+  {
+    "question": "What is the closing date for the Public Authority for Sport X-ray machine tender?",
+    "type": "objective",
+    "category": "factual",
+    "difficulty": 1,
+    "question_id": "q027"
+  },
+  {
+    "question": "What guarantee amount is required for the Public Authority for Sport X-ray machine tender?",
+    "type": "objective",
+    "category": "factual",
+    "difficulty": 2,
+    "question_id": "q028"
+  },
+  {
+    "question": "What is the tender document price for the Public Authority for Sport X-ray machine tender?",
+    "type": "objective",
+    "category": "factual",
+    "difficulty": 1,
+    "question_id": "q029"
+  },
+  {
+    "question": "What is the closing date for Kuwait Oil Company Tender No. 2125611-RFP?",
+    "type": "objective",
+    "category": "factual",
+    "difficulty": 2,
+    "question_id": "q030"
+  },
+  {
+    "question": "What is the preliminary bond value for Kuwait Oil Company Tender No. 2125611-RFP?",
+    "type": "objective",
+    "category": "factual",
+    "difficulty": 2,
+    "question_id": "q031"
+  },
+  {
+    "question": "What is the cost of the tender documents for Kuwait Oil Company Tender No. 2125611-RFP?",
+    "type": "objective",
+    "category": "factual",
+    "difficulty": 2,
+    "question_id": "q032"
+  },
+  {
+    "question": "For the Amiri Diwan tender announced on 27/4/2025, how long must the bid remain valid?",
+    "type": "objective",
+    "category": "factual",
+    "difficulty": 2,
+    "question_id": "q033"
+  },
+  {
+    "question": "For the Amiri Diwan tender announced on 27/4/2025, what is the minimum initial bond percentage?",
+    "type": "objective",
+    "category": "factual",
+    "difficulty": 2,
+    "question_id": "q034"
+  },
+  {
+    "question": "Are alternative offers permitted in the Amiri Diwan tender announced on 27/4/2025?",
+    "type": "objective",
+    "category": "factual",
+    "difficulty": 1,
+    "question_id": "q035"
+  },
+  {
+    "question": "What is the submission deadline time and date for Amiri Diwan Practice A/M/804?",
+    "type": "objective",
+    "category": "factual",
+    "difficulty": 2,
+    "question_id": "q036"
+  },
+  {
+    "question": "What initial security deposit percentage is required for Amiri Diwan Practice A/M/804?",
+    "type": "objective",
+    "category": "factual",
+    "difficulty": 1,
+    "question_id": "q037"
+  },
+  {
+    "question": "What is the practice fee for Ministry of Health Practice No. 5DX003?",
+    "type": "objective",
+    "category": "factual",
+    "difficulty": 1,
+    "question_id": "q038"
+  },
+  {
+    "question": "What closing period is stated for Ministry of Health Practice No. 5DXK10?",
+    "type": "objective",
+    "category": "factual",
+    "difficulty": 3,
+    "question_id": "q039"
+  },
+  {
+    "question": "What is the registration number for the National Medical Company’s Top Glove agency?",
+    "type": "objective",
+    "category": "factual",
+    "difficulty": 2,
+    "question_id": "q040"
+  },
+  {
+    "question": "What is the agency registration number for R&B United General Trading Company (Remist Tianjin Medical Device)?",
+    "type": "objective",
+    "category": "factual",
+    "difficulty": 2,
+    "question_id": "q041"
+  },
+  {
+    "question": "What is the duration of the National Medical Company’s Top Glove agency (from and to dates)?",
+    "type": "objective",
+    "category": "factual",
+    "difficulty": 3,
+    "question_id": "q042"
+  },
+  {
+    "question": "What is the registration number for Al-Shifa Medical and Supplies Company’s E-Tips agency?",
+    "type": "objective",
+    "category": "factual",
+    "difficulty": 2,
+    "question_id": "q043"
+  },
+  {
+    "question": "What is the duration of Al-Shifa Medical and Supplies Company’s E-Tips agency (from and to dates)?",
+    "type": "objective",
+    "category": "factual",
+    "difficulty": 3,
+    "question_id": "q044"
+  },
+  {
+    "question": "According to the latest supplement, what is the correct company name for Tender RFP-2113556?",
+    "type": "objective",
+    "category": "factual",
+    "difficulty": 3,
+    "question_id": "q045"
+  },
+  {
+    "question": "According to the latest supplement, on what date was the earlier incorrect RFP-2113556 announcement published?",
+    "type": "objective",
+    "category": "factual",
+    "difficulty": 3,
+    "question_id": "q046"
+  },
+  {
+    "question": "How many fiscal years was the withdrawal period extended by the 2025 decree-law?",
+    "type": "objective",
+    "category": "factual",
+    "difficulty": 2,
+    "question_id": "q047"
+  },
+  {
+    "question": "What is the closing date of the Sports Medicine Center X-ray tender?",
+    "type": "objective",
+    "category": "factual",
+    "difficulty": 1,
+    "question_id": "q048"
+  },
+  {
+    "question": "What is the required guarantee amount for the Sports Medicine Center X-ray tender?",
+    "type": "objective",
+    "category": "factual",
+    "difficulty": 2,
+    "question_id": "q049"
+  },
+  {
+    "question": "How much does it cost to purchase the documents for the Sports Medicine Center X-ray tender?",
+    "type": "objective",
+    "category": "factual",
+    "difficulty": 1,
+    "question_id": "q050"
+  },
+  {
+    "question": "How long must bids remain valid in the Amiri Diwan tender announced in late April?",
+    "type": "objective",
+    "category": "factual",
+    "difficulty": 2,
+    "question_id": "q051"
+  },
+  {
+    "question": "What is the minimum initial bond percentage required in the late-April Amiri Diwan tender?",
+    "type": "objective",
+    "category": "factual",
+    "difficulty": 2,
+    "question_id": "q052"
+  },
+  {
+    "question": "Are alternative offers allowed in the late-April Amiri Diwan tender?",
+    "type": "objective",
+    "category": "factual",
+    "difficulty": 1,
+    "question_id": "q053"
+  },
+  {
+    "question": "What is the practice fee for Ministry of Health Practice No. 5DX003?",
+    "type": "objective",
+    "category": "factual",
+    "difficulty": 1,
+    "question_id": "q054"
+  },
+  {
+    "question": "What is the bid closing time for the Ministry of Awqaf Practice No. 1-2026/2025?",
+    "type": "objective",
+    "category": "factual",
+    "difficulty": 5,
+    "question_id": "q055"
+  },
+  {
+    "question": "What is the closing date for Kuwait Oil Company Tender No. 2125611-RFP?",
+    "type": "objective",
+    "category": "factual",
+    "difficulty": 4,
+    "question_id": "q056"
+  },
+  {
+    "question": "What preliminary bond value is set for Kuwait Oil Company Tender No. 2125611-RFP?",
+    "type": "objective",
+    "category": "factual",
+    "difficulty": 4,
+    "question_id": "q057"
+  },
+  {
+    "question": "How much are the tender documents for Kuwait Oil Company Tender No. 2125611-RFP?",
+    "type": "objective",
+    "category": "factual",
+    "difficulty": 4,
+    "question_id": "q058"
+  },
+  {
+    "question": "By what time on the due day must bids be submitted for Amiri Diwan Practice A/M/804?",
+    "type": "objective",
+    "category": "procedural",
+    "difficulty": 4,
+    "question_id": "q059"
+  },
+  {
+    "question": "What initial security deposit percentage is required for Amiri Diwan Practice A/M/804?",
+    "type": "objective",
+    "category": "factual",
+    "difficulty": 4,
+    "question_id": "q060"
+  },
+  {
+    "question": "What closing period is stated for Ministry of Health Practice No. 5DXK10?",
+    "type": "objective",
+    "category": "factual",
+    "difficulty": 5,
+    "question_id": "q061"
+  },
+  {
+    "question": "What is the objection window for changes to a company’s registration?",
+    "type": "objective",
+    "category": "procedural",
+    "difficulty": 5,
+    "question_id": "q062"
+  },
+  {
+    "question": "Where should objections on company registration changes be filed?",
+    "type": "objective",
+    "category": "procedural",
+    "difficulty": 7,
+    "question_id": "q063"
+  },
+  {
+    "question": "Which types of legal entities are referenced in the company registration announcements?",
+    "type": "objective",
+    "category": "factual",
+    "difficulty": 8,
+    "question_id": "q064"
+  },
+  {
+    "question": "According to the latest correction, which company name is confirmed for the rig site preparation tender?",
+    "type": "objective",
+    "category": "factual",
+    "difficulty": 7,
+    "question_id": "q065"
+  },
+  {
+    "question": "According to the latest correction, on what date was the earlier rig site preparation notice published?",
+    "type": "objective",
+    "category": "factual",
+    "difficulty": 7,
+    "question_id": "q066"
+  },
+  {
+    "question": "Across both the late-April Amiri Diwan tender and Practice A/M/804, are alternative offers allowed?",
+    "type": "objective",
+    "category": "factual",
+    "difficulty": 8,
+    "question_id": "q067"
+  },
+  {
+    "question": "What minimum initial bond percentage is stated across both the late-April Amiri Diwan tender and Practice A/M/804?",
+    "type": "objective",
+    "category": "factual",
+    "difficulty": 8,
+    "question_id": "q068"
+  },
+  {
+    "question": "What bid validity period is stated across both the late-April Amiri Diwan tender and Practice A/M/804?",
+    "type": "objective",
+    "category": "factual",
+    "difficulty": 8,
+    "question_id": "q069"
+  },
+  {
+    "question": "What is the maximum duration of a commercial lease?",
+    "type": "objective",
+    "category": "factual",
+    "difficulty": 2,
+    "question_id": "q070"
+  },
+  {
+    "question": "What is the filing fee for an appeal in civil court?",
+    "type": "objective",
+    "category": "factual",
+    "difficulty": 2,
+    "question_id": "q071"
+  }
+]

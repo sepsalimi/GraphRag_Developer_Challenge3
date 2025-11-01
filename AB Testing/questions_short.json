@@ -1,0 +1,86 @@
+[
+  {
+    "question": "What is the time period to submit an objection for company registration changes?",
+    "type": "objective",
+    "category": "factual",
+    "difficulty": 3,
+    "question_id": "q001"
+  },
+  {
+    "question": "Where should objections to company registration be submitted?",
+    "type": "objective",
+    "category": "factual",
+    "difficulty": 3,
+    "question_id": "q002"
+  },
+  {
+    "question": "What types of legal entities are mentioned in company registration announcements?",
+    "type": "objective",
+    "category": "factual",
+    "difficulty": 5,
+    "question_id": "q003"
+  },
+  {
+    "question": "What happens to joint partner obligations when an objection is filed for company registration?",
+    "type": "complex",
+    "category": "procedural",
+    "difficulty": 6,
+    "question_id": "q004"
+  },
+  {
+    "question": "What is the bid closing time for Practice No. 1-2026/2025?",
+    "type": "objective",
+    "category": "factual",
+    "difficulty": 2,
+    "question_id": "s001"
+  },
+  {
+    "question": "What is the closing date of the Sports Medicine Center X-ray tender?",
+    "type": "objective",
+    "category": "factual",
+    "difficulty": 1,
+    "question_id": "q048"
+  },
+  {
+    "question": "What is the amount for the Sports Medicine Center X-ray tender?",
+    "type": "objective",
+    "category": "factual",
+    "difficulty": 2,
+    "question_id": "s002"
+  },
+  {
+    "question": "What is the closing date for the oil company well-testing tender?",
+    "type": "objective",
+    "category": "factual",
+    "difficulty": 2,
+    "question_id": "s003"
+  },
+  {
+    "question": "What is the preliminary bond value for the oil company well-testing tender?",
+    "type": "objective",
+    "category": "factual",
+    "difficulty": 2,
+    "question_id": "s004"
+  },
+  {
+    "question": "How long must bids remain valid in the late-April Amiri Diwan auction?",
+    "type": "objective",
+    "category": "factual",
+    "difficulty": 2,
+    "question_id": "s005"
+  },
+  {
+    "question": "What is the minimum initial bond percentage in the late-April Amiri Diwan auction?",
+    "type": "objective",
+    "category": "factual",
+    "difficulty": 2,
+    "question_id": "s006"
+  },
+  {
+    "question": "According to the latest correction, which company name is confirmed for the rig site preparation tender?",
+    "type": "objective",
+    "category": "factual",
+    "difficulty": 4,
+    "question_id": "q065"
+  }
+]

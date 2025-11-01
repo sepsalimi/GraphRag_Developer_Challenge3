@@ -1,0 +1,614 @@
+{
+  "saved_at": "2025-10-31T22:15:15",
+  "threshold": 0.85,
+  "expected_file": "/mnt/c/Users/sepeh/OneDrive/Documents/Git/GraphRAG_Developer_Challenge2/AB Testing/answer_key_long.json",
+  "comment": "variant=Output Answers, workers=8, hybrid=True, runtime_s=27.88, q=71, qpm=152.82",
+  "include_question_id": true,
+  "overall": {
+    "evaluated": 71.0,
+    "answered": 71.0,
+    "match_count": 5.0,
+    "match_rate": 0.07042253521126761,
+    "average_similarity": 0.36461138296734497
+  },
+  "runs": [
+    {
+      "label": "answers_20251031_221515.json",
+      "path": "/mnt/c/Users/sepeh/OneDrive/Documents/Git/GraphRAG_Developer_Challenge2/AB Testing/Output Answers/answers_20251031_221515.json",
+      "evaluated": 71,
+      "answered": 71,
+      "match_count": 5,
+      "match_rate": 0.07042253521126761,
+      "average_similarity": 0.36461138296734497,
+      "missing": 0,
+      "extras": 0,
+      "questions": [
+        {
+          "question": "What is the time period to submit an objection for company registration changes?",
+          "expected": "Thirty days from the date of publication in the official gazette [1].\n\nReferences\n1. Kuwait Official Gazette 2025-04-27, Lines 5228-5327.",
+          "answer": "within thirty days [issue 1736, 2025-04-27, \"Pre-qualification for Limited Tenders on a List of Companies\"]",
+          "similarity": 0.11764705882352941,
+          "match": false,
+          "question_id": "q001"
+        },
+        {
+          "question": "Where should objections to company registration be submitted?",
+          "expected": "Objections should be submitted to the General Court (المحكمة الكلية) [1].\n\nReferences\n1. Kuwait Official Gazette 2025-04-27, Lines 5228-5327.",
+          "answer": "The General Court (المحكمة الكلية) [issue 1736, 2025-04-27, \"Pre-qualification for Limited Tenders on a List of Companies\"]",
+          "similarity": 1.0,
+          "match": true,
+          "question_id": "q002"
+        },
+        {
+          "question": "What types of legal entities are mentioned in company registration announcements?",
+          "expected": "Limited Liability Company, One-Person Company (شركة الشخص الواحد), Joint Stock Company, and Partnership [1][2].\n\nReferences\n1. Kuwait Official Gazette 2025-04-27, Lines 1799-1899.\n2. Kuwait Official Gazette 2025-04-27, Lines 5228-5327.",
+          "answer": "Limited Liability Company, Partnership, شركة ذات مسؤولية محدودة",
+          "similarity": 0.0,
+          "match": false,
+          "question_id": "q003"
+        },
+        {
+          "question": "What happens to joint partner obligations when an objection is filed for company registration?",
+          "expected": "The submission of an objection results in the continued obligation of joint partners in the case of a general partnership or a simple limited partnership until the objection is resolved by the court [1].\n\nReferences\n1. Kuwait Official Gazette 2025-04-27, Lines 5228-5327.",
+          "answer": "within thirty days [issue 1737, 2025-05-04, \"A request has been submitted by the owners of the company / Kuwait Countryside Butchery <orig>ملحمة ريف الكويت</orig> ## Company Under Liquidation\"]",
+          "similarity": 0.11764705882352941,
+          "match": false,
+          "question_id": "q004"
+        },
+        {
+          "question": "What is the scheduled closing date for the Public Authority for Sport tender to purchase and maintain an X-ray machine for the Sports Medicine Center?",
+          "expected": "2025-07-20. [1]\n\nReferences\n1. Kuwait Official Gazette 2025-04-20, Lines 3222–3225.",
+          "answer": "25-04-20 [issue 1735, 2025-04-20, \"<table_caption>Recommendations / Contract Amount Amendment</table_caption>\"]",
+          "similarity": 0.9,
+          "match": false,
+          "question_id": "q005"
+        },
+        {
+          "question": "What is the agency registration number for R&B United General Trading Company’s agency with Octane Furniture (India)?",
+          "expected": "Registration No. 2025/00590. [1]\n\nReferences\n1. Kuwait Official Gazette 2025-05-11, Lines 16448–16449.",
+          "answer": "unknown",
+          "similarity": 0.0,
+          "match": false,
+          "question_id": "q006"
+        },
+        {
+          "question": "Under Decree-Law No. 61 of 2025, what additional period was granted for withdrawals authorized by Law No. 3 of 2016?",
+          "expected": "An additional two fiscal years; Article One extends the period specified in Law No. 3 of 2016 by two fiscal years. [1]\n\nReferences\n1. Kuwait Official Gazette 2025-04-06, Lines 135–136.",
+          "answer": "Two fiscal years",
+          "similarity": 0.0,
+          "match": false,
+          "question_id": "q007"
+        },
+        {
+          "question": "For Practice No. 1-2026/2025 (Ministry of Awqaf and Islamic Affairs), what is the bid closing time and date?",
+          "expected": "1:00 PM on Sunday, 4/5/2025. [1]\n\nReferences\n1. Kuwait Official Gazette 2025-04-13, Lines 758–761.",
+          "answer": "25-04-13 [issue 1734, 2025-04-13, \"Practice No. 1-2026/2025\"]",
+          "similarity": 1.0,
+          "match": true,
+          "question_id": "q008"
+        },
+        {
+          "question": "For National Medical Company’s agency with Top Glove (Malaysia), what is the duration (from and to dates)?",
+          "expected": "From 2025/02/10 to 2030/02/10. [1]\n\nReferences\n1. Kuwait Official Gazette 2025-05-11, Lines 16442–16445.",
+          "answer": "unknown",
+          "similarity": 0.0,
+          "match": false,
+          "question_id": "q009"
+        },
+        {
+          "question": "In the Amiri Diwan auction announced on 27/4/2025, how long must a bid remain valid from the submission date?",
+          "expected": "Ninety (90) days. [1]\n\nReferences\n1. Kuwait Official Gazette 2025-04-27, Lines 1958–1961.",
+          "answer": "90 days",
+          "similarity": 0.11764705882352941,
+          "match": false,
+          "question_id": "q010"
+        },
+        {
+          "question": "How long must a bid remain valid from the submission date?",
+          "expected": "Ninety (90) days. [1]\n\nReferences\n1. Kuwait Official Gazette 2025-04-27, Lines 1958–1961.",
+          "answer": "90 days [issue 1736, 2025-04-27, \"Regarding the Tender No. (BZ - M 2025/12)\"]",
+          "similarity": 1.0,
+          "match": true,
+          "question_id": "q011"
+        },
+        {
+          "question": "For Kuwait Oil Company Tender No. 2125611-RFP (Well Testing and Associated Services), what is the value of the preliminary bond?",
+          "expected": "K.D. 300,000. [1]\n\nReferences\n1. Kuwait Official Gazette 2025-04-27, Lines 13586–13588.",
+          "answer": "2% [issue 1740, 2025-05-25, \"Storage facilities for Kuwaiti export crude and Jurassic crude, and upgrading of the existing export network\"]",
+          "similarity": 0.8,
+          "match": false,
+          "question_id": "q012"
+        },
+        {
+          "question": "In the Ministry of Health (Medical Stores Dept.) table, what fee is listed for Practice No. 5DX003?",
+          "expected": "K.D. 75. [1]\n\nReferences\n1. Kuwait Official Gazette 2025-05-04, Lines 8286–8291.",
+          "answer": "unknown",
+          "similarity": 0.0,
+          "match": false,
+          "question_id": "q013"
+        },
+        {
+          "question": "For Al-Shifa Medical and Supplies Company’s agency registration, state the registration number and the duration (from and to).",
+          "expected": "Registration No. 2025/00574; duration 2024/12/20 to 2027/12/20. [1]\n\nReferences\n1. Kuwait Official Gazette 2025-05-11, Lines 16528–16534.",
+          "answer": "Registration number: 2025/00553 Duration: unknown",
+          "similarity": 0.13559322033898305,
+          "match": false,
+          "question_id": "q014"
+        },
+        {
+          "question": "For Ministry of Health Practice No. 5DXK10 (Radiology consumables for Kuwait Cancer Control Hospital), what are the fee and the closing period stated?",
+          "expected": "Fee: K.D. 75; closing period: 30 days from the announcement date. [1]\n\nReferences\n1. Kuwait Official Gazette 2025-05-04, Lines 8294–8295.",
+          "answer": "unknown",
+          "similarity": 0.0,
+          "match": false,
+          "question_id": "q015"
+        },
+        {
+          "question": "According to CAPT Meeting No. 40/2025, within how many days must the concerned authority issue recommendations after tender documents are referred?",
+          "expected": "Within thirty (30) days. [1]\n\nReferences\n1. Kuwait Official Gazette 2025-05-11, Lines 13396–13398.",
+          "answer": "unknown",
+          "similarity": 0.0,
+          "match": false,
+          "question_id": "q016"
+        },
+        {
+          "question": "When an individual commercial license is converted into a general partnership, what form must an objection take and what happens if it is not submitted during the announcement period?",
+          "expected": "It must be a written objection submitted during the announcement period; otherwise, the objection will not be taken into consideration. [1]\n\nReferences\n1. Kuwait Official Gazette 2025-05-11, Lines 15786–15790.",
+          "answer": "written objection, accompanied by a debt instrument, unknown",
+          "similarity": 0.0,
+          "match": false,
+          "question_id": "q017"
+        },
+        {
+          "question": "For Kuwait Oil Company Tender No. 2125611-RFP, provide the closing date, the cost of tender documents, and the value of the preliminary bond.",
+          "expected": "Closing date: 14/07/2025; cost of tender documents: K.D. 2,500; preliminary bond: K.D. 300,000. [1]\n\nReferences\n1. Kuwait Official Gazette 2025-04-27, Lines 13586–13588.",
+          "answer": "25-05-25 [issue 1740, 2025-05-25, \"RFQ No.: 2124771\"]",
+          "similarity": 0.8,
+          "match": false,
+          "question_id": "q018"
+        },
+        {
+          "question": "When a company is being dissolved and liquidated through the Partnerships Department, where must objections be submitted and within what time limit?",
+          "expected": "Submit the objection to the Court (<Arabic>المحكمة الكلية</Arabic>) within thirty days from the date of publication. [1]\n\nReferences\n1. Kuwait Official Gazette 2025-05-11, Lines 15809–15809.",
+          "answer": "The General Court (المحكمة الكلية) [issue 1738, 2025-05-11, \"Works for extending and welding 11 kV medium voltage underground cables for the expansion of the electrical distribution network in Al-Ahmadi <orig>الأحمدي</orig> and Mubarak Al-Kabeer <orig>مبارك الكبير</orig> Governorates.\"]",
+          "similarity": 0.11764705882352941,
+          "match": false,
+          "question_id": "q019"
+        },
+        {
+          "question": "For Amiri Diwan Practice A/M/804 (announced 11/5/2025), what initial security deposit percentage is required and name two other submission requirements stated?",
+          "expected": "An initial security deposit of 2% of the bid value, plus (for example) a certificate of compliance with the national labor percentage and a valid tax compliance certificate, and a letter of authorization with a copy of the company representative’s civil ID. [1]\n\nReferences\n1. Kuwait Official Gazette 2025-05-11, Lines 13258–13260.",
+          "answer": "2% [issue 1738, 2025-05-11, \"Regarding\"]",
+          "similarity": 1.0,
+          "match": true,
+          "question_id": "q020"
+        },
+        {
+          "question": "According to the latest correction for RFP-2113556, on what date was the earlier (incorrect) announcement published?",
+          "expected": "Sunday, 27/04/2025. According to the latest correction, it specifies the earlier publication date of the announcement that contained the typographical error. [1]\n\nReferences\n1. Kuwait Official Gazette 2025-05-04 (Supplement), Lines 15490–15490.",
+          "answer": "I don't have the information regarding passages mentioning\nthe latest correction rfp-2113556, correction rfp-2113556\ndate, or rfp-2113556 date earlier.",
+          "similarity": 0.06369426751592357,
+          "match": false,
+          "question_id": "q021"
+        },
+        {
+          "question": "According to the latest correction, what is the corrected legal entity in the Ministry of Commerce and Industry announcement that previously mis-stated it as a One-Person Company?",
+          "expected": "According to the latest correction, the correct legal entity is a Limited Liability Company. [1]\n\nReferences\n1. Kuwait Official Gazette 2025-04-13 (Supplement), Lines 846–849.",
+          "answer": "The latest correction has been made to ensure that the legal\nentity is correctly identified and all necessary corrections\nhave been implemented. The correction process has been\ncompleted to address any discrepancies and ensure compliance\nwith legal requirements. Additionally, any supplements\nrequired to enhance the accuracy of the information have\nbeen included in the updated documents.",
+          "similarity": 0.0,
+          "match": false,
+          "question_id": "q022"
+        },
+        {
+          "question": "Across the Amiri Diwan auction (27/4/2025) and Practice A/M/804 (11/5/2025), what consistent rule is stated regarding alternative offers?",
+          "expected": "Alternative offers are not permitted; both announcements state the practice/auction is indivisible. [1][2]\n\nReferences\n1. Kuwait Official Gazette 2025-05-11, Lines 13261–13261.\n2. Kuwait Official Gazette 2025-04-27, Lines 1959–1959.",
+          "answer": "kwd 200, [issue 1740, 2025-05-25, \"<table_caption>Proposed Amendments to Article 12 of the Basic Regulations</table_caption>\"]",
+          "similarity": 0.8,
+          "match": false,
+          "question_id": "q023"
+        },
+        {
+          "question": "According to the latest correction, what is the correct company name listed for Tender RFP-2113556 (Rig Site Preparation for Drilling and Workover Wells)?",
+          "expected": "According to the latest correction, the correct company name is FUTURE SERVICES GENERAL TRADING AND CONTRACTING COMPANY W.L.L. [1]\n\nReferences\n1. Kuwait Official Gazette 2025-05-04 (Supplement), Lines 15490–15492.",
+          "answer": "The passages mention the terms \"latest correction,\"\n\"correction correct company,\" and \"correct company name\" in\nthe context of commercial inquiries and tenders. The\ninformation provided includes details about corrections,\nsupplements, and commercial practices related to the\nmentioned terms.",
+          "similarity": 0.0,
+          "match": false,
+          "question_id": "q024"
+        },
+        {
+          "question": "How many fiscal years did Decree-Law No. 61 of 2025 extend the withdrawal period authorized by Law No. 3 of 2016?",
+          "expected": "Two fiscal years. [1]\n\nReferences\n1. Kuwait Official Gazette 2025-04-06, Lines 135–136.",
+          "answer": "2",
+          "similarity": 0.18181818181818182,
+          "match": false,
+          "question_id": "q025"
+        },
+        {
+          "question": "What is the bid closing time and date for Practice No. 1-2026/2025 (Ministry of Awqaf and Islamic Affairs)?",
+          "expected": "1:00 PM on Sunday, 4/5/2025. [1]\n\nReferences\n1. Kuwait Official Gazette 2025-04-13, Lines 760–761.",
+          "answer": "25-05-25 [issue 1740, 2025-05-25, \"The Ministry of Islamic Affairs <orig>وزارة الشؤون الإسلامية</orig> announces the issuance of Tender No. A.Y. 9/2024 for the completion of works for the Mutairan Al-Ardi Mosque / Prayer Area <orig>مسجد / مصلى مطيران العارضي</orig> in Saad Al-Abdullah <orig>سعد العبد الله</orig> area – Block (8), in accordance with the following terms and data:\"]",
+          "similarity": 0.7,
+          "match": false,
+          "question_id": "q026"
+        },
+        {
+          "question": "What is the closing date for the Public Authority for Sport X-ray machine tender?",
+          "expected": "2025-07-20. [1]\n\nReferences\n1. Kuwait Official Gazette 2025-04-20, Lines 3222–3224.",
+          "answer": "25-05-11 [issue 1738, 2025-05-11, \"The Public Authority for Sport <orig>الهيئة العامة للرياضة</orig> announces the launch of Public Practice No. PAS/2026/6 for the maintenance and development of the Authority's website, its associated systems, and the mobile application, in sealed envelopes according to the terms and specifications contained in the practice documents, which can be obtained from the Services and Supplies Department - Tenders Section.\"]",
+          "similarity": 0.7,
+          "match": false,
+          "question_id": "q027"
+        },
+        {
+          "question": "What guarantee amount is required for the Public Authority for Sport X-ray machine tender?",
+          "expected": "2,000 K.D. [1]\n\nReferences\n1. Kuwait Official Gazette 2025-04-20, Lines 3222–3225.",
+          "answer": "unknown",
+          "similarity": 0.0,
+          "match": false,
+          "question_id": "q028"
+        },
+        {
+          "question": "What is the tender document price for the Public Authority for Sport X-ray machine tender?",
+          "expected": "75 K.D. [1]\n\nReferences\n1. Kuwait Official Gazette 2025-04-20, Lines 3222–3225.",
+          "answer": "unknown",
+          "similarity": 0.0,
+          "match": false,
+          "question_id": "q029"
+        },
+        {
+          "question": "What is the closing date for Kuwait Oil Company Tender No. 2125611-RFP?",
+          "expected": "14/07/2025. [1]\n\nReferences\n1. Kuwait Official Gazette 2025-04-27, Lines 13586–13588.",
+          "answer": "25-04-20 [issue 1735, 2025-04-20, \"For commercial inquiries, please contact phone numbers 23887794 / 23887792\"]",
+          "similarity": 0.9,
+          "match": false,
+          "question_id": "q030"
+        },
+        {
+          "question": "What is the preliminary bond value for Kuwait Oil Company Tender No. 2125611-RFP?",
+          "expected": "K.D. 300,000. [1]\n\nReferences\n1. Kuwait Official Gazette 2025-04-27, Lines 13586–13588.",
+          "answer": "2% [issue 1740, 2025-05-25, \"Storage facilities for Kuwaiti export crude and Jurassic crude, and upgrading of the existing export network\"]",
+          "similarity": 0.8,
+          "match": false,
+          "question_id": "q031"
+        },
+        {
+          "question": "What is the cost of the tender documents for Kuwait Oil Company Tender No. 2125611-RFP?",
+          "expected": "K.D. 2,500. [1]\n\nReferences\n1. Kuwait Official Gazette 2025-04-27, Lines 13586–13588.",
+          "answer": "unknown",
+          "similarity": 0.0,
+          "match": false,
+          "question_id": "q032"
+        },
+        {
+          "question": "For the Amiri Diwan tender announced on 27/4/2025, how long must the bid remain valid?",
+          "expected": "90 days from the closing date. [1]\n\nReferences\n1. Kuwait Official Gazette 2025-04-27, Lines 1897–1897.",
+          "answer": "90 days [issue 1736, 2025-04-27, \"Pre-qualification for Limited Tenders on a List of Companies\"]",
+          "similarity": 1.0,
+          "match": true,
+          "question_id": "q033"
+        },
+        {
+          "question": "For the Amiri Diwan tender announced on 27/4/2025, what is the minimum initial bond percentage?",
+          "expected": "2%. [1]\n\nReferences\n1. Kuwait Official Gazette 2025-04-27, Lines 1892–1892.",
+          "answer": "10% [issue 1738, 2025-05-11, \"The General Command of the National Guard <orig>الرئاسة العامة للحرس الوطني</orig> announces the offering of Qualification No. (2-2025/2026) for Gulf training centers to hold conferences and training programs outside the State of Kuwait, in accordance with the conditions stated in the qualification documents.\"]",
+          "similarity": 0.7,
+          "match": false,
+          "question_id": "q034"
+        },
+        {
+          "question": "Are alternative offers permitted in the Amiri Diwan tender announced on 27/4/2025?",
+          "expected": "No. [1]\n\nReferences\n1. Kuwait Official Gazette 2025-04-27, Lines 1895–1895.",
+          "answer": "kwd 4,211 [issue 1734, 2025-04-13, \"Regarding the Tax Assessment for Assist B.V. B.V. <orig>اسيست بي في بي اي</orig>\"]",
+          "similarity": 0.8,
+          "match": false,
+          "question_id": "q035"
+        },
+        {
+          "question": "What is the submission deadline time and date for Amiri Diwan Practice A/M/804?",
+          "expected": "1:30 PM on Thursday, 2025/5/22. [1]\n\nReferences\n1. Kuwait Official Gazette 2025-05-11, Lines 13256–13256.",
+          "answer": "25-05-04 [issue 1737, 2025-05-04, \"The gentlemen mentioned below have submitted requests to the Ministry to transfer their licenses and commercial registration numbers to other individuals:\"]",
+          "similarity": 0.8,
+          "match": false,
+          "question_id": "q036"
+        },
+        {
+          "question": "What initial security deposit percentage is required for Amiri Diwan Practice A/M/804?",
+          "expected": "2%. [1]\n\nReferences\n1. Kuwait Official Gazette 2025-05-11, Lines 13258–13258.",
+          "answer": "2% [issue 1737, 2025-05-04, \"Annual Plan for Supply, Contracting, and Services Contracts\"]",
+          "similarity": 0.8,
+          "match": false,
+          "question_id": "q037"
+        },
+        {
+          "question": "What is the practice fee for Ministry of Health Practice No. 5DX003?",
+          "expected": "75 K.D. [1]\n\nReferences\n1. Kuwait Official Gazette 2025-05-04, Lines 8288–8291.",
+          "answer": "unknown",
+          "similarity": 0.0,
+          "match": false,
+          "question_id": "q038"
+        },
+        {
+          "question": "What closing period is stated for Ministry of Health Practice No. 5DXK10?",
+          "expected": "30 days from the announcement date. [1]\n\nReferences\n1. Kuwait Official Gazette 2025-05-04, Lines 8294–8294.",
+          "answer": "Two weeks from the date of announcement",
+          "similarity": 0.0,
+          "match": false,
+          "question_id": "q039"
+        },
+        {
+          "question": "What is the registration number for the National Medical Company’s Top Glove agency?",
+          "expected": "2025/00549. [1]\n\nReferences\n1. Kuwait Official Gazette 2025-05-11, Lines 16441–16441.",
+          "answer": "unknown",
+          "similarity": 0.0,
+          "match": false,
+          "question_id": "q040"
+        },
+        {
+          "question": "What is the agency registration number for R&B United General Trading Company (Remist Tianjin Medical Device)?",
+          "expected": "2025/00590. [1]\n\nReferences\n1. Kuwait Official Gazette 2025-05-11, Lines 16448–16450.",
+          "answer": "unknown",
+          "similarity": 0.0,
+          "match": false,
+          "question_id": "q041"
+        },
+        {
+          "question": "What is the duration of the National Medical Company’s Top Glove agency (from and to dates)?",
+          "expected": "From 2025/02/10 to 2030/02/10. [1]\n\nReferences\n1. Kuwait Official Gazette 2025-05-11, Lines 16442–16444.",
+          "answer": "unknown",
+          "similarity": 0.0,
+          "match": false,
+          "question_id": "q042"
+        },
+        {
+          "question": "What is the registration number for Al-Shifa Medical and Supplies Company’s E-Tips agency?",
+          "expected": "2025/00574. [1]\n\nReferences\n1. Kuwait Official Gazette 2025-05-11, Lines 16528–16532.",
+          "answer": "unknown",
+          "similarity": 0.0,
+          "match": false,
+          "question_id": "q043"
+        },
+        {
+          "question": "What is the duration of Al-Shifa Medical and Supplies Company’s E-Tips agency (from and to dates)?",
+          "expected": "From 2024/12/20 to 2027/12/20. [1]\n\nReferences\n1. Kuwait Official Gazette 2025-05-11, Lines 16528–16532.",
+          "answer": "unknown",
+          "similarity": 0.0,
+          "match": false,
+          "question_id": "q044"
+        },
+        {
+          "question": "According to the latest supplement, what is the correct company name for Tender RFP-2113556?",
+          "expected": "According to the latest supplement, FUTURE SERVICES GENERAL TRADING AND CONTRACTING COMPANY W.L.L. [1]\n\nReferences\n1. Kuwait Official Gazette 2025-05-04 (Supplement), Lines 15491–15492.",
+          "answer": "The passages mention the correct company name for the latest\nsupplement and emphasize the importance of ensuring the\naccuracy of the supplement information for commercial\npurposes. It is crucial to follow the guidelines for\ncorrections and submit accurate details through the\ncommercial platform.",
+          "similarity": 0.0,
+          "match": false,
+          "question_id": "q045"
+        },
+        {
+          "question": "According to the latest supplement, on what date was the earlier incorrect RFP-2113556 announcement published?",
+          "expected": "According to the latest supplement, Sunday, 27/04/2025. [1]\n\nReferences\n1. Kuwait Official Gazette 2025-05-04 (Supplement), Lines 15490–15490.",
+          "answer": "I don't have the information to answer that question.",
+          "similarity": 0.0,
+          "match": false,
+          "question_id": "q046"
+        },
+        {
+          "question": "How many fiscal years was the withdrawal period extended by the 2025 decree-law?",
+          "expected": "The period was extended by two fiscal years. [1]\n\nReferences\n1. Kuwait Official Gazette 2025-04-06, Lines 136–136.",
+          "answer": "two",
+          "similarity": 0.0,
+          "match": false,
+          "question_id": "q047"
+        },
+        {
+          "question": "What is the closing date of the Sports Medicine Center X-ray tender?",
+          "expected": "The closing date is 2025-07-20. [1]\n\nReferences\n1. Kuwait Official Gazette 2025-04-20, Lines 3222–3225.",
+          "answer": "25-05-25 [issue 1740, 2025-05-25, \"RFQ No.: 2124771\"]",
+          "similarity": 0.8,
+          "match": false,
+          "question_id": "q048"
+        },
+        {
+          "question": "What is the required guarantee amount for the Sports Medicine Center X-ray tender?",
+          "expected": "The initial guarantee is 2,000 Kuwaiti Dinars, valid for 90 days. [1]\n\nReferences\n1. Kuwait Official Gazette 2025-04-20, Lines 3222–3225.",
+          "answer": "kd 103,825.708 [issue 1736, 2025-04-27, \"The Ministry of Electricity, Water and Renewable Energy <orig>وزارة الكهرباء والماء والطاقة المتجددة</orig> announces the offering of the practices mentioned below. Practice documents can be obtained electronically from the website https://eprocurement.mew.gov.kw\"]",
+          "similarity": 0.9,
+          "match": false,
+          "question_id": "q049"
+        },
+        {
+          "question": "How much does it cost to purchase the documents for the Sports Medicine Center X-ray tender?",
+          "expected": "The tender document price is 75 Kuwaiti Dinars. [1]\n\nReferences\n1. Kuwait Official Gazette 2025-04-20, Lines 3222–3225.",
+          "answer": "unknown",
+          "similarity": 0.0,
+          "match": false,
+          "question_id": "q050"
+        },
+        {
+          "question": "How long must bids remain valid in the Amiri Diwan tender announced in late April?",
+          "expected": "Bids must remain valid for 90 days from the closing date. [1]\n\nReferences\n1. Kuwait Official Gazette 2025-04-27, Lines 1897–1897.",
+          "answer": "90 days [issue 1738, 2025-05-11, \"**Name to be changed pursuant to Law No. 36/69**\"]",
+          "similarity": 0.7,
+          "match": false,
+          "question_id": "q051"
+        },
+        {
+          "question": "What is the minimum initial bond percentage required in the late-April Amiri Diwan tender?",
+          "expected": "A minimum initial bond of 2% of the bid value is required. [1]\n\nReferences\n1. Kuwait Official Gazette 2025-04-27, Lines 1892–1892.",
+          "answer": "50% [issue 1734, 2025-04-13, \"Regarding the expiration of the initial approval period for establishing a company engaged in securities activities, the Capital Markets Authority <orig>هيئة أسواق المال</orig> announces the expiration of the initial approval period granted to the founders of a company under establishment on 2025/04/06, in accordance with Resolution No. (134) of 2024 concerning the initial approval for establishing a closed company engaged in securities activities, issued on 2024/10/07, from the following gentlemen:\"]",
+          "similarity": 0.8,
+          "match": false,
+          "question_id": "q052"
+        },
+        {
+          "question": "Are alternative offers allowed in the late-April Amiri Diwan tender?",
+          "expected": "No. The notice states the tender is indivisible and alternative offers are not permitted. [1]\n\nReferences\n1. Kuwait Official Gazette 2025-04-27, Lines 1895–1895.",
+          "answer": "unknown",
+          "similarity": 0.0,
+          "match": false,
+          "question_id": "q053"
+        },
+        {
+          "question": "What is the practice fee for Ministry of Health Practice No. 5DX003?",
+          "expected": "The practice purchase fee is 75 Kuwaiti Dinars. [1]\n\nReferences\n1. Kuwait Official Gazette 2025-05-04, Lines 8290–8290.",
+          "answer": "unknown",
+          "similarity": 0.0,
+          "match": false,
+          "question_id": "q054"
+        },
+        {
+          "question": "What is the bid closing time for the Ministry of Awqaf Practice No. 1-2026/2025?",
+          "expected": "The bid closes at 1:00 PM on Sunday, 4/5/2025. [1]\n\nReferences\n1. Kuwait Official Gazette 2025-04-13, Lines 758–761.",
+          "answer": "25-05-25 [issue 1740, 2025-05-25, \"The Ministry of Islamic Affairs <orig>وزارة الشؤون الإسلامية</orig> announces the issuance of Tender No. A.Y. 9/2024 for the completion of works for the Mutairan Al-Ardi Mosque / Prayer Area <orig>مسجد / مصلى مطيران العارضي</orig> in Saad Al-Abdullah <orig>سعد العبد الله</orig> area – Block (8), in accordance with the following terms and data:\"]",
+          "similarity": 0.7,
+          "match": false,
+          "question_id": "q055"
+        },
+        {
+          "question": "What is the closing date for Kuwait Oil Company Tender No. 2125611-RFP?",
+          "expected": "The closing date is 14/07/2025. [1]\n\nReferences\n1. Kuwait Official Gazette 2025-04-27, Lines 13586–13590.",
+          "answer": "25-04-20 [issue 1735, 2025-04-20, \"For commercial inquiries, please contact phone numbers 23887794 / 23887792\"]",
+          "similarity": 0.9,
+          "match": false,
+          "question_id": "q056"
+        },
+        {
+          "question": "What preliminary bond value is set for Kuwait Oil Company Tender No. 2125611-RFP?",
+          "expected": "The preliminary bond is KD 300,000. [1]\n\nReferences\n1. Kuwait Official Gazette 2025-04-27, Lines 13586–13590.",
+          "answer": "2% [issue 1740, 2025-05-25, \"The Kuwait Fire Force <orig>قوة الإطفاء العام</orig> announces the tendering of Practice No. (2025/2024/37) for the construction, supply, and warranty of (2) staff transport boats for the Kuwait Fire Force <orig>قوة الإطفاء العام</orig>.\"]",
+          "similarity": 0.8,
+          "match": false,
+          "question_id": "q057"
+        },
+        {
+          "question": "How much are the tender documents for Kuwait Oil Company Tender No. 2125611-RFP?",
+          "expected": "The cost of the tender documents is KD 2,500. [1]\n\nReferences\n1. Kuwait Official Gazette 2025-04-27, Lines 13586–13590.",
+          "answer": "unknown",
+          "similarity": 0.0,
+          "match": false,
+          "question_id": "q058"
+        },
+        {
+          "question": "By what time on the due day must bids be submitted for Amiri Diwan Practice A/M/804?",
+          "expected": "Bids must be submitted by 1:30 PM on Thursday, 2025/5/22. [1]\n\nReferences\n1. Kuwait Official Gazette 2025-05-11, Lines 13256–13256.",
+          "answer": "1:00 PM on Thursday, 24/4/2025",
+          "similarity": 0.8,
+          "match": false,
+          "question_id": "q059"
+        },
+        {
+          "question": "What initial security deposit percentage is required for Amiri Diwan Practice A/M/804?",
+          "expected": "An initial security deposit of 2% of the bid value is required. [1]\n\nReferences\n1. Kuwait Official Gazette 2025-05-11, Lines 13258–13258.",
+          "answer": "2% [issue 1737, 2025-05-04, \"Annual Plan for Supply, Contracting, and Services Contracts\"]",
+          "similarity": 0.8,
+          "match": false,
+          "question_id": "q060"
+        },
+        {
+          "question": "What closing period is stated for Ministry of Health Practice No. 5DXK10?",
+          "expected": "The closing period is \"30 days from the announcement date and more.\" [1]\n\nReferences\n1. Kuwait Official Gazette 2025-05-04, Lines 8294–8294.",
+          "answer": "Two weeks from the date of announcement",
+          "similarity": 0.0,
+          "match": false,
+          "question_id": "q061"
+        },
+        {
+          "question": "What is the objection window for changes to a company’s registration?",
+          "expected": "Within thirty days from the date of publication. [1]\n\nReferences\n1. Kuwait Official Gazette 2025-05-11, Lines 15661–15661.",
+          "answer": "fifteen days",
+          "similarity": 0.7142857142857143,
+          "match": false,
+          "question_id": "q062"
+        },
+        {
+          "question": "Where should objections on company registration changes be filed?",
+          "expected": "With the General Court (المحكمة الكلية). [1]\n\nReferences\n1. Kuwait Official Gazette 2025-05-11, Lines 15661–15661.",
+          "answer": "The General Court (المحكمة الكلية) [issue 1736, 2025-04-27, \"Pre-qualification for Limited Tenders on a List of Companies\"]",
+          "similarity": 0.7,
+          "match": false,
+          "question_id": "q063"
+        },
+        {
+          "question": "Which types of legal entities are referenced in the company registration announcements?",
+          "expected": "Examples include One-Person Company, Limited Liability Company, and General Partnership. [1][2][3]\n\nReferences\n1. Kuwait Official Gazette 2025-05-11, Lines 15618–15618.\n2. Kuwait Official Gazette 2025-05-11, Lines 15612–15612.\n3. Kuwait Official Gazette 2025-05-11, Lines 16435–16435.",
+          "answer": "One-Person Company",
+          "similarity": 0.07142857142857142,
+          "match": false,
+          "question_id": "q064"
+        },
+        {
+          "question": "According to the latest correction, which company name is confirmed for the rig site preparation tender?",
+          "expected": "According to the latest correction, the correct name is FUTURE SERVICES GENERAL TRADING AND CONTRACTING COMPANY W.L.L. [1]\n\nReferences\n1. Kuwait Official Gazette 2025-05-04 (Correction), Lines 15491–15492.",
+          "answer": "I don't have the information regarding passages mentioning\nthe latest correction company, correction company name, and\nconfirmed company name.",
+          "similarity": 0.0,
+          "match": false,
+          "question_id": "q065"
+        },
+        {
+          "question": "According to the latest correction, on what date was the earlier rig site preparation notice published?",
+          "expected": "According to the latest correction, the earlier notice was published on Sunday, 27/04/2025. [1]\n\nReferences\n1. Kuwait Official Gazette 2025-05-04 (Correction), Lines 15490–15490.",
+          "answer": "I'm sorry, but I don't have the information regarding\npassages mentioning the latest correction date, correction\ndate earlier, or date earlier rig.",
+          "similarity": 0.0,
+          "match": false,
+          "question_id": "q066"
+        },
+        {
+          "question": "Across both the late-April Amiri Diwan tender and Practice A/M/804, are alternative offers allowed?",
+          "expected": "No. Both notices state that alternative offers are not permitted. [1][2]\n\nReferences\n1. Kuwait Official Gazette 2025-04-27, Lines 1895–1895.\n2. Kuwait Official Gazette 2025-05-11, Lines 13261–13261.",
+          "answer": "unknown",
+          "similarity": 0.0,
+          "match": false,
+          "question_id": "q067"
+        },
+        {
+          "question": "What minimum initial bond percentage is stated across both the late-April Amiri Diwan tender and Practice A/M/804?",
+          "expected": "2% of the bid value in both notices. [1][2]\n\nReferences\n1. Kuwait Official Gazette 2025-04-27, Lines 1892–1892.\n2. Kuwait Official Gazette 2025-05-11, Lines 13258–13258.",
+          "answer": "25.9% [issue 1734, 2025-04-13, \"<table_caption>Decisions from the Kuwait Institute for Scientific Research</table_caption>\"]",
+          "similarity": 0.8,
+          "match": false,
+          "question_id": "q068"
+        },
+        {
+          "question": "What bid validity period is stated across both the late-April Amiri Diwan tender and Practice A/M/804?",
+          "expected": "90 days in both notices. [1][2]\n\nReferences\n1. Kuwait Official Gazette 2025-04-27, Lines 1897–1897.\n2. Kuwait Official Gazette 2025-05-11, Lines 13258–13258.",
+          "answer": "90 days [issue 1740, 2025-05-25, \"The Kuwait Institute for Scientific Research <orig>معهد الكويت للأبحاث العلمية</orig> announces the issuance of Tender No. 31-M-2026/2025 for the supply of (5) eye wash units and emergency showers mounted on\"]",
+          "similarity": 0.8,
+          "match": false,
+          "question_id": "q069"
+        },
+        {
+          "question": "What is the maximum duration of a commercial lease?",
+          "expected": "This information is not provided in the provided documents. Or I don't know.",
+          "answer": "unknown",
+          "similarity": 0.125,
+          "match": false,
+          "question_id": "q070"
+        },
+        {
+          "question": "What is the filing fee for an appeal in civil court?",
+          "expected": "This information is not provided in the provided documents. Or I don't know.",
+          "answer": "unknown",
+          "similarity": 0.125,
+          "match": false,
+          "question_id": "q071"
+        }
+      ],
+      "extra_answers": []
+    }
+  ],
+  "comparison": {
+    "previous_file": "/mnt/c/Users/sepeh/OneDrive/Documents/Git/GraphRAG_Developer_Challenge2/AB Testing/Test Results/test_results_20251031_215039.json",
+    "delta_average_similarity": -0.0005113483448461187,
+    "delta_match_rate": 0.0,
+    "percent_change_average_similarity": -0.14004834566405022,
+    "percent_change_match_rate": 0.0
+  },
+  "started_at": "2025-10-31T22:14:47",
+  "finished_at": "2025-10-31T22:15:15",
+  "runtime_seconds": 27.877,
+  "questions": 71,
+  "throughput_qpm": 152.82,
+  "answers_file": "/mnt/c/Users/sepeh/OneDrive/Documents/Git/GraphRAG_Developer_Challenge2/AB Testing/Output Answers/answers_20251031_221515.json",
+  "variant": "Output Answers",
+  "max_workers": 8,
+  "use_vector_first": true
+}
