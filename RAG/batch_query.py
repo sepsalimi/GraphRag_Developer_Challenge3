@@ -21,7 +21,7 @@ time.tzset()
 def batch_query_graph_rag(
     input_question_file: str,
     max_workers: int = None,
-    top_k: int = None,
+    retriever_k: int = None,
     neighbor_window: int = 1
 ):
     """
@@ -30,7 +30,7 @@ def batch_query_graph_rag(
     Args:
         input_question_file: Path to JSON file containing questions
         max_workers: Number of worker threads (defaults to min(16, cpu_count * 2) if not provided)
-        top_k: Optional top_k parameter for query_graph_rag (uses default if not provided)
+        retriever_k: Optional retriever_k parameter for query_graph_rag (uses default if not provided)
         neighbor_window: Adjacent-chunk window per hit (0 disables; 1 includes i±1)
     
     Returns:
@@ -108,8 +108,8 @@ def batch_query_graph_rag(
     
     def process_query(question):
         try:
-            if top_k is not None:
-                answer = query_graph_rag(question, top_k=top_k, neighbor_window=neighbor_window)
+            if retriever_k is not None:
+                answer = query_graph_rag(question, retriever_k=retriever_k, neighbor_window=neighbor_window)
             else:
                 answer = query_graph_rag(question, neighbor_window=neighbor_window)
             return {"question": question, "answer": answer}

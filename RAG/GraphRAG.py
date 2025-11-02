@@ -29,12 +29,12 @@ def _make_rag(neighbor_window: int):
     wrapped = wrap_with_neighbors(base, driver, window=neighbor_window)
     return GraphRAG(retriever=wrapped, llm=llm)
 
-# Resolve default top_k from environment
-_env_top_k = os.getenv("TOP_K")
-_DEFAULT_TOP_K = int(_env_top_k) if _env_top_k is not None else 5
+# Resolve default retriever_k from environment
+_env_retriever_k = os.getenv("retriever_k")
+_DEFAULT_retriever_k = int(_env_retriever_k) if _env_retriever_k is not None else 5
 
-def query_graph_rag(query_text: str, top_k: int = _DEFAULT_TOP_K, neighbor_window: int = 1):
+def query_graph_rag(query_text: str, retriever_k: int = _DEFAULT_retriever_k, neighbor_window: int = 1):
     """Query the GraphRAG system with a question."""
     rag = _make_rag(neighbor_window)
-    response = rag.search(query_text=query_text, retriever_config={"top_k": top_k})
+    response = rag.search(query_text=query_text, retriever_config={"retriever_k": retriever_k})
     return response.answer
