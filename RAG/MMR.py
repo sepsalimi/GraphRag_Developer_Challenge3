@@ -1,12 +1,20 @@
 from typing import Any, List
-import re
 
+import numpy as np
 from langchain_community.vectorstores.utils import maximal_marginal_relevance
+from neo4j_graphrag.types import RawSearchResult, RetrieverResult
+from RAG.AnchorUtils import (
+    filter_to_anchor_hits,
+    enforce_slot_guard,
+    preboost_results_by_anchors,
+)
 
 
 def _get_text(hit: Any) -> str:
     if hasattr(hit, "text"):
         return getattr(hit, "text") or ""
+    if hasattr(hit, "content"):
+        return getattr(hit, "content") or ""
     if isinstance(hit, dict):
         return hit.get("text") or ""
     return ""
@@ -19,61 +27,6 @@ def _embed_docs(embedder, docs: List[str]) -> List[List[float]]:
         return embedder.embed(docs)
     return [embedder.embed_query(t or "") for t in docs]
 
-
-# -----------------------------
-# Anchor-aware preboost
-# -----------------------------
-_RX_ANCHORS = [
-    re.compile(r"\bRFP[\s/-]?\d+\b", re.IGNORECASE),
-    re.compile(r"\b\d{6,7}[\s/-]?RFP\b", re.IGNORECASE),
-    re.compile(r"\bA/M/\d+\b", re.IGNORECASE),
-    re.compile(r"\b5D[A-Z0-9]+\b", re.IGNORECASE),
-    re.compile(r"\b\d{4}/\d{4}/\d+\b", re.IGNORECASE),
-]
-
-_ARABIC_DIGITS = str.maketrans("٠١٢٣٤٥٦٧٨٩", "0123456789")
-
-
-def _norm_digits(s: str) -> str:
-    return (s or "").translate(_ARABIC_DIGITS)
-
-
-def _extract_anchors_from_query(q: str) -> List[str]:
-    qn = _norm_digits(q or "")
-    out: List[str] = []
-    for rx in _RX_ANCHORS:
-        for m in rx.findall(qn):
-            out.append(str(m))
-    # dedupe order-preserving (case-insensitive)
-    seen = set()
-    uniq: List[str] = []
-    for a in out:
-        k = a.upper()
-        if k not in seen:
-            seen.add(k)
-            uniq.append(a)
-    return uniq
-
-
-def _preboost_results_by_anchors(query_text: str, results: List[Any]) -> List[Any]:
-    if not results:
-        return results
-    anchors = _extract_anchors_from_query(query_text)
-    if not anchors:
-        return results
-    anchors_norm = [ _norm_digits(a).lower() for a in anchors ]
-    docs_norm = [ _norm_digits(_get_text(r)).lower() for r in results ]
-    def is_match(i: int) -> bool:
-        di = docs_norm[i]
-        for a in anchors_norm:
-            if a and a in di:
-                return True
-        return False
-    idxs = list(range(len(results)))
-    idxs.sort(key=lambda i: (not is_match(i), i))
-    return [results[i] for i in idxs]
-
-
 class MMRWrapperRetriever:
     def __init__(self, base, embedder, mmr_k: int, lambda_mult: float, always_keep_top):
         self._base = base
@@ -85,74 +38,82 @@ class MMRWrapperRetriever:
     def __getattr__(self, name: str):
         return getattr(self._base, name)
 
-    def get_search_results(self, *args, **kwargs):
-        rc = dict(kwargs.pop("retriever_config", {}) or {})
-        top_k = int(rc.get("top_k") or self._mmr_k)
-        # Forward using base signature (expects top_k rather than retriever_config)
-        kwargs["top_k"] = top_k
-        results: List[Any] = self._base.get_search_results(*args, **kwargs)
-        if not results:
-            return results
-        try:
-            query_text = kwargs.get("query_text") or (args[0] if args else "")
-            results = _preboost_results_by_anchors(query_text, results)
-            q = self._embedder.embed_query(query_text)
-            docs = [_get_text(r) for r in results]
-            X = _embed_docs(self._embedder, docs)
-            k = min(self._mmr_k, len(results))
-            if k <= 0:
-                return results
-            keep_n = int(self._keep_top_n)
-            if keep_n > 0:
-                keep_n = min(keep_n, k, len(results))
-                if keep_n == k:
-                    return results[:k]
-                idxs_sub = maximal_marginal_relevance(q, X[keep_n:], lambda_mult=self._lambda, k=k - keep_n)
-                mapped = list(range(keep_n)) + [i + keep_n for i in idxs_sub]
-                return [results[i] for i in mapped]
-            idxs = maximal_marginal_relevance(q, X, lambda_mult=self._lambda, k=k)
-            return [results[i] for i in idxs]
-        except Exception:
-            return results
+    def _unwrap(self, result_obj: Any):
+        if isinstance(result_obj, RetrieverResult):
+            metadata = result_obj.metadata
+            return list(result_obj.items), lambda items: RetrieverResult(items=items, metadata=metadata)
+        if isinstance(result_obj, RawSearchResult):
+            metadata = result_obj.metadata
+            return list(result_obj.records), lambda items: RawSearchResult(records=items, metadata=metadata)
+        if isinstance(result_obj, list):
+            return list(result_obj), lambda items: items
+        return [], lambda items: result_obj
 
-    def _invoke(self, method, *args, **kwargs):
+    def _apply_mmr(self, query_text: str, items: List[Any]) -> List[Any]:
+        hits = filter_to_anchor_hits(query_text, list(items), _get_text)
+        if not hits:
+            return hits
+        hits = preboost_results_by_anchors(query_text, hits, _get_text)
+        k = min(self._mmr_k, len(hits))
+        if k <= 0:
+            return hits
+
+        q = np.asarray(self._embedder.embed_query(query_text), dtype=float)
+        q = np.atleast_1d(q)
+        if q.ndim > 1:
+            q = q.reshape(-1)
+
+        docs = [_get_text(r) for r in hits]
+        X = np.asarray(_embed_docs(self._embedder, docs), dtype=float)
+        X = np.atleast_2d(X)
+
+        if q.size == 0 or X.size == 0 or X.shape[0] != len(hits):
+            chosen = hits[:k]
+        else:
+            keep_n = max(0, min(self._keep_top_n, k))
+            if keep_n >= k:
+                chosen = hits[:k]
+            elif keep_n > 0:
+                remaining = maximal_marginal_relevance(
+                    q,
+                    X[keep_n:],
+                    lambda_mult=self._lambda,
+                    k=k - keep_n,
+                )
+                mapped = list(range(keep_n)) + [keep_n + i for i in remaining]
+                chosen = [hits[i] for i in mapped]
+            else:
+                idxs = maximal_marginal_relevance(q, X, lambda_mult=self._lambda, k=k)
+                chosen = [hits[i] for i in idxs]
+
+        return enforce_slot_guard(query_text, hits, chosen, _get_text)
+
+    def _run(self, method, args, kwargs):
         rc = dict(kwargs.pop("retriever_config", {}) or {})
         top_k = int(rc.get("top_k") or self._mmr_k)
         kwargs["top_k"] = top_k
-        results: List[Any] = method(*args, **kwargs)
-        if not results:
-            return results
-        try:
-            k = min(self._mmr_k, len(results))
-            if k <= 0:
-                return results
-            query_text = kwargs.get("query_text") or (args[0] if args else "")
-            results = _preboost_results_by_anchors(query_text, results)
-            q = self._embedder.embed_query(query_text)
-            docs = [_get_text(r) for r in results]
-            X = _embed_docs(self._embedder, docs)
-            keep_n = int(self._keep_top_n)
-            if keep_n > 0:
-                keep_n = min(keep_n, k, len(results))
-                if keep_n == k:
-                    return results[:k]
-                idxs_sub = maximal_marginal_relevance(q, X[keep_n:], lambda_mult=self._lambda, k=k - keep_n)
-                mapped = list(range(keep_n)) + [i + keep_n for i in idxs_sub]
-                return [results[i] for i in mapped]
-            idxs = maximal_marginal_relevance(q, X, lambda_mult=self._lambda, k=k)
-            return [results[i] for i in idxs]
-        except Exception:
-            return results
+        result_obj = method(*args, **kwargs)
+        items, rebuild = self._unwrap(result_obj)
+        if not items:
+            return rebuild(items)
+        query_text = kwargs.get("query_text") or (args[0] if args else "")
+        ranked = self._apply_mmr(query_text, items)
+        return rebuild(ranked)
+
+    def get_search_results(self, *args, **kwargs):
+        if not hasattr(self._base, "get_search_results"):
+            return []
+        return self._run(self._base.get_search_results, args, kwargs)
 
     def search(self, *args, **kwargs):
-        if hasattr(self._base, "search"):
-            return self._invoke(self._base.search, *args, **kwargs)
-        return []
+        if not hasattr(self._base, "search"):
+            return []
+        return self._run(self._base.search, args, kwargs)
 
     def retrieve(self, *args, **kwargs):
-        if hasattr(self._base, "retrieve"):
-            return self._invoke(self._base.retrieve, *args, **kwargs)
-        return []
+        if not hasattr(self._base, "retrieve"):
+            return []
+        return self._run(self._base.retrieve, args, kwargs)
 
 
 def wrap_with_mmr(base, embedder, mmr_k: int, lambda_mult: float, always_keep_top: int):

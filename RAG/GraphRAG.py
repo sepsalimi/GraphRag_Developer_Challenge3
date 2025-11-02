@@ -1,10 +1,12 @@
 import os
+import re
 from pathlib import Path
 from neo4j import GraphDatabase
 from neo4j_graphrag.embeddings import OpenAIEmbeddings
 from neo4j_graphrag.generation import GraphRAG
 from neo4j_graphrag.llm import OpenAILLM
 from neo4j_graphrag.retrievers import VectorRetriever
+from neo4j_graphrag.types import RawSearchResult, RetrieverResult
 from dotenv import load_dotenv
 from RAG.GetNeighbor import wrap_with_neighbors
 from RAG.MMR import wrap_with_mmr
@@ -44,21 +46,40 @@ except Exception:
 
 
 def _get_field(obj, name):
-    try:
-        if hasattr(obj, name):
-            return getattr(obj, name)
-    except Exception:
-        pass
+    if hasattr(obj, name):
+        return getattr(obj, name)
+
+    metadata = getattr(obj, "metadata", None)
+    if isinstance(metadata, dict) and name in metadata:
+        return metadata[name]
+
     if isinstance(obj, dict):
         if name in obj:
-            return obj.get(name)
-        meta = obj.get("metadata")
-        if isinstance(meta, dict) and name in meta:
-            return meta.get(name)
-    if hasattr(obj, "metadata") and isinstance(getattr(obj, "metadata"), dict):
-        md = getattr(obj, "metadata")
-        if name in md:
-            return md.get(name)
+            return obj[name]
+        metadata = obj.get("metadata")
+        if isinstance(metadata, dict) and name in metadata:
+            return metadata[name]
+
+    if name in {"source", "document_key", "file"}:
+        text = None
+        if hasattr(obj, "content"):
+            text = getattr(obj, "content")
+        if isinstance(text, dict):
+            text = text.get("text")
+        if not isinstance(text, str) and hasattr(obj, "text"):
+            text = getattr(obj, "text")
+        if not isinstance(text, str) and isinstance(obj, dict):
+            text = obj.get("text")
+        if isinstance(text, str):
+            if name in {"source", "document_key"}:
+                match = re.search(r"\[PUB=([^\]]+)\]", text)
+                if match:
+                    return match.group(1)
+            if name == "file":
+                match = re.search(r"\[DOC=([^\]]+)\]", text)
+                if match:
+                    return match.group(1)
+
     return None
 
 
@@ -90,39 +111,52 @@ class _SourceScopedRetriever:
         return False
 
     def _filter(self, results):
-        try:
-            return [r for r in (results or []) if self._keep(r)]
-        except Exception:
-            return results
+        items, rebuild = self._unwrap(results)
+        if not items:
+            return rebuild(items)
+        if not self._allowed:
+            return rebuild(items)
+        filtered = [hit for hit in items if self._keep(hit)]
+        if filtered:
+            return rebuild(filtered)
+        return rebuild(items)
+
+    def _unwrap(self, result_obj):
+        if isinstance(result_obj, RetrieverResult):
+            metadata = result_obj.metadata
+            return list(result_obj.items), lambda items: RetrieverResult(items=items, metadata=metadata)
+        if isinstance(result_obj, RawSearchResult):
+            metadata = result_obj.metadata
+            return list(result_obj.records), lambda items: RawSearchResult(records=items, metadata=metadata)
+        if isinstance(result_obj, list):
+            return list(result_obj), lambda items: items
+        return [], lambda items: result_obj
 
     def search(self, *args, **kwargs):
-        if hasattr(self._base, "search"):
-            results = self._base.search(*args, **kwargs)
-        elif hasattr(self._base, "retrieve"):
-            results = self._base.retrieve(*args, **kwargs)
-        else:
+        base = getattr(self._base, "search", None)
+        if base is None and hasattr(self._base, "retrieve"):
+            base = getattr(self._base, "retrieve")
+        if base is None:
             return []
-        return self._filter(results)
+        return self._filter(base(*args, **kwargs))
 
     def retrieve(self, *args, **kwargs):
-        if hasattr(self._base, "retrieve"):
-            results = self._base.retrieve(*args, **kwargs)
-        elif hasattr(self._base, "search"):
-            results = self._base.search(*args, **kwargs)
-        else:
+        base = getattr(self._base, "retrieve", None)
+        if base is None and hasattr(self._base, "search"):
+            base = getattr(self._base, "search")
+        if base is None:
             return []
-        return self._filter(results)
+        return self._filter(base(*args, **kwargs))
 
     def get_search_results(self, *args, **kwargs):
-        if hasattr(self._base, "get_search_results"):
-            results = self._base.get_search_results(*args, **kwargs)
-        elif hasattr(self._base, "search"):
-            results = self._base.search(*args, **kwargs)
-        elif hasattr(self._base, "retrieve"):
-            results = self._base.retrieve(*args, **kwargs)
-        else:
+        base = getattr(self._base, "get_search_results", None)
+        if base is None and hasattr(self._base, "search"):
+            base = getattr(self._base, "search")
+        if base is None and hasattr(self._base, "retrieve"):
+            base = getattr(self._base, "retrieve")
+        if base is None:
             return []
-        return self._filter(results)
+        return self._filter(base(*args, **kwargs))
 
 def _make_rag(neighbor_window: int, scope_files=None):
     base = VectorRetriever(driver, INDEX_NAME, embedder)
@@ -175,6 +209,25 @@ def query_graph_rag(query_text: str, top_k: int = _DEFAULT_top_k, neighbor_windo
         return _format_card_answer(gate.get("answers"), gate.get("provenance"))
     if mode == "restrict":
         scope_files = gate.get("scope_files") or None
+
+    # Light heuristic: widen neighbors for table-like fee/bond rows
+    qt = (query_text or "").lower()
+    table_cues = [
+        "table",
+        "fee",
+        "document",
+        "price",
+        "cost",
+        "bond",
+        "%",
+        "5dx",
+        "agency",
+        "registration",
+        "practice",
+    ]
+    table_like = any(k in qt for k in table_cues) or "جدول" in qt
+    if table_like and neighbor_window < 2:
+        neighbor_window = 2
 
     rag = _make_rag(neighbor_window, scope_files=scope_files)
     response = rag.search(query_text=query_text, retriever_config={"top_k": top_k})

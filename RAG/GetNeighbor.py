@@ -1,33 +1,31 @@
-import os
+from typing import Any
+
 from neo4j_graphrag.retrievers import VectorRetriever as _VectorRetriever
+from neo4j_graphrag.types import RawSearchResult, RetrieverResult
 
 
 def _get_field(obj, name):
-    try:
-        if hasattr(obj, name):
-            return getattr(obj, name)
-    except Exception:
-        pass
+    if hasattr(obj, name):
+        return getattr(obj, name)
+    metadata = getattr(obj, "metadata", None)
+    if isinstance(metadata, dict) and name in metadata:
+        return metadata[name]
     if isinstance(obj, dict):
         if name in obj:
-            return obj.get(name)
-        meta = obj.get("metadata")
-        if isinstance(meta, dict) and name in meta:
-            return meta.get(name)
-    if hasattr(obj, "metadata") and isinstance(getattr(obj, "metadata"), dict):
-        md = getattr(obj, "metadata")
-        if name in md:
-            return md.get(name)
+            return obj[name]
+        metadata = obj.get("metadata")
+        if isinstance(metadata, dict) and name in metadata:
+            return metadata[name]
     return None
 
 
 def _set_text(obj, new_text):
-    try:
-        if hasattr(obj, "text"):
-            setattr(obj, "text", new_text)
-            return True
-    except Exception:
-        pass
+    if hasattr(obj, "text"):
+        setattr(obj, "text", new_text)
+        return True
+    if hasattr(obj, "content"):
+        setattr(obj, "content", new_text)
+        return True
     if isinstance(obj, dict):
         obj["text"] = new_text
         return True
@@ -58,54 +56,60 @@ class NeighborWindowRetriever(_VectorRetriever):
 
     def __getattr__(self, item):
         return getattr(self._base, item)
+    def _unwrap(self, result_obj: Any):
+        if isinstance(result_obj, RetrieverResult):
+            metadata = result_obj.metadata
+            return list(result_obj.items), lambda items: RetrieverResult(items=items, metadata=metadata)
+        if isinstance(result_obj, RawSearchResult):
+            metadata = result_obj.metadata
+            return list(result_obj.records), lambda items: RawSearchResult(records=items, metadata=metadata)
+        if isinstance(result_obj, list):
+            return list(result_obj), lambda items: items
+        return [], lambda items: result_obj
 
     def _expand_results(self, results):
-        if not results or self._window <= 0:
+        if self._window <= 0:
             return results
-        try:
-            with self._driver.session() as session:
-                for hit in results:
-                    doc_key = _get_field(hit, "document_key")
-                    idx = _get_field(hit, "chunk_index")
-                    if doc_key is None or idx is None:
-                        continue
-                    texts = _fetch_neighbor_texts(session, doc_key, idx, self._window)
-                    if not texts:
-                        continue
-                    combined = "\n".join(texts)
-                    _set_text(hit, combined)
-        except Exception:
-            return results
-        return results
+        items, rebuild = self._unwrap(results)
+        if not items:
+            return rebuild(items)
+        with self._driver.session() as session:
+            for hit in items:
+                doc_key = _get_field(hit, "document_key")
+                idx = _get_field(hit, "chunk_index")
+                if doc_key is None or idx is None:
+                    continue
+                texts = _fetch_neighbor_texts(session, doc_key, idx, self._window)
+                if not texts:
+                    continue
+                _set_text(hit, "\n".join(texts))
+        return rebuild(items)
 
     def search(self, *args, **kwargs):
-        if hasattr(self._base, "search"):
-            results = self._base.search(*args, **kwargs)
-        elif hasattr(self._base, "retrieve"):
-            results = self._base.retrieve(*args, **kwargs)
-        else:
+        base = getattr(self._base, "search", None)
+        if base is None and hasattr(self._base, "retrieve"):
+            base = getattr(self._base, "retrieve")
+        if base is None:
             return []
-        return self._expand_results(results)
+        return self._expand_results(base(*args, **kwargs))
 
     def retrieve(self, *args, **kwargs):
-        if hasattr(self._base, "retrieve"):
-            results = self._base.retrieve(*args, **kwargs)
-        elif hasattr(self._base, "search"):
-            results = self._base.search(*args, **kwargs)
-        else:
+        base = getattr(self._base, "retrieve", None)
+        if base is None and hasattr(self._base, "search"):
+            base = getattr(self._base, "search")
+        if base is None:
             return []
-        return self._expand_results(results)
+        return self._expand_results(base(*args, **kwargs))
 
     def get_search_results(self, *args, **kwargs):
-        if hasattr(self._base, "get_search_results"):
-            results = self._base.get_search_results(*args, **kwargs)
-        elif hasattr(self._base, "search"):
-            results = self._base.search(*args, **kwargs)
-        elif hasattr(self._base, "retrieve"):
-            results = self._base.retrieve(*args, **kwargs)
-        else:
+        base = getattr(self._base, "get_search_results", None)
+        if base is None and hasattr(self._base, "search"):
+            base = getattr(self._base, "search")
+        if base is None and hasattr(self._base, "retrieve"):
+            base = getattr(self._base, "retrieve")
+        if base is None:
             return []
-        return self._expand_results(results)
+        return self._expand_results(base(*args, **kwargs))
 
 
 def wrap_with_neighbors(base_retriever, neo4j_driver, window=1):

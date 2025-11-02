@@ -1,4 +1,5 @@
 from tqdm import tqdm
+from concurrent.futures import ThreadPoolExecutor
 
 
 # 1. Add main nodes without creating relationships
@@ -109,7 +110,7 @@ def create_vector_index(graph, index_name, dims=None):
 
 
 
-def embed_text(graph, OPENAI_API_KEY, OPENAI_ENDPOINT, node_name, model_name='text-embedding-3-small'):
+def embed_text(graph, OPENAI_API_KEY, OPENAI_ENDPOINT, node_name, model_name='text-embedding-3-small', max_workers=None):
     """
     Creates embeddings for nodes with a dynamic label using the OpenAI endpoint,
     and displays a single-line progress bar using tqdm.
@@ -120,6 +121,8 @@ def embed_text(graph, OPENAI_API_KEY, OPENAI_ENDPOINT, node_name, model_name='te
         OPENAI_ENDPOINT: The OpenAI endpoint URL.
         node_name: The label of nodes to process.
         model_name: The OpenAI embedding model to use.
+        max_workers: Optional level of parallelism for embedding updates. When >1,
+            updates are executed concurrently.
     """
     print("Starting embedding update...")
 
@@ -133,30 +136,40 @@ def embed_text(graph, OPENAI_API_KEY, OPENAI_ENDPOINT, node_name, model_name='te
     total_nodes = len(nodes)
     print(f"Found {total_nodes} nodes without embeddings.")
 
+    # Prepare the update query once
+    update_query = f"""
+    MATCH (n:{node_name})
+    WHERE elementId(n) = $node_id
+    WITH n, genai.vector.encode(
+      n.text, 
+      "OpenAI", 
+      {{
+        token: $openAiApiKey, 
+        endpoint: $openAiEndpoint,
+        model: $modelName
+      }}
+    ) AS vector
+    CALL db.create.setNodeVectorProperty(n, "textEmbeddingOpenAI", vector)
+    """
+
+    def _update_node(record):
+        node_id = record["node_id"]
+        graph.query(update_query, params={
+            "node_id": node_id,
+            "openAiApiKey": OPENAI_API_KEY,
+            "openAiEndpoint": OPENAI_ENDPOINT,
+            "modelName": model_name
+        })
+
     # Use a single-line progress bar for node updates
     with tqdm(total=total_nodes, desc="Embedding nodes", ncols=100, leave=True) as pbar:
-        for record in nodes:
-            node_id = record["node_id"]
-            update_query = f"""
-            MATCH (n:{node_name})
-            WHERE elementId(n) = $node_id
-            WITH n, genai.vector.encode(
-              n.text, 
-              "OpenAI", 
-              {{
-                token: $openAiApiKey, 
-                endpoint: $openAiEndpoint,
-                model: $modelName
-              }}
-            ) AS vector
-            CALL db.create.setNodeVectorProperty(n, "textEmbeddingOpenAI", vector)
-            """
-            graph.query(update_query, params={
-                "node_id": node_id,
-                "openAiApiKey": OPENAI_API_KEY,
-                "openAiEndpoint": OPENAI_ENDPOINT,
-                "modelName": model_name
-            })
-            pbar.update(1)
+        if max_workers and int(max_workers) > 1:
+            with ThreadPoolExecutor(max_workers=int(max_workers)) as executor:
+                for _ in executor.map(_update_node, nodes):
+                    pbar.update(1)
+        else:
+            for record in nodes:
+                _update_node(record)
+                pbar.update(1)
 
     print("Finished embedding update.")

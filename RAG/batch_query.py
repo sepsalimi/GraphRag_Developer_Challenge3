@@ -30,6 +30,8 @@ def _normalize_answer_text(answer: str, question: str) -> str:
     # normalize 'K.D. N' regardless of order
     s = re.sub(r"(?i)\b(?:KWD|KD|K\.?D\.?)\s*(\d+(?:\.\d+)?)\b", r"K.D. \1", s)
     s = re.sub(r"(?i)\b(\d+(?:\.\d+)?)\s*(?:KWD|KD|K\.?D\.?)\b", r"K.D. \1", s)
+    # collapse double dots e.g., K.D.. -> K.D.
+    s = s.replace("K.D..", "K.D.")
     # if numeric only and fee/bond context → prefix K.D.
     if re.fullmatch(r"\d+(?:\.\d+)?", s) and any(w in q for w in ["fee", "document", "bond", "guarantee", "price", "cost"]):
         s = f"K.D. {s}"
