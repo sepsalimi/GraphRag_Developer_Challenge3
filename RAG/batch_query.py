@@ -143,6 +143,9 @@ def batch_query_graph_rag(
         "MMR_LAMBDA": float(os.getenv("MMR_LAMBDA")),
         "ALWAYS_KEEP_TOP": int(os.getenv("ALWAYS_KEEP_TOP")),
         "neighbor_window": neighbor_window,
+        # Card-first gate toggles (booleans if set, else None)
+        "CARD_FIRST_ENABLED": (lambda v: (v.strip().lower() in ("1", "true", "yes", "on")) if v is not None else None)(os.getenv("CARD_FIRST_ENABLED")),
+        "ALLOW_DIRECT_ANSWER": (lambda v: (v.strip().lower() in ("1", "true", "yes", "on")) if v is not None else None)(os.getenv("ALLOW_DIRECT_ANSWER")),
     }
     
     # Save results to output file

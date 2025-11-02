@@ -1,0 +1,297 @@
+{
+  "config": {
+    "top_k": 20,
+    "MMR_k": 8,
+    "MMR_LAMBDA": 0.4,
+    "ALWAYS_KEEP_TOP": 2,
+    "neighbor_window": 1,
+    "CARD_FIRST_ENABLED": true,
+    "ALLOW_DIRECT_ANSWER": true
+  },
+  "answers": [
+    {
+      "question": "What is the time period to submit an objection for company registration changes?",
+      "answer": "- Most company changes (e.g., dissolution/liquidation or legal‑entity amendments handled by the Partnerships Department): 30 days from the date of publication to file an objection with the General Court.\n- Converting an individual (sole) license to a company via the Companies Department: 15 days from the date of publication to submit a written objection to the Department, accompanied by a debt instrument."
+    },
+    {
+      "question": "Where should objections to company registration be submitted?",
+      "answer": "To the General Court (Court of First Instance, Al‑Mahkama Al‑Kulliya)."
+    },
+    {
+      "question": "What types of legal entities are mentioned in company registration announcements?",
+      "answer": "- One-Person Company (also called Single Person Company, SPC) — شركة الشخص الواحد\n- Limited Liability Company (LLC) — شركة ذات مسؤولية محدودة\n- General Partnership — شركة تضامنية\n- Simple Limited Partnership — شركة توصية بسيطة"
+    },
+    {
+      "question": "What happens to joint partner obligations when an objection is filed for company registration?",
+      "answer": "If an objection is filed, the joint partners remain obligated (liable) to the creditor until the court issues a ruling on the objection—but this applies only to general partnerships and simple limited partnerships, not to LLCs or one‑person companies."
+    },
+    {
+      "question": "What is the scheduled closing date for the Public Authority for Sport tender to purchase and maintain an X-ray machine for the Sports Medicine Center?",
+      "answer": "20 July 2025"
+    },
+    {
+      "question": "What is the agency registration number for R&B United General Trading Company’s agency with Octane Furniture (India)?",
+      "answer": "I can’t find any entry for R&B United General Trading Company or Octane Furniture (India) in the provided context, so the agency registration number isn’t available here. Please share the specific announcement text or issue/date that mentions it, and I’ll extract the number."
+    },
+    {
+      "question": "Under Decree-Law No. 61 of 2025, what additional period was granted for withdrawals authorized by Law No. 3 of 2016?",
+      "answer": "An additional two fiscal years."
+    },
+    {
+      "question": "For Practice No. 1-2026/2025 (Ministry of Awqaf and Islamic Affairs), what is the bid closing time and date?",
+      "answer": "I can’t find “Practice No. 1-2026/2025” for the Ministry of Awqaf and Islamic Affairs in the provided excerpts, so the bid closing time/date isn’t available here. \n\nIf you meant the Ministry of Islamic Affairs mosque practice shown (A.Y 11/2024), its bid closing is 1:00 PM on Wednesday, 2025/6/25."
+    },
+    {
+      "question": "For National Medical Company’s agency with Top Glove (Malaysia), what is the duration (from and to dates)?",
+      "answer": "I couldn’t find any announcement for National Medical Company’s agency with Top Glove (Malaysia) in the provided context, so the duration isn’t available here. Please share the relevant gazette snippet or issue/date number, and I’ll extract the from/to dates."
+    },
+    {
+      "question": "In the Amiri Diwan auction announced on 27/4/2025, how long must a bid remain valid from the submission date?",
+      "answer": "90 days."
+    },
+    {
+      "question": "How long must a bid remain valid from the submission date?",
+      "answer": "90 days (from the closing/last date for submitting bid envelopes)."
+    },
+    {
+      "question": "For Kuwait Oil Company Tender No. 2125611-RFP (Well Testing and Associated Services), what is the value of the preliminary bond?",
+      "answer": "K.D. 300,000."
+    },
+    {
+      "question": "In the Ministry of Health (Medical Stores Dept.) table, what fee is listed for Practice No. 5DX003?",
+      "answer": "75"
+    },
+    {
+      "question": "For Al-Shifa Medical and Supplies Company’s agency registration, state the registration number and the duration (from and to).",
+      "answer": "- Registration number: 2025/00574\n- Duration: from 2024/12/20 to 2027/12/20"
+    },
+    {
+      "question": "For Ministry of Health Practice No. 5DXK10 (Radiology consumables for Kuwait Cancer Control Hospital), what are the fee and the closing period stated?",
+      "answer": "Not stated in the provided context. The excerpts don’t include Practice No. 5DXK10, so its fee and closing period aren’t available here. Please share the specific announcement text or date, or check the Ministry of Health website for that practice."
+    },
+    {
+      "question": "According to CAPT Meeting No. 40/2025, within how many days must the concerned authority issue recommendations after tender documents are referred?",
+      "answer": "I can’t find Meeting No. 40/2025 in the provided excerpts, so the deadline isn’t stated here. Please share the relevant part of CAPT Meeting No. 40/2025, and I’ll extract the exact number of days."
+    },
+    {
+      "question": "When an individual commercial license is converted into a general partnership, what form must an objection take and what happens if it is not submitted during the announcement period?",
+      "answer": "- Form: A written objection accompanied by a debt instrument, submitted to the Companies Department.\n- Deadline/effect: It must be filed within 15 days from the announcement’s publication; otherwise, the objection will not be taken into consideration."
+    },
+    {
+      "question": "For Kuwait Oil Company Tender No. 2125611-RFP, provide the closing date, the cost of tender documents, and the value of the preliminary bond.",
+      "answer": "- Closing date: 2025/8/4 (final submission time 1:00 PM)\n- Cost of tender documents: 100 K.D. (non‑refundable)\n- Preliminary bond: 5,000 K.D. (valid for 90 days from the closing date, in favor of Kuwait Oil Company)"
+    },
+    {
+      "question": "When a company is being dissolved and liquidated through the Partnerships Department, where must objections be submitted and within what time limit?",
+      "answer": "With the General Court (Court of First Instance), within 30 days from the date of publication of the announcement."
+    },
+    {
+      "question": "For Amiri Diwan Practice A/M/804 (announced 11/5/2025), what initial security deposit percentage is required and name two other submission requirements stated?",
+      "answer": "I can’t find any mention of Amiri Diwan Practice A/M/804 (11/5/2025) in the provided excerpts, so the initial security deposit percentage and specific submission requirements aren’t available here.\n\nIf you can share the text of that announcement (or its Kuwait Today/Al-Kuwait Al-Youm issue page), I’ll extract the exact percentage and list the submission requirements. Note: 11/5/2025 would likely be in Issue 1736 of Kuwait Today."
+    },
+    {
+      "question": "According to the latest correction for RFP-2113556, on what date was the earlier (incorrect) announcement published?",
+      "answer": "Sunday, 27/04/2025 (27 April 2025)"
+    },
+    {
+      "question": "According to the latest correction, what is the corrected legal entity in the Ministry of Commerce and Industry announcement that previously mis-stated it as a One-Person Company?",
+      "answer": "Limited Liability Company."
+    },
+    {
+      "question": "Across the Amiri Diwan auction (27/4/2025) and Practice A/M/804 (11/5/2025), what consistent rule is stated regarding alternative offers?",
+      "answer": "Both state that a competing/alternative offer is only valid if it is at least 10% higher than the awarded price and is accompanied by a deposit of the full auction price; in that case, bidding is reopened on the basis of the new price."
+    },
+    {
+      "question": "According to the latest correction, what is the correct company name listed for Tender RFP-2113556 (Rig Site Preparation for Drilling and Workover Wells)?",
+      "answer": "FUTURE SERVICES GENERAL TRADING AND CONTRACTING COMPANY W.L.L"
+    },
+    {
+      "question": "How many fiscal years did Decree-Law No. 61 of 2025 extend the withdrawal period authorized by Law No. 3 of 2016?",
+      "answer": "Two fiscal years."
+    },
+    {
+      "question": "What is the bid closing time and date for Practice No. 1-2026/2025 (Ministry of Awqaf and Islamic Affairs)?",
+      "answer": "I can’t find “Practice No. 1-2026/2025” for the Ministry of Awqaf and Islamic Affairs in the provided excerpts. The notices here list other MoAIA practices (e.g., A.Y. 2024/11 and A.Y. 11/2024) with closings at 1:00 PM on 2025-05-11 and 2025-06-25, respectively. If you can share the specific announcement for Practice No. 1-2026/2025, I’ll extract the exact closing time and date."
+    },
+    {
+      "question": "What is the closing date for the Public Authority for Sport X-ray machine tender?",
+      "answer": "July 20, 2025 (by 1:00 PM)."
+    },
+    {
+      "question": "What guarantee amount is required for the Public Authority for Sport X-ray machine tender?",
+      "answer": "K.D. 1,500 (initial guarantee, valid for 90 days from the closing date)."
+    },
+    {
+      "question": "What is the tender document price for the Public Authority for Sport X-ray machine tender?",
+      "answer": "75 Kuwaiti Dinars (KD)"
+    },
+    {
+      "question": "What is the closing date for Kuwait Oil Company Tender No. 2125611-RFP?",
+      "answer": "I can’t find Tender No. 2125611-RFP in the provided excerpts, so its closing date isn’t shown here. Please share the specific tender notice, or check the K-Tendering Portal (ktendering.com.kw → RFQs/Tenders/Auctions, search “2125611-RFP”) to view the closing date."
+    },
+    {
+      "question": "What is the preliminary bond value for Kuwait Oil Company Tender No. 2125611-RFP?",
+      "answer": "The provided context does not mention Tender No. 2125611-RFP, so the preliminary bond value isn’t available here. \nPlease check the K-Tendering Portal (https://www.ktendering.com.kw) and search for “2125611-RFP,” or share the Kuwait Today issue/date of the announcement so I can look it up."
+    },
+    {
+      "question": "What is the cost of the tender documents for Kuwait Oil Company Tender No. 2125611-RFP?",
+      "answer": "Not stated in the provided context. To find it, check the K-Tendering Portal (https://www.ktendering.com.kw → RFQs/Tenders/Auctions) and search for “2125611-RFP” or the tender title."
+    },
+    {
+      "question": "For the Amiri Diwan tender announced on 27/4/2025, how long must the bid remain valid?",
+      "answer": "90 days from the closing date (with the Amiri Diwan reserving the right to extend/renew it)."
+    },
+    {
+      "question": "For the Amiri Diwan tender announced on 27/4/2025, what is the minimum initial bond percentage?",
+      "answer": "I can’t find any Amiri Diwan tender details in the provided excerpts from 27/4/2025, so the minimum initial bond percentage isn’t specified here. If you share the relevant notice text from Kuwait Today Issue 1736, I can extract it."
+    },
+    {
+      "question": "Are alternative offers permitted in the Amiri Diwan tender announced on 27/4/2025?",
+      "answer": "No. The announcement states the tender is indivisible and alternative offers are not permitted (Kuwait Today, Issue 1736 – 27/4/2025)."
+    },
+    {
+      "question": "What is the submission deadline time and date for Amiri Diwan Practice A/M/804?",
+      "answer": "1:30 PM on Thursday, 22 May 2025."
+    },
+    {
+      "question": "What initial security deposit percentage is required for Amiri Diwan Practice A/M/804?",
+      "answer": "2% of the bid value."
+    },
+    {
+      "question": "What is the practice fee for Ministry of Health Practice No. 5DX003?",
+      "answer": "I couldn’t find Practice No. 5DX003 in the provided Kuwait Today/MoH excerpts, so its fee isn’t specified here. Please check the Ministry of Health website (moh.gov.kw) or the relevant Kuwait Today issue where 5DX003 is listed for the exact fee. If you can share the issue/date, I can look again."
+    },
+    {
+      "question": "What closing period is stated for Ministry of Health Practice No. 5DXK10?",
+      "answer": "The provided context does not mention Practice No. 5DXK10, so its closing period isn’t stated here. Please share the relevant notice or issue (or check the Ministry of Health website/Kuwait Today for that practice) to confirm the closing period."
+    },
+    {
+      "question": "What is the registration number for the National Medical Company’s Top Glove agency?",
+      "answer": "I couldn’t find any announcement for National Medical Company’s Top Glove agency in the provided context, so the registration number isn’t available here. If you have the issue/date, I can look it up."
+    },
+    {
+      "question": "What is the agency registration number for R&B United General Trading Company (Remist Tianjin Medical Device)?",
+      "answer": "Not found in the provided context. None of the excerpts mention R&B United General Trading Company or Remist Tianjin Medical Device. Please share the relevant notice to identify the registration number."
+    },
+    {
+      "question": "What is the duration of the National Medical Company’s Top Glove agency (from and to dates)?",
+      "answer": "I can’t find any announcement for National Medical Company’s Top Glove agency in the provided context, so the duration (from/to) isn’t available here. If you can share the specific notice or issue number, I can extract the dates."
+    },
+    {
+      "question": "What is the registration number for Al-Shifa Medical and Supplies Company’s E-Tips agency?",
+      "answer": "2025/00574"
+    },
+    {
+      "question": "What is the duration of Al-Shifa Medical and Supplies Company’s E-Tips agency (from and to dates)?",
+      "answer": "From 2024/12/20 to 2027/12/20."
+    },
+    {
+      "question": "According to the latest supplement, what is the correct company name for Tender RFP-2113556?",
+      "answer": "FUTURE SERVICES GENERAL TRADING AND CONTRACTING COMPANY W.L.L."
+    },
+    {
+      "question": "According to the latest supplement, on what date was the earlier incorrect RFP-2113556 announcement published?",
+      "answer": "Sunday, 27/04/2025."
+    },
+    {
+      "question": "How many fiscal years was the withdrawal period extended by the 2025 decree-law?",
+      "answer": "Two fiscal years."
+    },
+    {
+      "question": "What is the closing date of the Sports Medicine Center X-ray tender?",
+      "answer": "2025-07-20"
+    },
+    {
+      "question": "What is the required guarantee amount for the Sports Medicine Center X-ray tender?",
+      "answer": "2,000 Kuwaiti Dinars (valid for 90 days, in favor of the Central Agency for Public Tenders)."
+    },
+    {
+      "question": "How much does it cost to purchase the documents for the Sports Medicine Center X-ray tender?",
+      "answer": "75 Kuwaiti dinars (K.D.)"
+    },
+    {
+      "question": "How long must bids remain valid in the Amiri Diwan tender announced in late April?",
+      "answer": "90 days from the closing date."
+    },
+    {
+      "question": "What is the minimum initial bond percentage required in the late-April Amiri Diwan tender?",
+      "answer": "I can’t find any “Amiri Diwan” tender in the provided excerpts, so the minimum initial bond percentage for that late‑April tender isn’t stated here. Please share the specific announcement (issue/date or tender number) so I can confirm the percentage."
+    },
+    {
+      "question": "Are alternative offers allowed in the late-April Amiri Diwan tender?",
+      "answer": "No. The Amiri Diwan’s late‑April tender is indivisible, and alternative offers are not permitted."
+    },
+    {
+      "question": "What is the practice fee for Ministry of Health Practice No. 5DX003?",
+      "answer": "I couldn’t find Practice No. 5DX003 in the provided Kuwait Today/MoH excerpts, so its fee isn’t specified here. Please check the Ministry of Health website (moh.gov.kw) or the relevant Kuwait Today issue where 5DX003 is listed for the exact fee. If you can share the issue/date, I can look again."
+    },
+    {
+      "question": "What is the bid closing time for the Ministry of Awqaf Practice No. 1-2026/2025?",
+      "answer": "1:00 PM"
+    },
+    {
+      "question": "What is the closing date for Kuwait Oil Company Tender No. 2125611-RFP?",
+      "answer": "I can’t find Tender No. 2125611-RFP in the provided excerpts, so its closing date isn’t shown here. Please share the specific tender notice, or check the K-Tendering Portal (ktendering.com.kw → RFQs/Tenders/Auctions, search “2125611-RFP”) to view the closing date."
+    },
+    {
+      "question": "What preliminary bond value is set for Kuwait Oil Company Tender No. 2125611-RFP?",
+      "answer": "Not specified in the provided context. Tender No. 2125611-RFP isn’t listed in these excerpts, so its preliminary bond value isn’t available here. You may need to check the K-Tendering Portal (ktendering.com.kw) by searching the tender number."
+    },
+    {
+      "question": "How much are the tender documents for Kuwait Oil Company Tender No. 2125611-RFP?",
+      "answer": "Not available in the provided excerpts. The tender No. 2125611-RFP isn’t shown here, so its document purchase fee can’t be confirmed. Please search the tender number on the K‑Tendering Portal (ktendering.com.kw → RFQs/Tenders/Auctions) or contact K-HELP@KIPIC.COM.KW / +965‑23898811."
+    },
+    {
+      "question": "By what time on the due day must bids be submitted for Amiri Diwan Practice A/M/804?",
+      "answer": "The provided context doesn’t mention Amiri Diwan Practice A/M/804, so the submission time isn’t available here. Please share the specific notice or issue containing that practice, and I’ll extract the exact deadline."
+    },
+    {
+      "question": "What initial security deposit percentage is required for Amiri Diwan Practice A/M/804?",
+      "answer": "2% of the bid value."
+    },
+    {
+      "question": "What closing period is stated for Ministry of Health Practice No. 5DXK10?",
+      "answer": "The provided context does not mention Practice No. 5DXK10, so its closing period isn’t stated here. Please share the relevant notice or issue (or check the Ministry of Health website/Kuwait Today for that practice) to confirm the closing period."
+    },
+    {
+      "question": "What is the objection window for changes to a company’s registration?",
+      "answer": "- Most company changes (e.g., legal-entity amendments, dissolution/liquidation) handled by the Partnerships Department: 30 days from the date of publication to file an objection with the General Court.\n- Conversions of an individual license to a company via the Companies Department: 15 days from the date of publication to submit a written objection to the department (with a debt instrument)."
+    },
+    {
+      "question": "Where should objections on company registration changes be filed?",
+      "answer": "The General Court (Court of First Instance), within 30 days of the announcement’s publication."
+    },
+    {
+      "question": "Which types of legal entities are referenced in the company registration announcements?",
+      "answer": "- One-Person Company (Single Person Company, SPC) — شركة الشخص الواحد\n- Limited Liability Company — شركة ذات مسؤولية محدودة\n- General Partnership — شركة تضامنية\n- Simple Limited Partnership — شركة توصية بسيطة"
+    },
+    {
+      "question": "According to the latest correction, which company name is confirmed for the rig site preparation tender?",
+      "answer": "FUTURE SERVICES GENERAL TRADING AND CONTRACTING COMPANY W.L.L."
+    },
+    {
+      "question": "According to the latest correction, on what date was the earlier rig site preparation notice published?",
+      "answer": "27/04/2025 (Sunday)"
+    },
+    {
+      "question": "Across both the late-April Amiri Diwan tender and Practice A/M/804, are alternative offers allowed?",
+      "answer": "Short answer: No—unless the tender documents explicitly allow them.\n\n- Late‑April Amiri Diwan tender (Practice 28–2025/2024): The notice is “non‑divisible” and does not grant permission for alternative offers, so treat them as not allowed.\n- Practice A/M/804: Not in the provided extracts; under Law 49/2016, alternative bids are only allowed if the specific practice documents permit them."
+    },
+    {
+      "question": "What minimum initial bond percentage is stated across both the late-April Amiri Diwan tender and Practice A/M/804?",
+      "answer": "2% of the bid value."
+    },
+    {
+      "question": "What bid validity period is stated across both the late-April Amiri Diwan tender and Practice A/M/804?",
+      "answer": "90 days."
+    },
+    {
+      "question": "What is the maximum duration of a commercial lease?",
+      "answer": "The provided context does not address commercial leases. It only mentions company durations (unlimited) and a fund term (15 years, renewable). Please specify the jurisdiction or provide the relevant lease law so I can give the correct maximum duration."
+    },
+    {
+      "question": "What is the filing fee for an appeal in civil court?",
+      "answer": "The provided context doesn’t state any filing fee for a civil appeal. It only announces criminal judgments (with fines) and mentions a 37-day appeal window under Article 188, but no fees. Please share the jurisdiction (e.g., country/court), or check the civil court’s official fee schedule or the Ministry of Justice/court clerk for the exact appeal filing fee."
+    }
+  ]
+}

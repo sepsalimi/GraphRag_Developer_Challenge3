@@ -99,6 +99,25 @@ def mark_answers(answer_key_path: str, max_workers: int = None) -> dict:
         "MMR_LAMBDA": config.get("MMR_LAMBDA") or (float(os.getenv("MMR_LAMBDA")) if os.getenv("MMR_LAMBDA") else None),
         "ALWAYS_KEEP_TOP": config.get("ALWAYS_KEEP_TOP") or (int(os.getenv("ALWAYS_KEEP_TOP")) if os.getenv("ALWAYS_KEEP_TOP") else None),
         "neighbor_window": config.get("neighbor_window"),
+        # Card-first gate toggles (prefer value from answers file config; else from env; else None)
+        "CARD_FIRST_ENABLED": (
+            config.get("CARD_FIRST_ENABLED")
+            if "CARD_FIRST_ENABLED" in config
+            else (
+                (os.getenv("CARD_FIRST_ENABLED").strip().lower() in ("1", "true", "yes", "on"))
+                if os.getenv("CARD_FIRST_ENABLED")
+                else None
+            )
+        ),
+        "ALLOW_DIRECT_ANSWER": (
+            config.get("ALLOW_DIRECT_ANSWER")
+            if "ALLOW_DIRECT_ANSWER" in config
+            else (
+                (os.getenv("ALLOW_DIRECT_ANSWER").strip().lower() in ("1", "true", "yes", "on"))
+                if os.getenv("ALLOW_DIRECT_ANSWER")
+                else None
+            )
+        ),
     }
     
     # Extract timestamp from answers filename (e.g., "answers_20251101_153304.json" -> "20251101_153304")
@@ -147,6 +166,9 @@ def mark_answers(answer_key_path: str, max_workers: int = None) -> dict:
     print(f"  neighbor_window: {run_config['neighbor_window']}")
     print("\nResults:")
     print(f"  Average F1: {avg_f1_percent:.1f}% ({avg_f1:.3f})")
+    print("\nCard-first gate:")
+    print(f"  CARD_FIRST_ENABLED: {run_config['CARD_FIRST_ENABLED']}")
+    print(f"  ALLOW_DIRECT_ANSWER: {run_config['ALLOW_DIRECT_ANSWER']}")
     print("="*60 + "\n")
 
     return results
