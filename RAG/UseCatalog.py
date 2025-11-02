@@ -22,7 +22,7 @@ class CatalogHandle:
     def __init__(self) -> None:
         self.records: List[Dict[str, Any]] = []
         self.by_id: Dict[str, Dict[str, Any]] = {}
-        self.aliases: Dict[str, str] = {}
+        self.aliases: Dict[str, Set[str]] = {}
         self.id_to_sources: Dict[str, Set[str]] = {}
 
 
@@ -34,10 +34,15 @@ _DEFAULT_CATALOG_PATH = "RAG/card_catalog.jsonl"
 # Helpers
 # -----------------------------
 _WS = re.compile(r"\s+")
+_ARABIC_DIGITS = str.maketrans("٠١٢٣٤٥٦٧٨٩", "0123456789")
+
+
+def _norm_digits(s: str) -> str:
+    return s.translate(_ARABIC_DIGITS)
 
 
 def _norm_key(s: str) -> str:
-    return _WS.sub(" ", str(s).strip()).upper()
+    return _WS.sub(" ", _norm_digits(str(s).strip())).upper()
 
 
 def _env_bool(name: str, default: bool) -> bool:
@@ -65,9 +70,7 @@ def _add_alias(c: CatalogHandle, alias: Optional[str], record_id: str) -> None:
     if not alias:
         return
     key = _norm_key(alias)
-    # Do not overwrite existing mapping
-    if key not in c.aliases:
-        c.aliases[key] = record_id
+    c.aliases.setdefault(key, set()).add(record_id)
 
 
 # -----------------------------
@@ -103,7 +106,7 @@ _RX_MEETING = [
 
 
 def _extract_anchors(question: str) -> List[str]:
-    q = question or ""
+    q = _norm_digits(question or "")
     anchors: List[str] = []
 
     def collect(rx_list: List[re.Pattern[str]]) -> None:
@@ -135,16 +138,16 @@ def _extract_anchors(question: str) -> List[str]:
 
 
 def _question_type_hint(question: str) -> Optional[str]:
-    q = (question or "").lower()
-    if any(w in q for w in ["tender", "rfp"]):
+    q = _norm_digits(question or "").lower()
+    if any(w in q for w in ["tender", "rfp", "مناقصة", "طرح", "عطاء"]):
         return "tender"
-    if any(w in q for w in ["practice"]):
+    if any(w in q for w in ["practice", "ممارسة"]):
         return "practice"
     if any(w in q for w in ["registration", "agency"]):
         return "registration"
-    if any(w in q for w in ["decree", "law", "article"]):
+    if any(w in q for w in ["decree", "law", "article", "قانون", "مرسوم", "مادة"]):
         return "law"
-    if any(w in q for w in ["capt", "meeting", "minutes"]):
+    if any(w in q for w in ["capt", "meeting", "minutes", "اجتماع", "محضر"]):
         return "meeting"
     if "correction" in q:
         return "correction"
@@ -274,12 +277,13 @@ def _match_records(question: str, catalog: CatalogHandle) -> Tuple[List[str], Di
                 matched_ids.append(rid)
             continue
 
-        rid2 = catalog.aliases.get(a_key)
-        if rid2:
-            rec2 = catalog.by_id.get(_norm_key(rid2))
-            if rec2 is not None and rid2 not in record_map:
-                record_map[rid2] = rec2
-                matched_ids.append(rid2)
+        rid_set = catalog.aliases.get(a_key)
+        if rid_set:
+            for rid2 in rid_set:
+                rec2 = catalog.by_id.get(_norm_key(rid2))
+                if rec2 is not None and rid2 not in record_map:
+                    record_map[rid2] = rec2
+                    matched_ids.append(rid2)
 
     # If multiples, try to prefer by type hint from question; otherwise keep all
     if len(matched_ids) > 1:
@@ -305,6 +309,27 @@ def _collect_answers(rec: Dict[str, Any], fields: List[str]) -> Dict[str, Any]:
 def _has_conflict_or_uncertain(rec: Dict[str, Any]) -> bool:
     status = str(rec.get("status") or "").lower()
     return status in {"conflict", "uncertain", "absent"}
+
+
+def _anchor_matches_record(question: str, rec: Dict[str, Any]) -> bool:
+    anchors = _extract_anchors(question)
+    if not anchors:
+        return False
+    
+    core = rec.get("core", {}) or {}
+    record_ids = [
+        rec.get("record_id"),
+        core.get("practice_no"),
+        core.get("registration_no"),
+        core.get("law_no"),
+        core.get("meeting_no"),
+    ]
+    
+    anchor_keys = {_norm_key(a) for a in anchors}
+    for rid in record_ids:
+        if rid and _norm_key(str(rid)) in anchor_keys:
+            return True
+    return False
 
 
 def card_first_gate(question: str, *, allow_direct_answer: bool = True) -> Dict[str, Any]:
@@ -346,6 +371,8 @@ def card_first_gate(question: str, *, allow_direct_answer: bool = True) -> Dict[
     record_id = matched_ids[0]
     rec = record_map[record_id]
     intents = _detect_intents(question)
+    answers = _collect_answers(rec, intents) if intents else {}
+    all_fields_available = bool(intents) and len(answers) == len(set(intents))
 
     # Prepare provenance
     provenance = [{"source": pv.get("source"), "lines": pv.get("lines")} for pv in (rec.get("provenance", []) or [])]
@@ -353,9 +380,8 @@ def card_first_gate(question: str, *, allow_direct_answer: bool = True) -> Dict[
     # Decide answer vs restrict vs pass
     allow_da = allow_direct_answer and _env_bool("ALLOW_DIRECT_ANSWER", False)
     if allow_da and intents and not _has_conflict_or_uncertain(rec):
-        answers = _collect_answers(rec, intents)
-        # Only direct answer if all requested fields are available
-        if len(answers) == len(set(intents)) and answers:
+        # Only direct answer if all requested fields are available and anchor matches record
+        if all_fields_available and answers and _anchor_matches_record(question, rec):
             card_direct_hits += 1
             return {
                 "mode": "answer",
@@ -365,7 +391,7 @@ def card_first_gate(question: str, *, allow_direct_answer: bool = True) -> Dict[
             }
 
     # If summarization-like or missing fields → restrict
-    need_restrict = _is_summarize_like(question) or bool(intents)
+    need_restrict = _is_summarize_like(question) or all_fields_available
     if need_restrict:
         sources = sorted(catalog.id_to_sources.get(record_id, set()))
         core = rec.get("core", {}) or {}

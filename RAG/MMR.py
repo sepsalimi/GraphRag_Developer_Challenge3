@@ -25,10 +25,7 @@ class MMRWrapperRetriever:
         self._embedder = embedder
         self._mmr_k = int(mmr_k)
         self._lambda = float(lambda_mult)
-        try:
-            self._keep_top = bool(int(always_keep_top))
-        except Exception:
-            self._keep_top = True
+        self._keep_top_n = int(always_keep_top)
 
     def __getattr__(self, name: str):
         return getattr(self._base, name)
@@ -49,11 +46,13 @@ class MMRWrapperRetriever:
             k = min(self._mmr_k, len(results))
             if k <= 0:
                 return results
-            if self._keep_top and len(results) > 0:
-                if k == 1:
-                    return [results[0]]
-                idxs_sub = maximal_marginal_relevance(q, X[1:], lambda_mult=self._lambda, k=k-1)
-                mapped = [0] + [i + 1 for i in idxs_sub]
+            keep_n = int(self._keep_top_n)
+            if keep_n > 0:
+                keep_n = min(keep_n, k, len(results))
+                if keep_n == k:
+                    return results[:k]
+                idxs_sub = maximal_marginal_relevance(q, X[keep_n:], lambda_mult=self._lambda, k=k - keep_n)
+                mapped = list(range(keep_n)) + [i + keep_n for i in idxs_sub]
                 return [results[i] for i in mapped]
             idxs = maximal_marginal_relevance(q, X, lambda_mult=self._lambda, k=k)
             return [results[i] for i in idxs]
@@ -75,11 +74,13 @@ class MMRWrapperRetriever:
             q = self._embedder.embed_query(query_text)
             docs = [_get_text(r) for r in results]
             X = _embed_docs(self._embedder, docs)
-            if self._keep_top and len(results) > 0:
-                if k == 1:
-                    return [results[0]]
-                idxs_sub = maximal_marginal_relevance(q, X[1:], lambda_mult=self._lambda, k=k-1)
-                mapped = [0] + [i + 1 for i in idxs_sub]
+            keep_n = int(self._keep_top_n)
+            if keep_n > 0:
+                keep_n = min(keep_n, k, len(results))
+                if keep_n == k:
+                    return results[:k]
+                idxs_sub = maximal_marginal_relevance(q, X[keep_n:], lambda_mult=self._lambda, k=k - keep_n)
+                mapped = list(range(keep_n)) + [i + keep_n for i in idxs_sub]
                 return [results[i] for i in mapped]
             idxs = maximal_marginal_relevance(q, X, lambda_mult=self._lambda, k=k)
             return [results[i] for i in idxs]
