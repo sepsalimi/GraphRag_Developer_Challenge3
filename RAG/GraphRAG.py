@@ -177,10 +177,78 @@ _env_top_k = os.getenv("top_k")
 _DEFAULT_top_k = int(_env_top_k) if _env_top_k is not None else 5
 
 def _format_card_answer(answers, provenance) -> str:
-    parts = []
     try:
-        for k, v in (answers or {}).items():
-            parts.append(f"{k}: {v}")
+        a = answers or {}
+        sentences = []
+
+        def has(k):
+            return k in a and a[k] not in (None, "", [])
+
+        def kv(k, default=None):
+            return a.get(k, default)
+
+        # Dates and times
+        if has("closing_date") and has("closing_time"):
+            sentences.append(f"Closing date is {kv('closing_date')} at {kv('closing_time')}.")
+        elif has("closing_date"):
+            sentences.append(f"Closing date is {kv('closing_date')}.")
+        elif has("closing_time"):
+            sentences.append(f"Closing time is {kv('closing_time')}.")
+
+        # Bid validity
+        if has("bid_validity_days"):
+            sentences.append(f"Bids must remain valid for {kv('bid_validity_days')} days.")
+
+        # Fees and bonds
+        if has("tender_doc_fee_kd"):
+            sentences.append(f"Tender documents cost K.D. {kv('tender_doc_fee_kd')}.")
+        if has("initial_bond_value_kd"):
+            sentences.append(f"The initial bond is K.D. {kv('initial_bond_value_kd')}.")
+        if has("initial_bond_percent"):
+            sentences.append(f"The initial bond is {kv('initial_bond_percent')}%.")
+
+        # Alternatives and indivisibility
+        if "alternative_offers_allowed" in a:
+            allowed = bool(a.get("alternative_offers_allowed"))
+            sentences.append("Alternative offers are permitted." if allowed else "Alternative offers are not permitted.")
+        if "indivisible" in a:
+            indiv = bool(a.get("indivisible"))
+            sentences.append("The tender is indivisible." if indiv else "The tender may be divided.")
+
+        # Registration / duration / law / meeting (when applicable)
+        if has("registration_no"):
+            sentences.append(f"Registration number {kv('registration_no')}.")
+        if has("duration_from") and has("duration_to"):
+            sentences.append(f"Duration from {kv('duration_from')} to {kv('duration_to')}.")
+        if has("law_no"):
+            sentences.append(f"Law No. {kv('law_no')}.")
+        if has("article_no"):
+            sentences.append(f"Article {kv('article_no')}.")
+        if has("meeting_no"):
+            sentences.append(f"Meeting No. {kv('meeting_no')}.")
+
+        # If nothing recognized, fall back to key:value lines
+        if not sentences:
+            parts = []
+            for k, v in (a or {}).items():
+                parts.append(f"{k}: {v}")
+            if provenance:
+                prov_bits = []
+                for p in provenance:
+                    src = p.get("source")
+                    lines = p.get("lines")
+                    if src is None:
+                        continue
+                    if lines is None or lines == "":
+                        prov_bits.append(str(src))
+                    else:
+                        prov_bits.append(f"{src}:{lines}")
+                if prov_bits:
+                    parts.append("Provenance: " + "; ".join(prov_bits))
+            return "\n".join(parts) if parts else ""
+
+        # Build paragraph + provenance
+        paragraph = " ".join(sentences).strip()
         if provenance:
             prov_bits = []
             for p in provenance:
@@ -193,10 +261,14 @@ def _format_card_answer(answers, provenance) -> str:
                 else:
                     prov_bits.append(f"{src}:{lines}")
             if prov_bits:
-                parts.append("Provenance: " + "; ".join(prov_bits))
+                return paragraph + "\n" + ("Provenance: " + "; ".join(prov_bits))
+        return paragraph
     except Exception:
-        pass
-    return "\n".join(parts) if parts else ""
+        # On any formatting error, degrade gracefully to old behaviour
+        parts = []
+        for k, v in (answers or {}).items():
+            parts.append(f"{k}: {v}")
+        return "\n".join(parts) if parts else ""
 
 
 def query_graph_rag(query_text: str, top_k: int = _DEFAULT_top_k, neighbor_window: int = 1):
@@ -205,6 +277,7 @@ def query_graph_rag(query_text: str, top_k: int = _DEFAULT_top_k, neighbor_windo
     scope_files = None
     gate = card_first_gate(query_text, allow_direct_answer=True)
     mode = gate.get("mode")
+    # TODO What is Mode
     if mode == "answer":
         return _format_card_answer(gate.get("answers"), gate.get("provenance"))
     if mode == "restrict":
@@ -212,6 +285,8 @@ def query_graph_rag(query_text: str, top_k: int = _DEFAULT_top_k, neighbor_windo
 
     # Light heuristic: widen neighbors for table-like fee/bond rows
     qt = (query_text or "").lower()
+    
+    # TO DO: Evaluate this
     table_cues = [
         "table",
         "fee",
@@ -225,7 +300,7 @@ def query_graph_rag(query_text: str, top_k: int = _DEFAULT_top_k, neighbor_windo
         "registration",
         "practice",
     ]
-    table_like = any(k in qt for k in table_cues) or "جدول" in qt
+    table_like = any(k in qt for k in table_cues) or "جدول" in qt # جدول  = table
     if table_like and neighbor_window < 2:
         neighbor_window = 2
 

@@ -80,6 +80,9 @@ _RX_TENDER = [
     re.compile(r"\bRFP-\d+\b", re.IGNORECASE),
     re.compile(r"\b\d{6,7}-RFP\b", re.IGNORECASE),
     re.compile(r"\b\d{4}/\d{4}/\d+\b", re.IGNORECASE),  # CAPT tender style
+    # CAPT ministry/authority codes (e.g., MEW/17/2023-2024 or MEW/16-2024-2025)
+    re.compile(r"\b[A-Z]{2,6}/\d{1,3}/\d{4}-\d{4}\b", re.IGNORECASE),
+    re.compile(r"\b[A-Z]{2,6}/\d{1,3}-\d{4}-\d{4}\b", re.IGNORECASE),
 ]
 
 _RX_PRACTICE = [
@@ -196,7 +199,7 @@ def _detect_intents(question: str) -> List[str]:
     q = (question or "").lower()
     requested: List[str] = []
     for keywords, fields in _INTENT_MAP:
-        if all(k in q for k in keywords) or any(k in q for k in keywords):
+        if any(k in q for k in keywords):
             for f in fields:
                 if f not in requested:
                     requested.append(f)
@@ -241,6 +244,10 @@ def load_catalog(path: str = _DEFAULT_CATALOG_PATH) -> CatalogHandle:
 
         # provenance sources
         handle.id_to_sources[record_id] = _get_sources(rec)
+        # also merge any explicit scope_files provided with the record
+        for sf in (rec.get("scope_files") or []) or []:
+            if sf:
+                handle.id_to_sources[record_id].add(str(sf))
 
         # aliases from core secondary ids
         core = rec.get("core", {}) or {}
@@ -255,6 +262,13 @@ def load_catalog(path: str = _DEFAULT_CATALOG_PATH) -> CatalogHandle:
 
     _CATALOG = handle
     return handle
+
+
+def reload_catalog(path: str = _DEFAULT_CATALOG_PATH) -> CatalogHandle:
+    """Force reload of the catalog from disk, discarding any cached copy."""
+    global _CATALOG
+    _CATALOG = None
+    return load_catalog(path)
 
 
 def _match_records(question: str, catalog: CatalogHandle) -> Tuple[List[str], Dict[str, Dict[str, Any]]]:
@@ -357,14 +371,32 @@ def card_first_gate(question: str, *, allow_direct_answer: bool = True) -> Dict[
             rec = record_map[rid]
             for pv in rec.get("provenance", []) or []:
                 prov.append({"source": pv.get("source"), "lines": pv.get("lines")})
+            # merge provenance sources and any record-provided scope_files
             all_sources.update(catalog.id_to_sources.get(rid, set()))
+            for sf in (rec.get("scope_files") or []) or []:
+                if sf:
+                    all_sources.add(str(sf))
+        # boost with anchors (and type hint) to steer retrieval
+        boost_terms: List[str] = []
+        boost_terms.extend(_extract_anchors(question))
+        hint = _question_type_hint(question)
+        if hint:
+            boost_terms.append(hint)
+        # de-duplicate while preserving order
+        seen_bt: Set[str] = set()
+        boost_terms_unique: List[str] = []
+        for t in boost_terms:
+            kt = _norm_key(t)
+            if kt not in seen_bt:
+                seen_bt.add(kt)
+                boost_terms_unique.append(t)
         card_prefilter_uses += 1
         return {
             "mode": "restrict",
             "record_id": None,
             "provenance": prov,
             "scope_files": sorted(all_sources),
-            "boost_terms": [],
+            "boost_terms": boost_terms_unique,
         }
 
     # Single match
@@ -400,6 +432,10 @@ def card_first_gate(question: str, *, allow_direct_answer: bool = True) -> Dict[
             v = rec.get(k) if k == "record_id" else core.get(k)
             if v:
                 boost_terms.append(str(v))
+        # include authority for a bit more context signal
+        auth = rec.get("authority")
+        if auth:
+            boost_terms.append(str(auth))
         card_prefilter_uses += 1
         return {
             "mode": "restrict",

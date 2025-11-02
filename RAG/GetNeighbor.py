@@ -3,7 +3,7 @@ from typing import Any
 from neo4j_graphrag.retrievers import VectorRetriever as _VectorRetriever
 from neo4j_graphrag.types import RawSearchResult, RetrieverResult
 
-from .CheckSupplement import gather_supplement_snippets
+from .CheckUpdates import gather_update_snippets
 
 
 def _get_field(obj, name):
@@ -88,15 +88,15 @@ class NeighborWindowRetriever(_VectorRetriever):
                 if not texts:
                     continue
                 combined = "\n".join(texts)
-                sup_texts = gather_supplement_snippets(
+                update_texts = gather_update_snippets(
                     session=session,
                     query_text=query_text,
                     base_text=combined,
                     window=self._window,
                     publication_key=pub_key,
                 )
-                if sup_texts:
-                    combined = combined + "\n--- supplement ---\n" + "\n".join(sup_texts)
+                if update_texts:
+                    combined = combined + "\n--- update ---\n" + "\n".join(update_texts)
                 _set_text(hit, combined)
         return rebuild(items)
 
