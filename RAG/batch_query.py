@@ -21,7 +21,7 @@ time.tzset()
 def batch_query_graph_rag(
     input_question_file: str,
     max_workers: int = None,
-    retriever_k: int = None,
+    top_k: int = None,
     neighbor_window: int = 1
 ):
     """
@@ -30,7 +30,7 @@ def batch_query_graph_rag(
     Args:
         input_question_file: Path to JSON file containing questions
         max_workers: Number of worker threads (defaults to min(16, cpu_count * 2) if not provided)
-        retriever_k: Optional retriever_k parameter for query_graph_rag (uses default if not provided)
+        top_k: Optional top_k parameter for query_graph_rag (uses default if not provided)
         neighbor_window: Adjacent-chunk window per hit (0 disables; 1 includes i±1)
     
     Returns:
@@ -108,8 +108,8 @@ def batch_query_graph_rag(
     
     def process_query(question):
         try:
-            if retriever_k is not None:
-                answer = query_graph_rag(question, retriever_k=retriever_k, neighbor_window=neighbor_window)
+            if top_k is not None:
+                answer = query_graph_rag(question, top_k=top_k, neighbor_window=neighbor_window)
             else:
                 answer = query_graph_rag(question, neighbor_window=neighbor_window)
             return {"question": question, "answer": answer}
@@ -136,14 +136,28 @@ def batch_query_graph_rag(
     now = datetime.now()
     timestamp = now.strftime("%Y%m%d_%H%M%S")
     
+    # Collect configuration values
+    config = {
+        "top_k": top_k if top_k is not None else int(os.getenv("top_k")),
+        "MMR_k": int(os.getenv("MMR_k")),
+        "MMR_LAMBDA": float(os.getenv("MMR_LAMBDA")),
+        "ALWAYS_KEEP_TOP": int(os.getenv("ALWAYS_KEEP_TOP")),
+        "neighbor_window": neighbor_window,
+    }
+    
     # Save results to output file
     output_dir = project_root / "AB Testing" / "Output Answers"
     output_dir.mkdir(parents=True, exist_ok=True)
     
     output_file = output_dir / f"answers_{timestamp}.json"
     
+    output_data = {
+        "config": config,
+        "answers": results
+    }
+    
     with open(output_file, 'w', encoding='utf-8') as f:
-        json.dump(results, f, indent=2, ensure_ascii=False)
+        json.dump(output_data, f, indent=2, ensure_ascii=False)
     
     print(f"Processed {len(results)} queries with {max_workers} workers")
     print(f"Results saved to: {output_file}")

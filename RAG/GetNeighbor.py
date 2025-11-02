@@ -96,6 +96,17 @@ class NeighborWindowRetriever(_VectorRetriever):
             return []
         return self._expand_results(results)
 
+    def get_search_results(self, *args, **kwargs):
+        if hasattr(self._base, "get_search_results"):
+            results = self._base.get_search_results(*args, **kwargs)
+        elif hasattr(self._base, "search"):
+            results = self._base.search(*args, **kwargs)
+        elif hasattr(self._base, "retrieve"):
+            results = self._base.retrieve(*args, **kwargs)
+        else:
+            return []
+        return self._expand_results(results)
+
 
 def wrap_with_neighbors(base_retriever, neo4j_driver, window=1):
     try:
