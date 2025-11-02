@@ -18,6 +18,60 @@ os.environ["TZ"] = timezone
 time.tzset()
 
 
+def _normalize_answer_text(answer: str, question: str) -> str:
+    if not isinstance(answer, str):
+        return answer
+    s = answer.strip()
+    q = (question or "").lower()
+    # currency forms → K.D. N
+    s = re.sub(r"\bKWD\b", "K.D.", s, flags=re.IGNORECASE)
+    s = re.sub(r"\bK\.?D\.?\b", "K.D.", s, flags=re.IGNORECASE)
+    s = re.sub(r"\bKD\b", "K.D.", s, flags=re.IGNORECASE)
+    # normalize 'K.D. N' regardless of order
+    s = re.sub(r"(?i)\b(?:KWD|KD|K\.?D\.?)\s*(\d+(?:\.\d+)?)\b", r"K.D. \1", s)
+    s = re.sub(r"(?i)\b(\d+(?:\.\d+)?)\s*(?:KWD|KD|K\.?D\.?)\b", r"K.D. \1", s)
+    # if numeric only and fee/bond context → prefix K.D.
+    if re.fullmatch(r"\d+(?:\.\d+)?", s) and any(w in q for w in ["fee", "document", "bond", "guarantee", "price", "cost"]):
+        s = f"K.D. {s}"
+
+    # days normalization when question asks duration/validity
+    if re.fullmatch(r"\d+", s) and any(w in q for w in ["valid", "validity", "period", "days", "how long"]):
+        s = f"{s} days"
+    s = re.sub(r"\b(\d+)\s*day\b", r"\1 days", s, flags=re.IGNORECASE)
+
+    # date normalization to YYYY-MM-DD for common patterns
+    def _to_iso_date(txt: str) -> str:
+        t = txt.strip()
+        # strip trailing parenthetical
+        t = re.sub(r"\s*\([^)]*\)\s*$", "", t)
+        # YYYY-MM-DD or YYYY/MM/DD or YYYY.MM.DD → YYYY-MM-DD
+        m = re.fullmatch(r"(\d{4})[-/.](\d{2})[-/.](\d{2})", t)
+        if m:
+            return f"{m.group(1)}-{m.group(2)}-{m.group(3)}"
+        # DD-MM-YYYY or DD/MM/YYYY
+        m = re.fullmatch(r"(\d{2})[-/](\d{2})[-/](\d{4})", t)
+        if m:
+            return f"{m.group(3)}-{m.group(2)}-{m.group(1)}"
+        # Month DD, YYYY
+        m = re.fullmatch(r"(January|February|March|April|May|June|July|August|September|October|November|December)\s+(\d{1,2}),\s*(\d{4})", t, flags=re.IGNORECASE)
+        if m:
+            month_map = {m_name: f"{i:02d}" for i, m_name in enumerate(["January","February","March","April","May","June","July","August","September","October","November","December"], start=1)}
+            mm = month_map.get(m.group(1).capitalize())
+            dd = f"{int(m.group(2)):02d}"
+            return f"{m.group(3)}-{mm}-{dd}"
+        # DD Month YYYY
+        m = re.fullmatch(r"(\d{1,2})\s+(January|February|March|April|May|June|July|August|September|October|November|December)\s+(\d{4})", t, flags=re.IGNORECASE)
+        if m:
+            month_map = {m_name: f"{i:02d}" for i, m_name in enumerate(["January","February","March","April","May","June","July","August","September","October","November","December"], start=1)}
+            mm = month_map.get(m.group(2).capitalize())
+            dd = f"{int(m.group(1)):02d}"
+            return f"{m.group(3)}-{mm}-{dd}"
+        return txt
+
+    if any(w in q for w in ["date", "closing", "deadline"]):
+        s = _to_iso_date(s)
+    return s
+
 def batch_query_graph_rag(
     input_question_file: str,
     max_workers: int = None,
@@ -132,6 +186,10 @@ def batch_query_graph_rag(
         # Reconstruct results in original order
         results = [question_to_result[q] for q in questions]
     
+    # Normalize answers before saving
+    for r in results:
+        r["answer"] = _normalize_answer_text(r.get("answer"), r.get("question"))
+
     # Generate timestamp with timezone
     now = datetime.now()
     timestamp = now.strftime("%Y%m%d_%H%M%S")

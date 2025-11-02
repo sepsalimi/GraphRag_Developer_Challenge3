@@ -1,4 +1,5 @@
 from typing import Any, List
+import re
 
 from langchain_community.vectorstores.utils import maximal_marginal_relevance
 
@@ -17,6 +18,60 @@ def _embed_docs(embedder, docs: List[str]) -> List[List[float]]:
     if hasattr(embedder, "embed"):
         return embedder.embed(docs)
     return [embedder.embed_query(t or "") for t in docs]
+
+
+# -----------------------------
+# Anchor-aware preboost
+# -----------------------------
+_RX_ANCHORS = [
+    re.compile(r"\bRFP[\s/-]?\d+\b", re.IGNORECASE),
+    re.compile(r"\b\d{6,7}[\s/-]?RFP\b", re.IGNORECASE),
+    re.compile(r"\bA/M/\d+\b", re.IGNORECASE),
+    re.compile(r"\b5D[A-Z0-9]+\b", re.IGNORECASE),
+    re.compile(r"\b\d{4}/\d{4}/\d+\b", re.IGNORECASE),
+]
+
+_ARABIC_DIGITS = str.maketrans("٠١٢٣٤٥٦٧٨٩", "0123456789")
+
+
+def _norm_digits(s: str) -> str:
+    return (s or "").translate(_ARABIC_DIGITS)
+
+
+def _extract_anchors_from_query(q: str) -> List[str]:
+    qn = _norm_digits(q or "")
+    out: List[str] = []
+    for rx in _RX_ANCHORS:
+        for m in rx.findall(qn):
+            out.append(str(m))
+    # dedupe order-preserving (case-insensitive)
+    seen = set()
+    uniq: List[str] = []
+    for a in out:
+        k = a.upper()
+        if k not in seen:
+            seen.add(k)
+            uniq.append(a)
+    return uniq
+
+
+def _preboost_results_by_anchors(query_text: str, results: List[Any]) -> List[Any]:
+    if not results:
+        return results
+    anchors = _extract_anchors_from_query(query_text)
+    if not anchors:
+        return results
+    anchors_norm = [ _norm_digits(a).lower() for a in anchors ]
+    docs_norm = [ _norm_digits(_get_text(r)).lower() for r in results ]
+    def is_match(i: int) -> bool:
+        di = docs_norm[i]
+        for a in anchors_norm:
+            if a and a in di:
+                return True
+        return False
+    idxs = list(range(len(results)))
+    idxs.sort(key=lambda i: (not is_match(i), i))
+    return [results[i] for i in idxs]
 
 
 class MMRWrapperRetriever:
@@ -40,6 +95,7 @@ class MMRWrapperRetriever:
             return results
         try:
             query_text = kwargs.get("query_text") or (args[0] if args else "")
+            results = _preboost_results_by_anchors(query_text, results)
             q = self._embedder.embed_query(query_text)
             docs = [_get_text(r) for r in results]
             X = _embed_docs(self._embedder, docs)
@@ -71,6 +127,7 @@ class MMRWrapperRetriever:
             if k <= 0:
                 return results
             query_text = kwargs.get("query_text") or (args[0] if args else "")
+            results = _preboost_results_by_anchors(query_text, results)
             q = self._embedder.embed_query(query_text)
             docs = [_get_text(r) for r in results]
             X = _embed_docs(self._embedder, docs)

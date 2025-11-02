@@ -390,8 +390,8 @@ def card_first_gate(question: str, *, allow_direct_answer: bool = True) -> Dict[
                 "provenance": provenance,
             }
 
-    # If summarization-like or missing fields → restrict
-    need_restrict = _is_summarize_like(question) or all_fields_available
+    # If summarization-like or anchor matches (or all fields available) → restrict
+    need_restrict = _is_summarize_like(question) or all_fields_available or _anchor_matches_record(question, rec)
     if need_restrict:
         sources = sorted(catalog.id_to_sources.get(record_id, set()))
         core = rec.get("core", {}) or {}
