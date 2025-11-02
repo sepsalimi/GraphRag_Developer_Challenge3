@@ -1,0 +1,59 @@
+[
+  {
+    "question": "What company name is listed for Tender RFP-2113556?",
+    "type": "objective",
+    "category": "factual",
+    "difficulty": 4,
+    "question_id": "sup001"
+  },
+  {
+    "question": "What legal entity is stated for Tender RFP-2113556 in the Ministry of Commerce and Industry announcement?",
+    "type": "objective",
+    "category": "factual",
+    "difficulty": 4,
+    "question_id": "sup002"
+  },
+  {
+    "question": "On what date was the earlier announcement for Tender RFP-2113556 published?",
+    "type": "objective",
+    "category": "factual",
+    "difficulty": 4,
+    "question_id": "sup003"
+  },
+  {
+    "question": "Which company name should be used going forward for Tender RFP-2113556?",
+    "type": "objective",
+    "category": "factual",
+    "difficulty": 5,
+    "question_id": "sup004"
+  },
+  {
+    "question": "What fee is listed for Ministry of Health Practice No. 5DX003?",
+    "type": "objective",
+    "category": "factual",
+    "difficulty": 4,
+    "question_id": "sup005"
+  },
+  {
+    "question": "What closing period is stated for Ministry of Health Practice No. 5DXK10?",
+    "type": "objective",
+    "category": "factual",
+    "difficulty": 4,
+    "question_id": "sup006"
+  },
+  {
+    "question": "What is the preliminary bond value for Kuwait Oil Company Tender No. 2125611-RFP?",
+    "type": "objective",
+    "category": "factual",
+    "difficulty": 2,
+    "question_id": "sup007"
+  },
+  {
+    "question": "What is the scheduled closing date for the Public Authority for Sport tender to purchase and maintain an X-ray machine?",
+    "type": "objective",
+    "category": "factual",
+    "difficulty": 2,
+    "question_id": "sup008"
+  }
+]
+

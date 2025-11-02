@@ -3,6 +3,8 @@ from typing import Any
 from neo4j_graphrag.retrievers import VectorRetriever as _VectorRetriever
 from neo4j_graphrag.types import RawSearchResult, RetrieverResult
 
+from .CheckSupplement import gather_supplement_snippets
+
 
 def _get_field(obj, name):
     if hasattr(obj, name):
@@ -67,7 +69,7 @@ class NeighborWindowRetriever(_VectorRetriever):
             return list(result_obj), lambda items: items
         return [], lambda items: result_obj
 
-    def _expand_results(self, results):
+    def _expand_results(self, results, query_text: str = ""):
         if self._window <= 0:
             return results
         items, rebuild = self._unwrap(results)
@@ -79,10 +81,23 @@ class NeighborWindowRetriever(_VectorRetriever):
                 idx = _get_field(hit, "chunk_index")
                 if doc_key is None or idx is None:
                     continue
+                pub_key = None
+                if isinstance(doc_key, str) and ":" in doc_key:
+                    pub_key = doc_key.split(":", 1)[0]
                 texts = _fetch_neighbor_texts(session, doc_key, idx, self._window)
                 if not texts:
                     continue
-                _set_text(hit, "\n".join(texts))
+                combined = "\n".join(texts)
+                sup_texts = gather_supplement_snippets(
+                    session=session,
+                    query_text=query_text,
+                    base_text=combined,
+                    window=self._window,
+                    publication_key=pub_key,
+                )
+                if sup_texts:
+                    combined = combined + "\n--- supplement ---\n" + "\n".join(sup_texts)
+                _set_text(hit, combined)
         return rebuild(items)
 
     def search(self, *args, **kwargs):
@@ -91,7 +106,8 @@ class NeighborWindowRetriever(_VectorRetriever):
             base = getattr(self._base, "retrieve")
         if base is None:
             return []
-        return self._expand_results(base(*args, **kwargs))
+        query_text = kwargs.get("query_text") or (args[0] if args else "")
+        return self._expand_results(base(*args, **kwargs), query_text)
 
     def retrieve(self, *args, **kwargs):
         base = getattr(self._base, "retrieve", None)
@@ -99,7 +115,8 @@ class NeighborWindowRetriever(_VectorRetriever):
             base = getattr(self._base, "search")
         if base is None:
             return []
-        return self._expand_results(base(*args, **kwargs))
+        query_text = kwargs.get("query_text") or (args[0] if args else "")
+        return self._expand_results(base(*args, **kwargs), query_text)
 
     def get_search_results(self, *args, **kwargs):
         base = getattr(self._base, "get_search_results", None)
@@ -109,7 +126,8 @@ class NeighborWindowRetriever(_VectorRetriever):
             base = getattr(self._base, "retrieve")
         if base is None:
             return []
-        return self._expand_results(base(*args, **kwargs))
+        query_text = kwargs.get("query_text") or (args[0] if args else "")
+        return self._expand_results(base(*args, **kwargs), query_text)
 
 
 def wrap_with_neighbors(base_retriever, neo4j_driver, window=1):

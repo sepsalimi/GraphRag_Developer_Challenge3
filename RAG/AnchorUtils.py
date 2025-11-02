@@ -32,6 +32,7 @@ def extract_anchors(text: str) -> List[str]:
 
 
 RX_MONEY = re.compile(r"(?i)\b(?:kd|k\.?d\.?|دينار)\b.{0,150}?\b\d[\d,]*\b")
+RX_BOND = re.compile(r"(?i)(bond|security\s+deposit|initial\s+security|preliminary\s+bond|التأمين|كفالة|ضمان)")
 RX_PERCENT = re.compile(r"(?<!\d)\b\d{1,3}%\b")
 RX_DATE = re.compile(r"\b\d{4}[-/.]\d{2}[-/.]\d{2}\b|\b\d{1,2}[-/]\d{1,2}[-/]\d{2,4}\b")
 
@@ -48,8 +49,10 @@ def wants_slots(query_text: str) -> Tuple[bool, bool, bool]:
     return wants_money, wants_percent, wants_date
 
 
-def has_slot_near_anchor(text: str, anchors_norm: List[str], wants: Tuple[bool, bool, bool], window_chars: int = 180) -> bool:
+def has_slot_near_anchor(query_text: str, text: str, anchors_norm: List[str], wants: Tuple[bool, bool, bool], window_chars: int = 180) -> bool:
     di = norm_digits(text or "").lower()
+    ql = norm_digits(query_text or "").lower()
+    bond_in_query = ("bond" in ql) or ("security" in ql) or ("التأمين" in ql) or ("كفالة" in ql) or ("ضمان" in ql)
     for a in anchors_norm:
         p = di.find(a)
         if p == -1:
@@ -58,7 +61,10 @@ def has_slot_near_anchor(text: str, anchors_norm: List[str], wants: Tuple[bool, 
         hi = min(len(di), p + window_chars)
         window = di[lo:hi]
         wm, wp, wd = wants
-        if (wm and RX_MONEY.search(window)) or (wp and RX_PERCENT.search(window)) or (wd and RX_DATE.search(window)):
+        money_ok = RX_MONEY.search(window) is not None
+        if bond_in_query and wm:
+            money_ok = money_ok and (RX_BOND.search(window) is not None)
+        if (wm and money_ok) or (wp and RX_PERCENT.search(window)) or (wd and RX_DATE.search(window)):
             return True
     return False
 
@@ -85,10 +91,10 @@ def enforce_slot_guard(query_text: str, original_results: List[Any], selected_re
         return selected_results
     anchors_norm = [norm_digits(a).lower() for a in anchors]
     for r in selected_results:
-        if has_slot_near_anchor(get_text(r), anchors_norm, wants):
+        if has_slot_near_anchor(query_text, get_text(r), anchors_norm, wants):
             return selected_results
     for r in original_results:
-        if has_slot_near_anchor(get_text(r), anchors_norm, wants):
+        if has_slot_near_anchor(query_text, get_text(r), anchors_norm, wants):
             out = list(selected_results)
             if r in out:
                 return out
@@ -111,6 +117,32 @@ def preboost_results_by_anchors(query_text: str, results: List[Any], get_text: C
 
     ql = (norm_digits(query_text or "").lower())
     wants_money, wants_percent, wants_date = wants_slots(ql)
+
+    date_pattern = re.compile(r"\[date=([0-9]{4})-([0-9]{2})-([0-9]{2})\]", re.IGNORECASE)
+    supp_pattern = re.compile(r"\[supp=([0-9]+)\]", re.IGNORECASE)
+
+    def _header_info(idx: int):
+        raw = get_text(results[idx]) or ""
+        first_line = raw.splitlines()[0] if raw else ""
+        date_match = date_pattern.search(first_line)
+        if date_match:
+            year, month, day = map(int, date_match.groups())
+            date_tuple = (year, month, day)
+        else:
+            date_tuple = (0, 0, 0)
+        supp_match = supp_pattern.search(first_line)
+        supp_idx = int(supp_match.group(1)) if supp_match else 0
+        anchor_key = None
+        di = docs_norm[idx]
+        for a in anchors_norm:
+            if a and a in di:
+                anchor_key = a
+                break
+        return date_tuple, supp_idx, anchor_key
+
+    header_meta = [_header_info(i) for i in range(len(results))]
+
+    base_scores = []
 
     def score(i: int) -> int:
         di = docs_norm[i]
@@ -136,8 +168,30 @@ def preboost_results_by_anchors(query_text: str, results: List[Any], get_text: C
                 s += 3
         return s
 
+    for idx in range(len(results)):
+        base_scores.append(score(idx))
+
+    boosts = [0] * len(results)
+
+    clusters = {}
+    for idx, (_, _, anchor_key) in enumerate(header_meta):
+        if anchor_key:
+            clusters.setdefault(anchor_key, []).append(idx)
+
+    for idx, (_, supp_idx, _) in enumerate(header_meta):
+        if supp_idx > 0:
+            boosts[idx] += 1
+
+    for idx_list in clusters.values():
+        if len(idx_list) < 2:
+            continue
+        latest_date = max(header_meta[i][0] for i in idx_list)
+        for i in idx_list:
+            if header_meta[i][0] == latest_date:
+                boosts[i] += 2
+
     idxs = list(range(len(results)))
-    idxs.sort(key=lambda i: (-score(i), i))
+    idxs.sort(key=lambda i: (-(base_scores[i] + boosts[i]), i))
     return [results[i] for i in idxs]
 
 

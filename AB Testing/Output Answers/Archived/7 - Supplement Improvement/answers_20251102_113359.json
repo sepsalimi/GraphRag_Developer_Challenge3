@@ -1,0 +1,45 @@
+{
+  "config": {
+    "top_k": 30,
+    "MMR_k": 15,
+    "MMR_LAMBDA": 0.4,
+    "ALWAYS_KEEP_TOP": 3,
+    "neighbor_window": 1,
+    "CARD_FIRST_ENABLED": true,
+    "ALLOW_DIRECT_ANSWER": true
+  },
+  "answers": [
+    {
+      "question": "What company name is listed for Tender RFP-2113556?",
+      "answer": "I can’t find Tender RFP-2113556 in the provided context, so the company name isn’t available here. If you share the relevant notice or issue/page, I can look it up."
+    },
+    {
+      "question": "What legal entity is stated for Tender RFP-2113556 in the Ministry of Commerce and Industry announcement?",
+      "answer": "It isn’t in the provided context. The excerpts don’t mention Tender RFP-2113556, so no legal entity is stated here."
+    },
+    {
+      "question": "On what date was the earlier announcement for Tender RFP-2113556 published?",
+      "answer": "The provided context does not mention Tender RFP-2113556, so I can’t determine the earlier announcement date from this material. If you share the relevant announcement (or the Kuwait Today issue number referencing RFP-2113556), I can extract the date."
+    },
+    {
+      "question": "Which company name should be used going forward for Tender RFP-2113556?",
+      "answer": "FUTURE SERVICES GENERAL TRADING AND CONTRACTING COMPANY W.L.L."
+    },
+    {
+      "question": "What fee is listed for Ministry of Health Practice No. 5DX003?",
+      "answer": "Not specified in the provided context. I don’t see Practice No. 5DX003 mentioned, so no fee is listed here."
+    },
+    {
+      "question": "What closing period is stated for Ministry of Health Practice No. 5DXK10?",
+      "answer": "The provided context does not list Practice No. 5DXK10, so its closing period is not specified here."
+    },
+    {
+      "question": "What is the preliminary bond value for Kuwait Oil Company Tender No. 2125611-RFP?",
+      "answer": "K.D. 5,000"
+    },
+    {
+      "question": "What is the scheduled closing date for the Public Authority for Sport tender to purchase and maintain an X-ray machine?",
+      "answer": "2025-07-20"
+    }
+  ]
+}
