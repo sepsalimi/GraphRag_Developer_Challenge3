@@ -24,6 +24,8 @@ class CatalogHandle:
         self.by_id: Dict[str, Dict[str, Any]] = {}
         self.aliases: Dict[str, Set[str]] = {}
         self.id_to_sources: Dict[str, Set[str]] = {}
+        self.scope_files: Dict[str, Set[str]] = {}
+        self.source_aliases: Dict[str, Set[str]] = {}
 
 
 _CATALOG: Optional[CatalogHandle] = None
@@ -249,11 +251,29 @@ def load_catalog(path: str = _DEFAULT_CATALOG_PATH) -> CatalogHandle:
         handle.by_id[key] = rec
 
         # provenance sources
-        handle.id_to_sources[record_id] = _get_sources(rec)
+        sources_for_id = _get_sources(rec)
+        handle.id_to_sources[record_id] = sources_for_id
         # also merge any explicit scope_files provided with the record
+        scope_values = set()
         for sf in (rec.get("scope_files") or []) or []:
-            if sf:
-                handle.id_to_sources[record_id].add(str(sf))
+            if not sf:
+                continue
+            scoped = str(sf).strip()
+            if scoped:
+                scope_values.add(scoped)
+                handle.id_to_sources[record_id].add(scoped)
+        if scope_values:
+            handle.scope_files[record_id] = scope_values
+        # Build alias map so that publication keys or other handles resolve to scope files
+        for alias in handle.id_to_sources.get(record_id, set()):
+            alias_key = _norm_key(alias)
+            if scope_values:
+                handle.source_aliases.setdefault(alias_key, set()).update(scope_values)
+            else:
+                handle.source_aliases.setdefault(alias_key, set()).add(str(alias))
+        for scoped in scope_values:
+            scoped_key = _norm_key(scoped)
+            handle.source_aliases.setdefault(scoped_key, set()).add(scoped)
 
         # aliases from core secondary ids
         core = rec.get("core", {}) or {}
@@ -275,6 +295,29 @@ def reload_catalog(path: str = _DEFAULT_CATALOG_PATH) -> CatalogHandle:
     global _CATALOG
     _CATALOG = None
     return load_catalog(path)
+
+
+def _resolve_scope_sources(
+    catalog: CatalogHandle,
+    record_id: str,
+    raw_sources: List[str],
+) -> Tuple[List[str], List[str], Dict[str, List[str]]]:
+    explicit = sorted(catalog.scope_files.get(record_id, set()))
+    resolved: Set[str] = set(explicit)
+    alias_hits: Dict[str, List[str]] = {}
+    for src in raw_sources:
+        s = str(src).strip()
+        if not s:
+            continue
+        key = _norm_key(s)
+        mapped = sorted(catalog.source_aliases.get(key, set()))
+        if mapped:
+            alias_hits[s] = mapped
+            resolved.update(mapped)
+        else:
+            resolved.add(s)
+    normalized = sorted({r for r in resolved if r})
+    return normalized, explicit, alias_hits
 
 
 def _match_records(question: str, catalog: CatalogHandle) -> Tuple[List[str], Dict[str, Dict[str, Any]]]:
@@ -367,7 +410,14 @@ def card_first_gate(question: str, *, allow_direct_answer: bool = True) -> Dict[
     matched_ids, record_map = _match_records(question, catalog)
     if not matched_ids:
         card_misses += 1
-        return {"mode": "pass", "record_id": None}
+        diagnostics = {
+            "question": question,
+            "anchors": _extract_anchors(question),
+            "matched_ids": [],
+            "decision": "pass",
+            "reason": "no_match",
+        }
+        return {"mode": "pass", "record_id": None, "diagnostics": diagnostics}
 
     # If multiple records match, do not merge; prefer restrict using union of sources
     if len(matched_ids) > 1:
@@ -397,12 +447,23 @@ def card_first_gate(question: str, *, allow_direct_answer: bool = True) -> Dict[
                 seen_bt.add(kt)
                 boost_terms_unique.append(t)
         card_prefilter_uses += 1
+        diagnostics = {
+            "question": question,
+            "anchors": _extract_anchors(question),
+            "matched_ids": matched_ids,
+            "decision": "restrict",
+            "record_id": None,
+            "scope_candidates": sorted(all_sources),
+            "normalized_scope": sorted(all_sources),
+            "boost_terms": boost_terms_unique,
+        }
         return {
             "mode": "restrict",
             "record_id": None,
             "provenance": prov,
             "scope_files": sorted(all_sources),
             "boost_terms": boost_terms_unique,
+            "diagnostics": diagnostics,
         }
 
     # Single match
@@ -417,21 +478,38 @@ def card_first_gate(question: str, *, allow_direct_answer: bool = True) -> Dict[
 
     # Decide answer vs restrict vs pass
     allow_da = allow_direct_answer and _env_bool("ALLOW_DIRECT_ANSWER", False)
+    diagnostics: Dict[str, Any] = {
+        "question": question,
+        "anchors": _extract_anchors(question),
+        "matched_ids": matched_ids,
+        "intents": intents,
+        "record_id": record_id,
+    }
+
     if allow_da and intents and not _has_conflict_or_uncertain(rec):
         # Only direct answer if all requested fields are available and anchor matches record
         if all_fields_available and answers and _anchor_matches_record(question, rec):
             card_direct_hits += 1
+            diagnostics.update(
+                {
+                    "decision": "answer",
+                    "scope_candidates": sorted(catalog.id_to_sources.get(record_id, set())),
+                    "normalized_scope": sorted(catalog.scope_files.get(record_id, set())),
+                }
+            )
             return {
                 "mode": "answer",
                 "record_id": record_id,
                 "answers": answers,
                 "provenance": provenance,
+                "diagnostics": diagnostics,
             }
 
     # If summarization-like or anchor matches (or all fields available) → restrict
     need_restrict = _is_summarize_like(question) or all_fields_available or _anchor_matches_record(question, rec)
     if need_restrict:
-        sources = sorted(catalog.id_to_sources.get(record_id, set()))
+        raw_sources = sorted(catalog.id_to_sources.get(record_id, set()))
+        resolved_scope, explicit_scope, alias_hits = _resolve_scope_sources(catalog, record_id, raw_sources)
         core = rec.get("core", {}) or {}
         boost_terms: List[str] = []
         for k in ["record_id", "practice_no", "registration_no", "law_no", "title"]:
@@ -443,17 +521,44 @@ def card_first_gate(question: str, *, allow_direct_answer: bool = True) -> Dict[
         if auth:
             boost_terms.append(str(auth))
         card_prefilter_uses += 1
+        diagnostics.update(
+            {
+                "decision": "restrict",
+                "scope_candidates": raw_sources,
+                "normalized_scope": resolved_scope,
+                "explicit_scope": explicit_scope,
+                "alias_hits": alias_hits,
+                "boost_terms": boost_terms,
+            }
+        )
+        if not resolved_scope:
+            diagnostics["decision"] = "pass"
+            diagnostics["reason"] = "no_scope_match"
+            card_misses += 1
+            return {
+                "mode": "pass",
+                "record_id": record_id,
+                "diagnostics": diagnostics,
+            }
         return {
             "mode": "restrict",
             "record_id": record_id,
             "provenance": provenance,
-            "scope_files": sources,
+            "scope_files": resolved_scope,
             "boost_terms": boost_terms,
+            "diagnostics": diagnostics,
         }
 
     # Otherwise pass-through
     card_misses += 1
-    return {"mode": "pass", "record_id": record_id}
+    diagnostics.update(
+        {
+            "decision": "pass",
+            "scope_candidates": sorted(catalog.id_to_sources.get(record_id, set())),
+            "normalized_scope": sorted(catalog.scope_files.get(record_id, set())),
+        }
+    )
+    return {"mode": "pass", "record_id": record_id, "diagnostics": diagnostics}
 
 
 def get_catalog_metrics() -> Dict[str, int]:

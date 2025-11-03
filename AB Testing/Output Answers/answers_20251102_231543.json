@@ -1,0 +1,439 @@
+{
+  "config": {
+    "top_k": 120,
+    "MMR_k": 60,
+    "MMR_LAMBDA": 0.4,
+    "ALWAYS_KEEP_TOP": 10,
+    "neighbor_window": 1,
+    "HYBRID_ALPHA": 0.6,
+    "HYBRID_POOL_MULTIPLIER": 4.0,
+    "HYBRID_POOL_MAX": 300,
+    "HYBRID_APPLY_MMR": true,
+    "NEO4J_FULLTEXT_INDEX": "chunk_text_idx",
+    "COHERE_RERANK_ENABLED": false,
+    "COHERE_RERANK_MODEL": null,
+    "CARD_FIRST_ENABLED": true,
+    "ALLOW_DIRECT_ANSWER": true
+  },
+  "answers": [
+    {
+      "question": "What company name is listed for Tender RFP-2113556?",
+      "answer": "The provided excerpt doesn’t include any company names—only the table caption. Please share the continuation of the notice (the table content) so I can identify the company listed for Tender RFP-2113556.",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q0",
+          "question": "What company name is listed for Tender RFP-2113556?",
+          "anchors": [
+            "RFP-2113556"
+          ],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q0",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 1,
+          "ordered": 1,
+          "mmr_applied": true,
+          "final": 1,
+          "slot_guarded": 1,
+          "scope": [],
+          "top_k": 120,
+          "label": "primary",
+          "neighbor_window": 2
+        },
+        {
+          "event": "answer",
+          "run_id": "q0",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 1
+        }
+      ]
+    },
+    {
+      "question": "What legal entity is stated for Tender RFP-2113556 in the Ministry of Commerce and Industry announcement?",
+      "answer": "It is not specified in the provided context.",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q1",
+          "question": "What legal entity is stated for Tender RFP-2113556 in the Ministry of Commerce and Industry announcement?",
+          "anchors": [
+            "RFP-2113556"
+          ],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q1",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 120,
+          "slot_guarded": 120,
+          "scope": [],
+          "top_k": 120,
+          "label": "primary",
+          "neighbor_window": 1
+        },
+        {
+          "event": "answer",
+          "run_id": "q1",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 120
+        }
+      ]
+    },
+    {
+      "question": "On what date was the earlier announcement for Tender RFP-2113556 published?",
+      "answer": "2025-05-01",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q2",
+          "question": "On what date was the earlier announcement for Tender RFP-2113556 published?",
+          "anchors": [
+            "RFP-2113556"
+          ],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q2",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 120,
+          "slot_guarded": 120,
+          "scope": [],
+          "top_k": 120,
+          "label": "primary",
+          "neighbor_window": 2
+        },
+        {
+          "event": "answer",
+          "run_id": "q2",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 120
+        }
+      ]
+    },
+    {
+      "question": "Which company name should be used going forward for Tender RFP-2113556?",
+      "answer": "Kuwait Oil Company (KOC).",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q3",
+          "question": "Which company name should be used going forward for Tender RFP-2113556?",
+          "anchors": [
+            "RFP-2113556"
+          ],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q3",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 1,
+          "ordered": 1,
+          "mmr_applied": true,
+          "final": 1,
+          "slot_guarded": 1,
+          "scope": [],
+          "top_k": 120,
+          "label": "primary",
+          "neighbor_window": 2
+        },
+        {
+          "event": "answer",
+          "run_id": "q3",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 1
+        }
+      ]
+    },
+    {
+      "question": "What fee is listed for Ministry of Health Practice No. 5DX003?",
+      "answer": "75 KD [5]\n\nReferences\n5. 71-1737-0.",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q4",
+          "question": "What fee is listed for Ministry of Health Practice No. 5DX003?",
+          "anchors": [
+            "5DX003"
+          ],
+          "matched_ids": [
+            "5DX003"
+          ],
+          "intents": [],
+          "record_id": "5DX003",
+          "decision": "restrict",
+          "scope_candidates": [
+            "2025-05-04_en.md",
+            "71-1737-0"
+          ],
+          "normalized_scope": [
+            "2025-05-04_en.md"
+          ],
+          "explicit_scope": [
+            "2025-05-04_en.md"
+          ],
+          "alias_hits": {
+            "2025-05-04_en.md": [
+              "2025-05-04_en.md"
+            ],
+            "71-1737-0": [
+              "2025-05-04_en.md"
+            ]
+          },
+          "boost_terms": [
+            "5DX003",
+            "5DX003"
+          ]
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q4",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "scope_applied": true,
+          "scope_hits": 47,
+          "anchor_hits": 1,
+          "ordered": 1,
+          "mmr_applied": true,
+          "final": 1,
+          "slot_guarded": 1,
+          "scope": [
+            "2025-05-04_en.md"
+          ],
+          "top_k": 120,
+          "label": "primary",
+          "neighbor_window": 2
+        },
+        {
+          "event": "answer",
+          "run_id": "q4",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 1
+        }
+      ]
+    },
+    {
+      "question": "What closing period is stated for Ministry of Health Practice No. 5DXK10?",
+      "answer": "30 days from the announcement date (and more). [6]\n\nReferences\n6. 71-1737-0.",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q5",
+          "question": "What closing period is stated for Ministry of Health Practice No. 5DXK10?",
+          "anchors": [
+            "5DXK10"
+          ],
+          "matched_ids": [
+            "5DXK10"
+          ],
+          "intents": [],
+          "record_id": "5DXK10",
+          "decision": "restrict",
+          "scope_candidates": [
+            "2025-05-04_en.md",
+            "71-1737-0"
+          ],
+          "normalized_scope": [
+            "2025-05-04_en.md"
+          ],
+          "explicit_scope": [
+            "2025-05-04_en.md"
+          ],
+          "alias_hits": {
+            "2025-05-04_en.md": [
+              "2025-05-04_en.md"
+            ],
+            "71-1737-0": [
+              "2025-05-04_en.md"
+            ]
+          },
+          "boost_terms": [
+            "5DXK10",
+            "5DXK10"
+          ]
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q5",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "scope_applied": true,
+          "scope_hits": 53,
+          "anchor_hits": 1,
+          "ordered": 1,
+          "mmr_applied": true,
+          "final": 1,
+          "slot_guarded": 1,
+          "scope": [
+            "2025-05-04_en.md"
+          ],
+          "top_k": 120,
+          "label": "primary",
+          "neighbor_window": 2
+        },
+        {
+          "event": "answer",
+          "run_id": "q5",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 1
+        }
+      ]
+    },
+    {
+      "question": "What is the preliminary bond value for Kuwait Oil Company Tender No. 2125611-RFP?",
+      "answer": "The preliminary bond value is not stated in the provided excerpt. Please check the “Tender Information and Requirements” table for RFP 2125611-RFP on the K-Tendering Portal. [7]\n\nReferences\n7. 71-1736-0.",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q6",
+          "question": "What is the preliminary bond value for Kuwait Oil Company Tender No. 2125611-RFP?",
+          "anchors": [
+            "2125611-RFP"
+          ],
+          "matched_ids": [
+            "2125611-RFP"
+          ],
+          "intents": [
+            "initial_bond_value_kd",
+            "initial_bond_percent"
+          ],
+          "record_id": "2125611-RFP",
+          "decision": "restrict",
+          "scope_candidates": [
+            "71-1736-0"
+          ],
+          "normalized_scope": [
+            "71-1736-0"
+          ],
+          "explicit_scope": [],
+          "alias_hits": {
+            "71-1736-0": [
+              "71-1736-0"
+            ]
+          },
+          "boost_terms": [
+            "2125611-RFP"
+          ]
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q6",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "scope_applied": true,
+          "scope_hits": 23,
+          "anchor_hits": 1,
+          "ordered": 1,
+          "mmr_applied": true,
+          "final": 1,
+          "slot_guarded": 1,
+          "scope": [
+            "71-1736-0"
+          ],
+          "top_k": 120,
+          "label": "primary",
+          "neighbor_window": 2
+        },
+        {
+          "event": "answer",
+          "run_id": "q6",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 1
+        }
+      ]
+    },
+    {
+      "question": "What is the scheduled closing date for the Public Authority for Sport tender to purchase and maintain an X-ray machine?",
+      "answer": "2025-06-15",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q7",
+          "question": "What is the scheduled closing date for the Public Authority for Sport tender to purchase and maintain an X-ray machine?",
+          "anchors": [],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q7",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 120,
+          "slot_guarded": 120,
+          "scope": [],
+          "top_k": 120,
+          "label": "primary",
+          "neighbor_window": 1
+        },
+        {
+          "event": "answer",
+          "run_id": "q7",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 120
+        }
+      ]
+    }
+  ]
+}

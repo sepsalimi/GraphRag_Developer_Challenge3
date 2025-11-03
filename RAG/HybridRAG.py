@@ -1,0 +1,252 @@
+from __future__ import annotations
+
+from dataclasses import dataclass
+from typing import Callable, Dict, Iterable, List, Optional, Sequence, Tuple
+
+import neo4j
+from neo4j_graphrag.retrievers import HybridRetriever
+from neo4j_graphrag.retrievers.hybrid import HybridSearchRanker
+from neo4j_graphrag.types import RetrieverResult, RetrieverResultItem
+
+from RAG.AnchorUtils import filter_to_anchor_hits, preboost_results_by_anchors
+from RAG.AnchorUtils import enforce_slot_guard as _enforce_slot_guard
+from RAG.MMR import apply_mmr_list
+
+
+def _item_text(item: RetrieverResultItem) -> str:
+    return (getattr(item, "content", None) or "")
+
+
+def _matches_scope(item: RetrieverResultItem, allowed: Sequence[str]) -> bool:
+    if not allowed:
+        return True
+    lowered = {str(s).lower() for s in allowed if s}
+    if not lowered:
+        return True
+    metadata = getattr(item, "metadata", {}) or {}
+    candidates = [
+        metadata.get("document_key"),
+        metadata.get("source"),
+        metadata.get("file"),
+    ]
+    for cand in candidates:
+        if not cand:
+            continue
+        c = str(cand).lower()
+        if any(c == target or c.endswith(target) or target in c for target in lowered):
+            return True
+    text = _item_text(item).lower()
+    return any(target in text for target in lowered)
+
+
+def _filter_by_scope(
+    items: Sequence[RetrieverResultItem], allowed: Sequence[str]
+) -> Tuple[List[RetrieverResultItem], bool]:
+    if not allowed:
+        return list(items), False
+    filtered = [item for item in items if _matches_scope(item, allowed)]
+    if filtered:
+        return filtered, True
+    return list(items), False
+
+
+@dataclass
+class HybridRetrievalConfig:
+    vector_index: str
+    fulltext_index: str
+    alpha: float
+    pool_multiplier: float = 4.0
+    pool_min: int = 80
+    pool_max: int = 300
+    apply_mmr: bool = True
+    mmr_k: int = 5
+    mmr_lambda: float = 0.3
+    mmr_keep_top: int = 1
+    neo4j_database: Optional[str] = None
+
+
+class SafeHybridRetriever(HybridRetriever):
+    """Hybrid retriever that provides clearer errors when the vector index isn't found.
+
+    The upstream implementation raises an AttributeError when no record is returned;
+    this wrapper falls back to the generic SHOW INDEXES query and surfaces a helpful
+    message instead of crashing during import.
+    """
+
+    def _fetch_index_infos(self, vector_index_name: str) -> None:  # type: ignore[override]
+        query = (
+            "SHOW VECTOR INDEXES "
+            "YIELD name, labelsOrTypes, properties, options "
+            "WHERE name = $index_name "
+            "RETURN labelsOrTypes as labels, properties, "
+            "options.indexConfig.`vector.dimensions` as dimensions"
+        )
+        result = self.driver.execute_query(
+            query,
+            {"index_name": vector_index_name},
+            database_=self.neo4j_database,
+            routing_=neo4j.RoutingControl.READ,
+        )
+        records = list(result.records)
+        if not records:
+            fallback = (
+                "SHOW INDEXES YIELD name, type, labelsOrTypes, properties "
+                "WHERE type = 'VECTOR' AND name = $index_name "
+                "RETURN labelsOrTypes AS labels, properties"
+            )
+            result = self.driver.execute_query(
+                fallback,
+                {"index_name": vector_index_name},
+                database_=self.neo4j_database,
+                routing_=neo4j.RoutingControl.READ,
+            )
+            records = list(result.records)
+        if not records:
+            raise RuntimeError(
+                f"Vector index '{vector_index_name}' not found. "
+                "Ensure it exists (e.g., CREATE VECTOR INDEX Chunk ...) or set NEO4J_VECTOR_INDEX."
+            )
+        record = records[0]
+        labels = record.get("labels") or record.get("labelsOrTypes")
+        properties = record.get("properties")
+        dimensions = record.get("dimensions")
+        if not labels or not properties:
+            raise RuntimeError(
+                f"Unable to read index metadata for '{vector_index_name}'. "
+                "Check Neo4j permissions and index definition."
+            )
+        self._node_label = labels[0]
+        self._embedding_node_property = properties[0]
+        if dimensions is not None:
+            self._embedding_dimension = dimensions
+
+
+class HybridRetrievalPipeline:
+    def __init__(
+        self,
+        driver,
+        embedder,
+        reranker,
+        *,
+        config: HybridRetrievalConfig,
+    ) -> None:
+        self._config = config
+        self._embedder = embedder
+        self._reranker = reranker
+        self._hybrid = SafeHybridRetriever(
+            driver,
+            config.vector_index,
+            config.fulltext_index,
+            embedder,
+            neo4j_database=config.neo4j_database,
+        )
+
+    def _pool_size(self, top_k: int) -> int:
+        cfg = self._config
+        est = max(top_k, int(cfg.pool_multiplier * max(top_k, 1)))
+        est = max(est, cfg.pool_min)
+        est = min(est, cfg.pool_max)
+        return est
+
+    def retrieve(
+        self,
+        query_text: str,
+        *,
+        top_k: int,
+        scope: Optional[Sequence[str]] = None,
+    ) -> Tuple[RetrieverResult, Dict[str, object]]:
+        pool_k = self._pool_size(top_k)
+        result = self._hybrid.search(
+            query_text=query_text,
+            top_k=pool_k,
+            ranker=HybridSearchRanker.LINEAR,
+            alpha=self._config.alpha,
+        )
+
+        diagnostics: Dict[str, object] = {
+            "pool_top_k": pool_k,
+            "hybrid_retrieved": len(result.items),
+            "ranker": HybridSearchRanker.LINEAR.value,
+            "alpha": self._config.alpha,
+        }
+
+        scoped_items, scope_applied = _filter_by_scope(result.items, scope or [])
+        diagnostics["scope_applied"] = scope_applied
+        diagnostics["scope_hits"] = len(scoped_items)
+
+        anchor_hits = filter_to_anchor_hits(query_text, scoped_items, _item_text)
+        diagnostics["anchor_hits"] = len(anchor_hits)
+        if anchor_hits:
+            working = preboost_results_by_anchors(query_text, anchor_hits, _item_text)
+        else:
+            working = scoped_items
+
+        ordered: List[RetrieverResultItem]
+
+        if self._reranker and working:
+            rerank_results = self._reranker.rerank(
+                query_text,
+                [_item_text(item) for item in working],
+                top_n=len(working),
+            )
+            diagnostics["rerank_model"] = self._reranker.model
+            diagnostics["rerank_top"] = len(rerank_results)
+            seen = set()
+            ordered = []
+            for res in rerank_results:
+                if 0 <= res.index < len(working) and res.index not in seen:
+                    ordered.append(working[res.index])
+                    seen.add(res.index)
+            for idx, item in enumerate(working):
+                if idx not in seen:
+                    ordered.append(item)
+        else:
+            ordered = list(working)
+
+        diagnostics["ordered"] = len(ordered)
+
+        mmr_applied = False
+        selected = ordered
+        if self._config.apply_mmr and top_k > 1 and ordered:
+            mmr_k = min(max(self._config.mmr_k, top_k), len(ordered))
+            selected = apply_mmr_list(
+                query_text,
+                ordered,
+                embedder=self._embedder,
+                mmr_k=mmr_k,
+                lambda_mult=self._config.mmr_lambda,
+                always_keep_top=self._config.mmr_keep_top,
+                preprocess=False,
+                original_results=ordered,
+                get_text=_item_text,
+            )
+            mmr_applied = True
+
+        diagnostics["mmr_applied"] = mmr_applied
+
+        final_items = selected[:top_k] if top_k > 0 else selected
+        diagnostics["final"] = len(final_items)
+
+        guarded = _enforce_slot_guard(
+            query_text,
+            ordered,
+            final_items,
+            _item_text,
+        )
+        diagnostics["slot_guarded"] = len(guarded)
+
+        metadata = dict(result.metadata or {})
+        metadata.update(
+            {
+                "pool_top_k": pool_k,
+                "scope_applied": scope_applied,
+                "anchor_hits": diagnostics["anchor_hits"],
+                "mmr_applied": mmr_applied,
+            }
+        )
+
+        return RetrieverResult(items=guarded, metadata=metadata), diagnostics
+
+
+__all__ = ["HybridRetrievalPipeline", "HybridRetrievalConfig"]
+

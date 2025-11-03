@@ -15,7 +15,8 @@ dependencies = [
     "langchain (>=1.0.3)",
     "langchainhub (>=0.1.21,<0.2.0)",
     "langchain-openai (>=1.0.1,<2.0.0)",
-    "langchain-community (>=0.4.1,<0.5.0)"
+    "langchain-community (>=0.4.1,<0.5.0)",
+    "cohere (>=5.20.0,<6.0.0)"
 ]
 
 

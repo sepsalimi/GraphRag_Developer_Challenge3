@@ -22,13 +22,21 @@ timezone = os.getenv('TZ')
 os.environ["TZ"] = timezone
 time.tzset()
 
-# Suppress noisy DeprecationWarnings from the Neo4j GraphRAG retriever to keep tqdm output clean
+# Suppress noisy DeprecationWarnings from the Neo4j GraphRAG retrievers to keep tqdm output clean
 warnings.filterwarnings(
     "ignore",
     message="The default returned 'id' field in the search results will be removed.",
     category=DeprecationWarning,
-    module="neo4j_graphrag.retrievers.vector",
+    module=r"neo4j_graphrag\.retrievers\..*",
 )
+
+
+def _env_bool(name: str, default=None):
+    val = os.getenv(name)
+    if val is None:
+        return default
+    return str(val).strip().lower() in {"1", "true", "yes", "on"}
+
 
 def batch_query_graph_rag(
     input_question_file: str,
@@ -36,6 +44,7 @@ def batch_query_graph_rag(
     top_k: int = None,
     neighbor_window: int = 1,
     show_progress: bool = False,
+    include_events: bool | None = None,
 ):
     """
     Process multiple queries in parallel using threading.
@@ -48,7 +57,9 @@ def batch_query_graph_rag(
         show_progress: If True, display a tqdm progress bar as queries complete
     
     Returns:
-        List of dictionaries with "question" and "answer" fields
+        List of dictionaries with "question" and "answer" fields. If include_events
+        is True (or SAVE_EVENT_TRACE env var is truthy), the dictionaries will also
+        contain an "events" list for debugging.
     """
     # Get project root (parent of RAG directory)
     project_root = Path(__file__).resolve().parent.parent
@@ -139,23 +150,30 @@ def batch_query_graph_rag(
     
     def process_query(item):
         idx, question = item
+        events = []
+
+        def _event_cb(payload: dict) -> None:
+            events.append(dict(payload))
+
         try:
+            kwargs = dict(
+                neighbor_window=neighbor_window,
+                reference_seq_offset=idx,
+                run_id=f"q{idx}",
+                callback=_event_cb,
+            )
             if top_k is not None:
-                answer = query_graph_rag(
-                    question,
-                    top_k=top_k,
-                    neighbor_window=neighbor_window,
-                    reference_seq_offset=idx,
-                )
+                answer = query_graph_rag(question, top_k=top_k, **kwargs)
             else:
-                answer = query_graph_rag(
-                    question,
-                    neighbor_window=neighbor_window,
-                    reference_seq_offset=idx,
-                )
-            return {"index": idx, "question": question, "answer": answer}
+                answer = query_graph_rag(question, **kwargs)
+            return {"index": idx, "question": question, "answer": answer, "events": events}
         except Exception as e:
-            return {"index": idx, "question": question, "answer": f"Error: {str(e)}"}
+            return {
+                "index": idx,
+                "question": question,
+                "answer": f"Error: {str(e)}",
+                "events": events,
+            }
     
     with ThreadPoolExecutor(max_workers=max_workers) as executor:
         # Submit all queries
@@ -178,15 +196,22 @@ def batch_query_graph_rag(
     if progress_bar is not None:
         progress_bar.close()
 
+    save_events = include_events if include_events is not None else _env_bool("SAVE_EVENT_TRACE", False)
+
     # Reconstruct results in original order
     results = [
         {
             "question": index_to_result[i]["question"],
             "answer": index_to_result[i]["answer"],
+            "events": index_to_result[i].get("events", []),
         }
         for i in range(len(questions))
     ]
     
+    if not save_events:
+        for r in results:
+            r.pop("events", None)
+
     # Normalize answers before saving
     for r in results:
         r["answer"] = normalize_answer_text(r.get("answer"), r.get("question"))
@@ -202,9 +227,16 @@ def batch_query_graph_rag(
         "MMR_LAMBDA": float(os.getenv("MMR_LAMBDA")),
         "ALWAYS_KEEP_TOP": int(os.getenv("ALWAYS_KEEP_TOP")),
         "neighbor_window": neighbor_window,
+        "HYBRID_ALPHA": float(os.getenv("HYBRID_ALPHA", "0.6")),
+        "HYBRID_POOL_MULTIPLIER": float(os.getenv("HYBRID_POOL_MULTIPLIER", "4")),
+        "HYBRID_POOL_MAX": int(os.getenv("HYBRID_POOL_MAX", "300")),
+        "HYBRID_APPLY_MMR": _env_bool("HYBRID_APPLY_MMR", True),
+        "NEO4J_FULLTEXT_INDEX": os.getenv("NEO4J_FULLTEXT_INDEX"),
+        "COHERE_RERANK_ENABLED": _env_bool("COHERE_RERANK_ENABLED", None),
+        "COHERE_RERANK_MODEL": os.getenv("COHERE_RERANK_MODEL"),
         # Card-first gate toggles (booleans if set, else None)
-        "CARD_FIRST_ENABLED": (lambda v: (v.strip().lower() in ("1", "true", "yes", "on")) if v is not None else None)(os.getenv("CARD_FIRST_ENABLED")),
-        "ALLOW_DIRECT_ANSWER": (lambda v: (v.strip().lower() in ("1", "true", "yes", "on")) if v is not None else None)(os.getenv("ALLOW_DIRECT_ANSWER")),
+        "CARD_FIRST_ENABLED": _env_bool("CARD_FIRST_ENABLED", None),
+        "ALLOW_DIRECT_ANSWER": _env_bool("ALLOW_DIRECT_ANSWER", None),
     }
     
     # Save results to output file

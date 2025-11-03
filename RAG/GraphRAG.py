@@ -1,38 +1,49 @@
 import os
-import re
 from pathlib import Path
+from typing import Callable, Dict, Optional, Sequence
+
 from neo4j import GraphDatabase
 from neo4j_graphrag.embeddings import OpenAIEmbeddings
 from neo4j_graphrag.generation import GraphRAG
 from neo4j_graphrag.llm import OpenAILLM
-from neo4j_graphrag.retrievers import VectorRetriever
-from neo4j_graphrag.types import RawSearchResult, RetrieverResult
 from dotenv import load_dotenv
-from RAG.AnchorUtils import extract_anchors, wants_slots
-from RAG.Citations import build_references, format_with_citations
-from RAG.GetNeighbor import wrap_with_neighbors
-from RAG.MMR import wrap_with_mmr
-from RAG.UseCatalog import load_catalog, card_first_gate
-from RAG.normalize import normalize_answer_text
 
-# Load environment variables from .env at repo root explicitly
+from .AnchorUtils import extract_anchors, wants_slots
+from .Citations import build_references, format_with_citations
+from .GetNeighbor import wrap_with_neighbors
+from .HybridRAG import HybridRetrievalPipeline, HybridRetrievalConfig  # type: ignore[import]
+from .Reranker import CohereReranker  # type: ignore[import]
+from .UseCatalog import load_catalog, card_first_gate
+from .normalize import normalize_answer_text
+
+
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 ENV_PATH = PROJECT_ROOT / ".env"
 if ENV_PATH.exists():
     load_dotenv(ENV_PATH)
 else:
     load_dotenv()
-NEO4J_URI = os.getenv("NEO4J_URI")
-INDEX_NAME = "Chunk"
 
-# Connect to the Neo4j database
-driver = GraphDatabase.driver(NEO4J_URI)
+NEO4J_URI = os.getenv("NEO4J_URI")
+if not NEO4J_URI:
+    raise RuntimeError("NEO4J_URI must be set for GraphRAG pipeline")
+NEO4J_USERNAME = os.getenv("NEO4J_USERNAME")
+NEO4J_PASSWORD = os.getenv("NEO4J_PASSWORD")
+NEO4J_DATABASE = os.getenv("NEO4J_DATABASE") or None
+VECTOR_INDEX_NAME = os.getenv("NEO4J_VECTOR_INDEX", "Chunk")
+FULLTEXT_INDEX_NAME = os.getenv("NEO4J_FULLTEXT_INDEX")
+if not FULLTEXT_INDEX_NAME:
+    raise RuntimeError("NEO4J_FULLTEXT_INDEX must be set for hybrid retrieval")
+
+
+auth_tuple = None
+if NEO4J_USERNAME:
+    auth_tuple = (NEO4J_USERNAME, NEO4J_PASSWORD or "")
+driver = GraphDatabase.driver(NEO4J_URI, auth=auth_tuple)
 
 EMBED_MODEL = os.getenv("OPENAI_EMBED_MODEL", "text-embedding-3-small")
 embedder = OpenAIEmbeddings(model=EMBED_MODEL)
 
-
-# Instantiate the LLM with temperature: 1 for GPT-5, else 0.2
 LLM_MODEL = os.getenv("OPENAI_MODEL")
 temperature = 1 if (LLM_MODEL or "").lower().startswith("gpt-5") else 0.1
 llm = OpenAILLM(model_name=LLM_MODEL, model_params={"temperature": temperature})
@@ -41,146 +52,55 @@ _MMR_K = int(os.getenv("MMR_k"))
 _MMR_LAMBDA = float(os.getenv("MMR_LAMBDA"))
 _ALWAYS_KEEP_TOP = int(os.getenv("ALWAYS_KEEP_TOP"))
 
+
+def _env_bool(name: str, default: bool) -> bool:
+    val = os.getenv(name)
+    if val is None:
+        return default
+    return str(val).strip().lower() in {"1", "true", "yes", "on"}
+
+
+COHERE_ENABLED = _env_bool("COHERE_RERANK_ENABLED", True)
+if COHERE_ENABLED:
+    try:
+        _reranker = CohereReranker()
+    except Exception as exc:  # pragma: no cover - fail loud
+        raise RuntimeError(
+            "Failed to initialise Cohere reranker. Set COHERE_RERANK_ENABLED=0 to disable."
+        ) from exc
+else:
+    _reranker = None
+
+HYBRID_CONFIG = HybridRetrievalConfig(
+    vector_index=VECTOR_INDEX_NAME,
+    fulltext_index=FULLTEXT_INDEX_NAME,
+    alpha=float(os.getenv("HYBRID_ALPHA", "0.6")),
+    pool_multiplier=float(os.getenv("HYBRID_POOL_MULTIPLIER", "4")),
+    pool_min=int(os.getenv("HYBRID_POOL_MIN", "80")),
+    pool_max=int(os.getenv("HYBRID_POOL_MAX", "300")),
+    apply_mmr=_env_bool("HYBRID_APPLY_MMR", True),
+    mmr_k=int(os.getenv("HYBRID_MMR_K", str(_MMR_K))),
+    mmr_lambda=float(os.getenv("HYBRID_MMR_LAMBDA", str(_MMR_LAMBDA))),
+    mmr_keep_top=int(os.getenv("HYBRID_MMR_KEEP_TOP", str(_ALWAYS_KEEP_TOP))),
+    neo4j_database=NEO4J_DATABASE,
+)
+
+HYBRID_PIPELINE = HybridRetrievalPipeline(
+    driver,
+    embedder,
+    _reranker,
+    config=HYBRID_CONFIG,
+)
+
 # Load catalog once at startup (no-op if already loaded)
 try:
     load_catalog()
 except Exception:
     pass
 
-
-def _get_field(obj, name):
-    if hasattr(obj, name):
-        return getattr(obj, name)
-
-    metadata = getattr(obj, "metadata", None)
-    if isinstance(metadata, dict) and name in metadata:
-        return metadata[name]
-
-    if isinstance(obj, dict):
-        if name in obj:
-            return obj[name]
-        metadata = obj.get("metadata")
-        if isinstance(metadata, dict) and name in metadata:
-            return metadata[name]
-
-    if name in {"source", "document_key", "file"}:
-        text = None
-        if hasattr(obj, "content"):
-            text = getattr(obj, "content")
-        if isinstance(text, dict):
-            text = text.get("text")
-        if not isinstance(text, str) and hasattr(obj, "text"):
-            text = getattr(obj, "text")
-        if not isinstance(text, str) and isinstance(obj, dict):
-            text = obj.get("text")
-        if isinstance(text, str):
-            if name == "file":
-                match = re.search(r"\[SRC=([^\]]+)\]", text)
-                if match:
-                    return match.group(1)
-                match = re.search(r"\[DOC=([^\]]+)\]", text)
-                if match:
-                    return match.group(1)
-            if name in {"source", "document_key"}:
-                match = re.search(r"\[PUB=([^\]]+)\]", text)
-                if match:
-                    return match.group(1)
-
-    return None
-
-
-class _SourceScopedRetriever:
-    def __init__(self, base_retriever, allowed_sources):
-        self._base = base_retriever
-        # normalize to lowercase strings
-        self._allowed = {str(s).lower() for s in (allowed_sources or [])}
-
-    def __getattr__(self, item):
-        return getattr(self._base, item)
-
-    def _keep(self, hit) -> bool:
-        if not self._allowed:
-            return True
-        doc = (
-            _get_field(hit, "source")
-            or _get_field(hit, "document_key")
-            or _get_field(hit, "file")
-            or ""
-        )
-        ds = str(doc).lower()
-        if not ds:
-            return False
-        # allow exact, suffix, or substring match
-        for s in self._allowed:
-            if ds == s or ds.endswith(s) or s in ds:
-                return True
-        return False
-
-    def _filter(self, results):
-        items, rebuild = self._unwrap(results)
-        if not items:
-            return rebuild(items)
-        if not self._allowed:
-            return rebuild(items)
-        filtered = [hit for hit in items if self._keep(hit)]
-        if filtered:
-            return rebuild(filtered)
-        return rebuild(items)
-
-    def _unwrap(self, result_obj):
-        if isinstance(result_obj, RetrieverResult):
-            metadata = result_obj.metadata
-            return list(result_obj.items), lambda items: RetrieverResult(items=items, metadata=metadata)
-        if isinstance(result_obj, RawSearchResult):
-            metadata = result_obj.metadata
-            return list(result_obj.records), lambda items: RawSearchResult(records=items, metadata=metadata)
-        if isinstance(result_obj, list):
-            return list(result_obj), lambda items: items
-        return [], lambda items: result_obj
-
-    def search(self, *args, **kwargs):
-        base = getattr(self._base, "search", None)
-        if base is None and hasattr(self._base, "retrieve"):
-            base = getattr(self._base, "retrieve")
-        if base is None:
-            return []
-        return self._filter(base(*args, **kwargs))
-
-    def retrieve(self, *args, **kwargs):
-        base = getattr(self._base, "retrieve", None)
-        if base is None and hasattr(self._base, "search"):
-            base = getattr(self._base, "search")
-        if base is None:
-            return []
-        return self._filter(base(*args, **kwargs))
-
-    def get_search_results(self, *args, **kwargs):
-        base = getattr(self._base, "get_search_results", None)
-        if base is None and hasattr(self._base, "search"):
-            base = getattr(self._base, "search")
-        if base is None and hasattr(self._base, "retrieve"):
-            base = getattr(self._base, "retrieve")
-        if base is None:
-            return []
-        return self._filter(base(*args, **kwargs))
-
-def _make_rag(neighbor_window: int, scope_files=None):
-    base = VectorRetriever(driver, INDEX_NAME, embedder)
-    if scope_files:
-        base = _SourceScopedRetriever(base, scope_files)
-    base = wrap_with_mmr(
-        base,
-        embedder=embedder,
-        mmr_k=_MMR_K,
-        lambda_mult=_MMR_LAMBDA,
-        always_keep_top=_ALWAYS_KEEP_TOP,
-    )
-    wrapped = wrap_with_neighbors(base, driver, window=neighbor_window)
-    return GraphRAG(retriever=wrapped, llm=llm)
-
-# Resolve default top_k from environment
 _env_top_k = os.getenv("top_k")
 _DEFAULT_top_k = int(_env_top_k) if _env_top_k is not None else 5
+
 
 def _format_card_answer(answers, provenance) -> str:
     try:
@@ -193,7 +113,6 @@ def _format_card_answer(answers, provenance) -> str:
         def kv(k, default=None):
             return a.get(k, default)
 
-        # Dates and times
         if has("closing_date") and has("closing_time"):
             sentences.append(f"Closing time is {kv('closing_time')} on {kv('closing_date')}.")
         elif has("closing_date"):
@@ -201,11 +120,9 @@ def _format_card_answer(answers, provenance) -> str:
         elif has("closing_time"):
             sentences.append(f"Closing time is {kv('closing_time')}.")
 
-        # Bid validity
         if has("bid_validity_days"):
             sentences.append(f"Bids must remain valid for {kv('bid_validity_days')} days.")
 
-        # Fees and bonds
         if has("tender_doc_fee_kd"):
             sentences.append(f"Tender documents cost {kv('tender_doc_fee_kd')} KD.")
         if has("initial_bond_value_kd"):
@@ -213,15 +130,15 @@ def _format_card_answer(answers, provenance) -> str:
         if has("initial_bond_percent"):
             sentences.append(f"The initial bond is {kv('initial_bond_percent')}%.")
 
-        # Alternatives and indivisibility
         if "alternative_offers_allowed" in a:
             allowed = bool(a.get("alternative_offers_allowed"))
-            sentences.append("Alternative offers are permitted." if allowed else "Alternative offers are not permitted.")
+            sentences.append(
+                "Alternative offers are permitted." if allowed else "Alternative offers are not permitted."
+            )
         if "indivisible" in a:
             indiv = bool(a.get("indivisible"))
             sentences.append("The tender is indivisible." if indiv else "The tender may be divided.")
 
-        # Registration / duration / law / meeting (when applicable)
         if has("registration_no"):
             sentences.append(f"Registration number {kv('registration_no')}.")
         if has("duration_from") and has("duration_to"):
@@ -233,7 +150,6 @@ def _format_card_answer(answers, provenance) -> str:
         if has("meeting_no"):
             sentences.append(f"Meeting No. {kv('meeting_no')}.")
 
-        # If nothing recognized, fall back to key:value lines
         if not sentences:
             parts = []
             for k, v in (a or {}).items():
@@ -253,7 +169,6 @@ def _format_card_answer(answers, provenance) -> str:
                     parts.append("Provenance: " + "; ".join(prov_bits))
             return "\n".join(parts) if parts else ""
 
-        # Build paragraph + provenance
         paragraph = " ".join(sentences).strip()
         if provenance:
             prov_bits = []
@@ -270,7 +185,6 @@ def _format_card_answer(answers, provenance) -> str:
                 return paragraph + "\n" + ("Provenance: " + "; ".join(prov_bits))
         return paragraph
     except Exception:
-        # On any formatting error, degrade gracefully to old behaviour
         parts = []
         for k, v in (answers or {}).items():
             parts.append(f"{k}: {v}")
@@ -282,33 +196,48 @@ def query_graph_rag(
     top_k: int = _DEFAULT_top_k,
     neighbor_window: int = 1,
     reference_seq_offset: int = 0,
+    *,
+    run_id: Optional[str] = None,
+    callback: Optional[Callable[[Dict[str, object]], None]] = None,
 ):
     """Query the GraphRAG system with a question."""
-    # Card-first gate
-    scope_files = None
+
     original_question = query_text
+
+    def emit(event_type: str, **payload) -> None:
+        if not callback:
+            return
+        event: Dict[str, object] = {"event": event_type}
+        if run_id is not None:
+            event["run_id"] = run_id
+        event.update(payload)
+        callback(event)
+
     gate = card_first_gate(query_text, allow_direct_answer=True)
+    emit("gate", **(gate.get("diagnostics") or {}))
     provenance_refs = build_references(gate.get("provenance"))
+
     mode = gate.get("mode")
-    # TODO What is Mode
     if mode == "answer":
+        emit("card_answer", record_id=gate.get("record_id"), decision="answer")
         base_answer = _format_card_answer(gate.get("answers"), gate.get("provenance"))
         normalized = normalize_answer_text(base_answer, original_question)
-        return format_with_citations(normalized, provenance_refs, seq_offset=reference_seq_offset)
+        final_answer = format_with_citations(normalized, provenance_refs, seq_offset=reference_seq_offset)
+        emit("answer", source="card", fallback=False, retrieved=0)
+        return final_answer
+
+    boost_terms = gate.get("boost_terms") or []
+    scope_files = None
     if mode == "restrict":
         scope_files = gate.get("scope_files") or None
-        # Incorporate boost terms (anchors, ids, authority) directly into the query to steer retrieval
-        boost_terms = gate.get("boost_terms") or []
         if boost_terms:
             query_text = f"{query_text} \n\n" + " ".join(str(t) for t in boost_terms)
 
-    # Light heuristic: widen neighbors for table-like fee/bond rows
     qt = (query_text or "").lower()
     anchors_present = bool(extract_anchors(query_text))
     wants_money, wants_percent, wants_date = wants_slots(query_text)
     wants_time = any(k in qt for k in ["time", "1:", "pm", "am"])
 
-    # TO DO: Evaluate this
     table_cues = [
         "table",
         "fee",
@@ -322,18 +251,62 @@ def query_graph_rag(
         "registration",
         "practice",
     ]
-    table_like = any(k in qt for k in table_cues) or "جدول" in qt # جدول  = table
+    table_like = any(k in qt for k in table_cues) or "جدول" in qt
     if (table_like or (anchors_present and (wants_money or wants_percent or wants_date or wants_time))) and neighbor_window < 2:
         neighbor_window = 2
 
-    rag = _make_rag(neighbor_window, scope_files=scope_files)
-    response = rag.search(
-        query_text=query_text,
-        retriever_config={"top_k": top_k},
-        return_context=True,
-    )
+    class _PipelineAdapter:
+        def __init__(self, scope: Optional[Sequence[str]]):
+            self.scope = list(scope or [])
+            self.last_diagnostics: Dict[str, object] = {}
 
+        def _call(self, query: str, retriever_config: Dict[str, object]):
+            cfg_top = retriever_config.get("top_k")
+            effective_top = int(cfg_top) if cfg_top is not None else top_k
+            if effective_top <= 0:
+                effective_top = top_k if top_k > 0 else 1
+            result, diag = HYBRID_PIPELINE.retrieve(query, top_k=effective_top, scope=self.scope)
+            diag = dict(diag)
+            diag["scope"] = list(self.scope)
+            diag["top_k"] = effective_top
+            self.last_diagnostics = diag
+            return result
+
+        def search(self, *args, **kwargs):
+            rc = dict(kwargs.pop("retriever_config", {}) or {})
+            q = kwargs.get("query_text") or (args[0] if args else "")
+            return self._call(q, rc)
+
+        def retrieve(self, *args, **kwargs):
+            return self.search(*args, **kwargs)
+
+        def get_search_results(self, *args, **kwargs):
+            return self.search(*args, **kwargs)
+
+    def _run(query: str, scope: Optional[Sequence[str]], label: str):
+        adapter = _PipelineAdapter(scope)
+        retriever = wrap_with_neighbors(adapter, driver, window=neighbor_window)
+        rag = GraphRAG(retriever=retriever, llm=llm)
+        response_local = rag.search(
+            query_text=query,
+            retriever_config={"top_k": top_k},
+            return_context=True,
+        )
+        diag = dict(adapter.last_diagnostics)
+        diag["label"] = label
+        diag["neighbor_window"] = neighbor_window
+        emit("retrieval", **diag)
+        return response_local
+
+    response = _run(query_text, scope_files, "primary")
     retriever_result = getattr(response, "retriever_result", None)
+    fallback_used = False
+    if scope_files and (retriever_result is None or len(retriever_result.items) == 0):
+        emit("gate_fail_open", reason="empty_scope", scope=scope_files)
+        response = _run(query_text, None, "fallback")
+        retriever_result = getattr(response, "retriever_result", None)
+        fallback_used = True
+
     retrieval_refs = build_references(getattr(retriever_result, "items", None))
     if not retrieval_refs:
         retrieval_refs = build_references(getattr(response, "context", None))
@@ -344,4 +317,11 @@ def query_graph_rag(
             combined_refs.append(ref)
 
     normalized_answer = normalize_answer_text(getattr(response, "answer", ""), original_question)
-    return format_with_citations(normalized_answer, combined_refs, seq_offset=reference_seq_offset)
+    final_answer = format_with_citations(normalized_answer, combined_refs, seq_offset=reference_seq_offset)
+    emit(
+        "answer",
+        source="rag",
+        fallback=fallback_used,
+        retrieved=len(getattr(retriever_result, "items", []) or []),
+    )
+    return final_answer

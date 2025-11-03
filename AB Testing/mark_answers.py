@@ -22,6 +22,51 @@ _F1_PROMPT = (
 )
 
 
+def _env_bool(name: str, default=None):
+    val = os.getenv(name)
+    if val is None:
+        return default
+    return str(val).strip().lower() in {"1", "true", "yes", "on"}
+
+
+def _format_scope(scope) -> str:
+    if not scope:
+        return "-"
+    if isinstance(scope, (list, tuple)):
+        return ",".join(str(s) for s in scope)
+    return str(scope)
+
+
+def _summarize_events(events) -> list[str]:
+    logs: list[str] = []
+    for ev in events or []:
+        kind = ev.get("event")
+        if kind == "gate":
+            decision = ev.get("decision") or "pass"
+            scope = _format_scope(ev.get("normalized_scope") or ev.get("scope_candidates"))
+            anchors = len(ev.get("anchors") or [])
+            logs.append(f"gate={decision} scope={scope} anchors={anchors}")
+        elif kind == "retrieval":
+            label = ev.get("label") or "primary"
+            scope = _format_scope(ev.get("scope"))
+            pool = ev.get("pool_top_k")
+            hits = ev.get("hybrid_retrieved")
+            final = ev.get("final")
+            mmr = ev.get("mmr_applied")
+            logs.append(
+                f"retrieval[{label}] scope={scope} pool={pool} hits={hits} final={final} mmr={mmr}"
+            )
+        elif kind == "gate_fail_open":
+            scope = _format_scope(ev.get("scope"))
+            logs.append(f"fail_open scope={scope} reason={ev.get('reason')}")
+        elif kind == "answer":
+            source = ev.get("source")
+            fallback = ev.get("fallback")
+            retrieved = ev.get("retrieved")
+            logs.append(f"answer source={source} fallback={fallback} retrieved={retrieved}")
+    return logs
+
+
 def mark_answers(
     answer_key_path: str,
     max_workers: int = None,
@@ -32,6 +77,8 @@ def mark_answers(
     timezone = os.getenv("TZ", "America/New_York")
     os.environ["TZ"] = timezone
     time.tzset()
+
+    save_event_trace = _env_bool("SAVE_EVENT_TRACE", False)
 
     # Resolve project root
     project_root = Path(__file__).resolve().parents[1]
@@ -81,7 +128,15 @@ def mark_answers(
         question_text = ans_obj.get("question") or key_obj.get("question") or ""
         expected = (key_obj.get("answer") or "").strip()
         answer = (ans_obj.get("answer") or "").strip()
-        paired_questions.append((question_text, expected, answer))
+        events = ans_obj.get("events", []) if save_event_trace else []
+        paired_questions.append(
+            {
+                "question": question_text,
+                "expected": expected,
+                "answer": answer,
+                "events": events,
+            }
+        )
 
     # GPT-evaluated F1 per pair (optionally parallel)
     # Force model to gpt-5-mini regardless of env model selection
@@ -115,8 +170,8 @@ def mark_answers(
     if n:
         with ThreadPoolExecutor(max_workers=max_workers) as ex:
             future_to_idx = {
-                ex.submit(_grade, expected, answer): idx
-                for idx, (_, expected, answer) in enumerate(paired_questions)
+                ex.submit(_grade, item["expected"], item["answer"]): idx
+                for idx, item in enumerate(paired_questions)
             }
             for future in as_completed(future_to_idx):
                 idx = future_to_idx[future]
@@ -173,16 +228,21 @@ def mark_answers(
             "average_f1": avg_f1,
             "average_f1_percent": avg_f1_percent,
         },
-        "questions": [
-            {
-                "question": q,
-                "expected": e,
-                "answer": a,
-                "f1": f1_scores[i],
-            }
-            for i, (q, e, a) in enumerate(paired_questions)
-        ],
+        "questions": [],
     }
+
+    for i, item in enumerate(paired_questions):
+        question_entry = {
+            "question": item["question"],
+            "expected": item["expected"],
+            "answer": item["answer"],
+            "f1": f1_scores[i],
+        }
+        if save_event_trace:
+            events = item.get("events", [])
+            question_entry["events"] = events
+            question_entry["logs"] = _summarize_events(events)
+        results["questions"].append(question_entry)
 
     # Save to AB Testing/Test Results
     out_dir = project_root / "AB Testing" / "Test Results"

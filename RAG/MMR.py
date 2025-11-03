@@ -1,4 +1,4 @@
-from typing import Any, List
+from typing import Any, List, Optional
 
 import numpy as np
 from langchain_community.vectorstores.utils import maximal_marginal_relevance
@@ -28,6 +28,67 @@ def _embed_docs(embedder, docs: List[str]) -> List[List[float]]:
         return embedder.embed(docs)
     return [embedder.embed_query(t or "") for t in docs]
 
+
+def apply_mmr_list(
+    query_text: str,
+    items: List[Any],
+    *,
+    embedder,
+    mmr_k: int,
+    lambda_mult: float,
+    always_keep_top: int = 0,
+    preprocess: bool = True,
+    original_results: Optional[List[Any]] = None,
+    get_text=_get_text,
+):
+    hits = list(items)
+    if not hits:
+        return hits
+
+    working = list(hits)
+    if preprocess:
+        filtered = filter_to_anchor_hits(query_text, working, get_text)
+        if filtered:
+            working = filtered
+        working = preboost_results_by_anchors(query_text, working, get_text)
+
+    k = min(int(mmr_k), len(working))
+    if k <= 0:
+        chosen = working
+    else:
+        q = np.asarray(embedder.embed_query(query_text), dtype=float)
+        q = np.atleast_1d(q)
+        if q.ndim > 1:
+            q = q.reshape(-1)
+
+        docs = [get_text(r) for r in working]
+        X = np.asarray(_embed_docs(embedder, docs), dtype=float)
+        X = np.atleast_2d(X)
+
+        if q.size == 0 or X.size == 0 or X.shape[0] != len(working):
+            chosen = working[:k]
+        else:
+            keep_n = max(0, min(int(always_keep_top), k))
+            if keep_n >= k:
+                chosen = working[:k]
+            elif keep_n > 0:
+                remaining = maximal_marginal_relevance(
+                    q,
+                    X[keep_n:],
+                    lambda_mult=float(lambda_mult),
+                    k=k - keep_n,
+                )
+                mapped = list(range(keep_n)) + [keep_n + i for i in remaining]
+                chosen = [working[i] for i in mapped]
+            else:
+                idxs = maximal_marginal_relevance(
+                    q, X, lambda_mult=float(lambda_mult), k=k
+                )
+                chosen = [working[i] for i in idxs]
+
+    pool = list(original_results) if original_results is not None else hits
+    return enforce_slot_guard(query_text, pool, chosen, get_text)
+
 class MMRWrapperRetriever:
     def __init__(self, base, embedder, mmr_k: int, lambda_mult: float, always_keep_top):
         self._base = base
@@ -51,43 +112,17 @@ class MMRWrapperRetriever:
         return [], lambda items: result_obj
 
     def _apply_mmr(self, query_text: str, items: List[Any]) -> List[Any]:
-        hits = filter_to_anchor_hits(query_text, list(items), _get_text)
-        if not hits:
-            return hits
-        hits = preboost_results_by_anchors(query_text, hits, _get_text)
-        k = min(self._mmr_k, len(hits))
-        if k <= 0:
-            return hits
-
-        q = np.asarray(self._embedder.embed_query(query_text), dtype=float)
-        q = np.atleast_1d(q)
-        if q.ndim > 1:
-            q = q.reshape(-1)
-
-        docs = [_get_text(r) for r in hits]
-        X = np.asarray(_embed_docs(self._embedder, docs), dtype=float)
-        X = np.atleast_2d(X)
-
-        if q.size == 0 or X.size == 0 or X.shape[0] != len(hits):
-            chosen = hits[:k]
-        else:
-            keep_n = max(0, min(self._keep_top_n, k))
-            if keep_n >= k:
-                chosen = hits[:k]
-            elif keep_n > 0:
-                remaining = maximal_marginal_relevance(
-                    q,
-                    X[keep_n:],
-                    lambda_mult=self._lambda,
-                    k=k - keep_n,
-                )
-                mapped = list(range(keep_n)) + [keep_n + i for i in remaining]
-                chosen = [hits[i] for i in mapped]
-            else:
-                idxs = maximal_marginal_relevance(q, X, lambda_mult=self._lambda, k=k)
-                chosen = [hits[i] for i in idxs]
-
-        return enforce_slot_guard(query_text, hits, chosen, _get_text)
+        return apply_mmr_list(
+            query_text,
+            list(items),
+            embedder=self._embedder,
+            mmr_k=self._mmr_k,
+            lambda_mult=self._lambda,
+            always_keep_top=self._keep_top_n,
+            preprocess=True,
+            original_results=list(items),
+            get_text=_get_text,
+        )
 
     def _run(self, method, args, kwargs):
         rc = dict(kwargs.pop("retriever_config", {}) or {})
