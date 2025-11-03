@@ -1,0 +1,2270 @@
+{
+  "config": {
+    "top_k": 120,
+    "MMR_k": 60,
+    "MMR_LAMBDA": 0.4,
+    "ALWAYS_KEEP_TOP": 10,
+    "neighbor_window": 1,
+    "HYBRID_ALPHA": 0.6,
+    "HYBRID_POOL_MULTIPLIER": 4.0,
+    "HYBRID_POOL_MAX": 300,
+    "HYBRID_APPLY_MMR": true,
+    "NEO4J_FULLTEXT_INDEX": "chunk_text_idx",
+    "COHERE_RERANK_ENABLED": true,
+    "COHERE_RERANK_MODEL": "rerank-v3.5",
+    "CARD_FIRST_ENABLED": true,
+    "ALLOW_DIRECT_ANSWER": true
+  },
+  "answers": [
+    {
+      "question": "What is the bid submission deadline for the digital archiving system tender?",
+      "answer": "One month from the date of announcement (i.e., by 4 June 2025).",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q0",
+          "question": "What is the bid submission deadline for the digital archiving system tender?",
+          "anchors": [],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q0",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 120,
+          "slot_guarded": 120,
+          "scope": [],
+          "top_k": 120,
+          "label": "primary",
+          "neighbor_window": 1
+        },
+        {
+          "event": "answer",
+          "run_id": "q0",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 120
+        }
+      ]
+    },
+    {
+      "question": "What is the preliminary bond amount for the digital archiving system tender?",
+      "answer": "14,000 KD",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q1",
+          "question": "What is the preliminary bond amount for the digital archiving system tender?",
+          "anchors": [],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q1",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 120,
+          "slot_guarded": 120,
+          "scope": [],
+          "top_k": 120,
+          "label": "primary",
+          "neighbor_window": 2
+        },
+        {
+          "event": "answer",
+          "run_id": "q1",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 120
+        }
+      ]
+    },
+    {
+      "question": "What is the tender document fee for the digital archiving system tender?",
+      "answer": "I couldn’t find a “digital archiving system” tender in the provided excerpts. The only “digital … system” tender shown is the Ministry of Health’s Digital Radiography System, which has a tender document fee of 75 KD If you meant a different tender, please share its number or issuing entity.",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q2",
+          "question": "What is the tender document fee for the digital archiving system tender?",
+          "anchors": [],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q2",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 120,
+          "slot_guarded": 120,
+          "scope": [],
+          "top_k": 120,
+          "label": "primary",
+          "neighbor_window": 2
+        },
+        {
+          "event": "answer",
+          "run_id": "q2",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 120
+        }
+      ]
+    },
+    {
+      "question": "What bid validity period is required for the digital archiving system tender?",
+      "answer": "90 days from the closing date.",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q3",
+          "question": "What bid validity period is required for the digital archiving system tender?",
+          "anchors": [],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q3",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 120,
+          "slot_guarded": 120,
+          "scope": [],
+          "top_k": 120,
+          "label": "primary",
+          "neighbor_window": 1
+        },
+        {
+          "event": "answer",
+          "run_id": "q3",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 120
+        }
+      ]
+    },
+    {
+      "question": "Are alternative offers allowed in the digital archiving system tender?",
+      "answer": "No. Alternative offers are not permitted for that tender.",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q4",
+          "question": "Are alternative offers allowed in the digital archiving system tender?",
+          "anchors": [],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q4",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 120,
+          "slot_guarded": 120,
+          "scope": [],
+          "top_k": 120,
+          "label": "primary",
+          "neighbor_window": 1
+        },
+        {
+          "event": "answer",
+          "run_id": "q4",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 120
+        }
+      ]
+    },
+    {
+      "question": "What is the closing time for the seaport container scanners practice?",
+      "answer": "1:00 PM (Kuwait local time)",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q5",
+          "question": "What is the closing time for the seaport container scanners practice?",
+          "anchors": [],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q5",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 120,
+          "slot_guarded": 120,
+          "scope": [],
+          "top_k": 120,
+          "label": "primary",
+          "neighbor_window": 2
+        },
+        {
+          "event": "answer",
+          "run_id": "q5",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 120
+        }
+      ]
+    },
+    {
+      "question": "What is the initial security deposit percentage for the seaport container scanners practice?",
+      "answer": "2% of the total bid value.",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q6",
+          "question": "What is the initial security deposit percentage for the seaport container scanners practice?",
+          "anchors": [],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q6",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 120,
+          "slot_guarded": 120,
+          "scope": [],
+          "top_k": 120,
+          "label": "primary",
+          "neighbor_window": 2
+        },
+        {
+          "event": "answer",
+          "run_id": "q6",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 120
+        }
+      ]
+    },
+    {
+      "question": "How many envelopes must be submitted for the seaport container scanners practice?",
+      "answer": "Two — a technical envelope and a financial envelope.",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q7",
+          "question": "How many envelopes must be submitted for the seaport container scanners practice?",
+          "anchors": [],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q7",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 120,
+          "slot_guarded": 120,
+          "scope": [],
+          "top_k": 120,
+          "label": "primary",
+          "neighbor_window": 2
+        },
+        {
+          "event": "answer",
+          "run_id": "q7",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 120
+        }
+      ]
+    },
+    {
+      "question": "Is a site visit mandatory for the seaport container scanners practice?",
+      "answer": "No. The notice states “Site Visit Date: Not applicable,” so a site visit is not required for this practice.",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q8",
+          "question": "Is a site visit mandatory for the seaport container scanners practice?",
+          "anchors": [],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q8",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 120,
+          "slot_guarded": 120,
+          "scope": [],
+          "top_k": 120,
+          "label": "primary",
+          "neighbor_window": 2
+        },
+        {
+          "event": "answer",
+          "run_id": "q8",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 120
+        }
+      ]
+    },
+    {
+      "question": "What is the closing date for the streetlight LED retrofit project?",
+      "answer": "Monday, 2 June 2025 at 1:00 PM.",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q9",
+          "question": "What is the closing date for the streetlight LED retrofit project?",
+          "anchors": [],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q9",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 120,
+          "slot_guarded": 120,
+          "scope": [],
+          "top_k": 120,
+          "label": "primary",
+          "neighbor_window": 1
+        },
+        {
+          "event": "answer",
+          "run_id": "q9",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 120
+        }
+      ]
+    },
+    {
+      "question": "What is the document purchase fee for the streetlight LED retrofit project?",
+      "answer": "50 KD (non‑refundable).",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q10",
+          "question": "What is the document purchase fee for the streetlight LED retrofit project?",
+          "anchors": [],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q10",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 120,
+          "slot_guarded": 120,
+          "scope": [],
+          "top_k": 120,
+          "label": "primary",
+          "neighbor_window": 2
+        },
+        {
+          "event": "answer",
+          "run_id": "q10",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 120
+        }
+      ]
+    },
+    {
+      "question": "What is the corrected submission address for the streetlight LED retrofit project?",
+      "answer": "The provided context doesn’t specify any correction to the submission address for a streetlight LED retrofit project. If you can share the tender/practice number or issuing entity, I can locate the corrected address.",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q11",
+          "question": "What is the corrected submission address for the streetlight LED retrofit project?",
+          "anchors": [],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q11",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 120,
+          "slot_guarded": 120,
+          "scope": [],
+          "top_k": 120,
+          "label": "primary",
+          "neighbor_window": 1
+        },
+        {
+          "event": "answer",
+          "run_id": "q11",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 120
+        }
+      ]
+    },
+    {
+      "question": "What is the bid opening date for the streetlight LED retrofit project?",
+      "answer": "It isn’t specified in the announcement. The notice sets the bid submission deadline at 1:00 PM on Monday, 2 June 2025, and says bidders must coordinate with the Ministry of Information’s Procurement Department to attend the bid opening session.",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q12",
+          "question": "What is the bid opening date for the streetlight LED retrofit project?",
+          "anchors": [],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q12",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 120,
+          "slot_guarded": 120,
+          "scope": [],
+          "top_k": 120,
+          "label": "primary",
+          "neighbor_window": 1
+        },
+        {
+          "event": "answer",
+          "run_id": "q12",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 120
+        }
+      ]
+    },
+    {
+      "question": "What is the initial guarantee validity for the streetlight LED retrofit project?",
+      "answer": "90 days (valid for the entire bid validity period).",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q13",
+          "question": "What is the initial guarantee validity for the streetlight LED retrofit project?",
+          "anchors": [],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q13",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 120,
+          "slot_guarded": 120,
+          "scope": [],
+          "top_k": 120,
+          "label": "primary",
+          "neighbor_window": 1
+        },
+        {
+          "event": "answer",
+          "run_id": "q13",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 120
+        }
+      ]
+    },
+    {
+      "question": "What is the closing date for the blood bank refrigeration units tender?",
+      "answer": "One month from the announcement date. It was announced on 2025-05-04, so the closing date is 2025-06-04.",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q14",
+          "question": "What is the closing date for the blood bank refrigeration units tender?",
+          "anchors": [],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q14",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 120,
+          "slot_guarded": 120,
+          "scope": [],
+          "top_k": 120,
+          "label": "primary",
+          "neighbor_window": 1
+        },
+        {
+          "event": "answer",
+          "run_id": "q14",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 120
+        }
+      ]
+    },
+    {
+      "question": "What is the tender document price for the blood bank refrigeration units tender?",
+      "answer": "75 Kuwaiti Dinars (K.D.)",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q15",
+          "question": "What is the tender document price for the blood bank refrigeration units tender?",
+          "anchors": [],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q15",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 120,
+          "slot_guarded": 120,
+          "scope": [],
+          "top_k": 120,
+          "label": "primary",
+          "neighbor_window": 2
+        },
+        {
+          "event": "answer",
+          "run_id": "q15",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 120
+        }
+      ]
+    },
+    {
+      "question": "What is the preliminary bond value for the blood bank refrigeration units tender?",
+      "answer": "2,500 KD (valid for 90 days).",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q16",
+          "question": "What is the preliminary bond value for the blood bank refrigeration units tender?",
+          "anchors": [],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q16",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 120,
+          "slot_guarded": 120,
+          "scope": [],
+          "top_k": 120,
+          "label": "primary",
+          "neighbor_window": 2
+        },
+        {
+          "event": "answer",
+          "run_id": "q16",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 120
+        }
+      ]
+    },
+    {
+      "question": "Is the blood bank refrigeration units tender indivisible?",
+      "answer": "Not specified in the provided context. I couldn’t find a tender explicitly titled for blood bank refrigeration units, nor any note stating it is indivisible.",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q17",
+          "question": "Is the blood bank refrigeration units tender indivisible?",
+          "anchors": [],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q17",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 120,
+          "slot_guarded": 120,
+          "scope": [],
+          "top_k": 120,
+          "label": "primary",
+          "neighbor_window": 1
+        },
+        {
+          "event": "answer",
+          "run_id": "q17",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 120
+        }
+      ]
+    },
+    {
+      "question": "What is the submission method for the ministry data center firewall replacement practice?",
+      "answer": "Technical and financial offer submission — non-divisible, no alternative offers, and no samples required.",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q18",
+          "question": "What is the submission method for the ministry data center firewall replacement practice?",
+          "anchors": [],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q18",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 120,
+          "slot_guarded": 120,
+          "scope": [],
+          "top_k": 120,
+          "label": "primary",
+          "neighbor_window": 2
+        },
+        {
+          "event": "answer",
+          "run_id": "q18",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 120
+        }
+      ]
+    },
+    {
+      "question": "What is the closing time for the ministry data center firewall replacement practice?",
+      "answer": "10:30 AM.",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q19",
+          "question": "What is the closing time for the ministry data center firewall replacement practice?",
+          "anchors": [],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q19",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 120,
+          "slot_guarded": 120,
+          "scope": [],
+          "top_k": 120,
+          "label": "primary",
+          "neighbor_window": 2
+        },
+        {
+          "event": "answer",
+          "run_id": "q19",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 120
+        }
+      ]
+    },
+    {
+      "question": "What is the initial bond percentage for the ministry data center firewall replacement practice?",
+      "answer": "2% of the bid value (valid for 90 days).",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q20",
+          "question": "What is the initial bond percentage for the ministry data center firewall replacement practice?",
+          "anchors": [],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q20",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 120,
+          "slot_guarded": 120,
+          "scope": [],
+          "top_k": 120,
+          "label": "primary",
+          "neighbor_window": 2
+        },
+        {
+          "event": "answer",
+          "run_id": "q20",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 120
+        }
+      ]
+    },
+    {
+      "question": "What is the document fee for the ministry data center firewall replacement practice?",
+      "answer": "75 Kuwaiti Dinars (K.D.)",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q21",
+          "question": "What is the document fee for the ministry data center firewall replacement practice?",
+          "anchors": [],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q21",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 120,
+          "slot_guarded": 120,
+          "scope": [],
+          "top_k": 120,
+          "label": "primary",
+          "neighbor_window": 2
+        },
+        {
+          "event": "answer",
+          "run_id": "q21",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 120
+        }
+      ]
+    },
+    {
+      "question": "What is the corrected company name for the airport shuttle operations contract?",
+      "answer": "United Facilities Management Company.",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q22",
+          "question": "What is the corrected company name for the airport shuttle operations contract?",
+          "anchors": [],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q22",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 120,
+          "slot_guarded": 120,
+          "scope": [],
+          "top_k": 120,
+          "label": "primary",
+          "neighbor_window": 1
+        },
+        {
+          "event": "answer",
+          "run_id": "q22",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 120
+        }
+      ]
+    },
+    {
+      "question": "What is the publication date of the notice correcting the airport shuttle operations contract?",
+      "answer": "2025-05-04",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q23",
+          "question": "What is the publication date of the notice correcting the airport shuttle operations contract?",
+          "anchors": [],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q23",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 120,
+          "slot_guarded": 120,
+          "scope": [],
+          "top_k": 120,
+          "label": "primary",
+          "neighbor_window": 1
+        },
+        {
+          "event": "answer",
+          "run_id": "q23",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 120
+        }
+      ]
+    },
+    {
+      "question": "What is the objection period for amendments to commercial registration data?",
+      "answer": "- Generally: 15 days from the date of publication of the announcement in the Official Gazette to file an objection with the relevant ministry department.\n- Note: If the amendment is handled by the Partnerships Department (e.g., legal-entity change or liquidation), objections must be filed with the General Court (المحكمة الكلية) within 30 days.",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q24",
+          "question": "What is the objection period for amendments to commercial registration data?",
+          "anchors": [],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q24",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 120,
+          "slot_guarded": 120,
+          "scope": [],
+          "top_k": 120,
+          "label": "primary",
+          "neighbor_window": 2
+        },
+        {
+          "event": "answer",
+          "run_id": "q24",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 120
+        }
+      ]
+    },
+    {
+      "question": "Which court receives objections to commercial registration amendments?",
+      "answer": "The Court of First Instance (General Court) — المحكمة الكلية.",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q25",
+          "question": "Which court receives objections to commercial registration amendments?",
+          "anchors": [],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q25",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 120,
+          "slot_guarded": 120,
+          "scope": [],
+          "top_k": 120,
+          "label": "primary",
+          "neighbor_window": 2
+        },
+        {
+          "event": "answer",
+          "run_id": "q25",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 120
+        }
+      ]
+    },
+    {
+      "question": "What is the corrected legal form for Al-Nour Trading after restructuring?",
+      "answer": "Limited Liability Company (LLC).",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q26",
+          "question": "What is the corrected legal form for Al-Nour Trading after restructuring?",
+          "anchors": [],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q26",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 120,
+          "slot_guarded": 120,
+          "scope": [],
+          "top_k": 120,
+          "label": "primary",
+          "neighbor_window": 1
+        },
+        {
+          "event": "answer",
+          "run_id": "q26",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 120
+        }
+      ]
+    },
+    {
+      "question": "What is the corrected company name for the refinery maintenance framework agreement?",
+      "answer": "Consolidated Contractors Company (Kuwait) W.L.L.",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q27",
+          "question": "What is the corrected company name for the refinery maintenance framework agreement?",
+          "anchors": [],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q27",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 120,
+          "slot_guarded": 120,
+          "scope": [],
+          "top_k": 120,
+          "label": "primary",
+          "neighbor_window": 1
+        },
+        {
+          "event": "answer",
+          "run_id": "q27",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 120
+        }
+      ]
+    },
+    {
+      "question": "What is the corrected closing date for the university e-learning platform tender?",
+      "answer": "Tuesday, 27 May 2025 (12:00 PM).",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q28",
+          "question": "What is the corrected closing date for the university e-learning platform tender?",
+          "anchors": [],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q28",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 120,
+          "slot_guarded": 120,
+          "scope": [],
+          "top_k": 120,
+          "label": "primary",
+          "neighbor_window": 1
+        },
+        {
+          "event": "answer",
+          "run_id": "q28",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 120
+        }
+      ]
+    },
+    {
+      "question": "What is the document fee for the university e-learning platform tender?",
+      "answer": "75 Kuwaiti Dinars (K.D.)",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q29",
+          "question": "What is the document fee for the university e-learning platform tender?",
+          "anchors": [],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q29",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 120,
+          "slot_guarded": 120,
+          "scope": [],
+          "top_k": 120,
+          "label": "primary",
+          "neighbor_window": 2
+        },
+        {
+          "event": "answer",
+          "run_id": "q29",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 120
+        }
+      ]
+    },
+    {
+      "question": "What is the preliminary bond amount for the university e-learning platform tender?",
+      "answer": "2% of the bid value.",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q30",
+          "question": "What is the preliminary bond amount for the university e-learning platform tender?",
+          "anchors": [],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q30",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 120,
+          "slot_guarded": 120,
+          "scope": [],
+          "top_k": 120,
+          "label": "primary",
+          "neighbor_window": 2
+        },
+        {
+          "event": "answer",
+          "run_id": "q30",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 120
+        }
+      ]
+    },
+    {
+      "question": "Are alternative offers permitted in the university e-learning platform tender?",
+      "answer": "No. It’s issued as a non-divisible tender, and alternative offers are not permitted.",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q31",
+          "question": "Are alternative offers permitted in the university e-learning platform tender?",
+          "anchors": [],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q31",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 120,
+          "slot_guarded": 120,
+          "scope": [],
+          "top_k": 120,
+          "label": "primary",
+          "neighbor_window": 1
+        },
+        {
+          "event": "answer",
+          "run_id": "q31",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 120
+        }
+      ]
+    },
+    {
+      "question": "What is the closing date for the port crane refurbishment practice?",
+      "answer": "Not specified in the provided context. If you share the practice number or issuing entity, I can locate the exact closing date.",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q32",
+          "question": "What is the closing date for the port crane refurbishment practice?",
+          "anchors": [],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q32",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 120,
+          "slot_guarded": 120,
+          "scope": [],
+          "top_k": 120,
+          "label": "primary",
+          "neighbor_window": 2
+        },
+        {
+          "event": "answer",
+          "run_id": "q32",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 120
+        }
+      ]
+    },
+    {
+      "question": "What is the initial security deposit percentage for the port crane refurbishment practice?",
+      "answer": "2% of the total bid value.",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q33",
+          "question": "What is the initial security deposit percentage for the port crane refurbishment practice?",
+          "anchors": [],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q33",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 120,
+          "slot_guarded": 120,
+          "scope": [],
+          "top_k": 120,
+          "label": "primary",
+          "neighbor_window": 2
+        },
+        {
+          "event": "answer",
+          "run_id": "q33",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 120
+        }
+      ]
+    },
+    {
+      "question": "What is the bid validity period for the port crane refurbishment practice?",
+      "answer": "90 days from the date of opening the envelopes.",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q34",
+          "question": "What is the bid validity period for the port crane refurbishment practice?",
+          "anchors": [],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q34",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 120,
+          "slot_guarded": 120,
+          "scope": [],
+          "top_k": 120,
+          "label": "primary",
+          "neighbor_window": 2
+        },
+        {
+          "event": "answer",
+          "run_id": "q34",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 120
+        }
+      ]
+    },
+    {
+      "question": "What is the fee to purchase auction conditions for the sale of surplus government vehicles?",
+      "answer": "50 Kuwaiti Dinars (non-refundable).",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q35",
+          "question": "What is the fee to purchase auction conditions for the sale of surplus government vehicles?",
+          "anchors": [],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q35",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 120,
+          "slot_guarded": 120,
+          "scope": [],
+          "top_k": 120,
+          "label": "primary",
+          "neighbor_window": 2
+        },
+        {
+          "event": "answer",
+          "run_id": "q35",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 120
+        }
+      ]
+    },
+    {
+      "question": "How long must bids remain valid in the sale of surplus government vehicles?",
+      "answer": "90 days from the closing date (with the Amiri Diwan reserving the right to extend or renew this period).",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q36",
+          "question": "How long must bids remain valid in the sale of surplus government vehicles?",
+          "anchors": [],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q36",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 120,
+          "slot_guarded": 120,
+          "scope": [],
+          "top_k": 120,
+          "label": "primary",
+          "neighbor_window": 1
+        },
+        {
+          "event": "answer",
+          "run_id": "q36",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 120
+        }
+      ]
+    },
+    {
+      "question": "Is the sale of surplus government vehicles divisible by lots?",
+      "answer": "Yes. The Auction Sale Committee may sell in one lot or in several lots, depending on the sale circumstances (as stated in the published auction terms).",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q37",
+          "question": "Is the sale of surplus government vehicles divisible by lots?",
+          "anchors": [],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q37",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 120,
+          "slot_guarded": 120,
+          "scope": [],
+          "top_k": 120,
+          "label": "primary",
+          "neighbor_window": 1
+        },
+        {
+          "event": "answer",
+          "run_id": "q37",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 120
+        }
+      ]
+    },
+    {
+      "question": "What is the registration number for the agency of Gulf Health with MedEquip (Germany)?",
+      "answer": "I couldn’t find any entry in the provided context for an agency of “Gulf Health” with “MedEquip (Germany).” Please confirm the exact company names. For reference, the context does include:\n- Kuwaiti Saudi Pharmaceutical Industries Company with Merz Therapeutics Limited (Germany), Reg. No. 00514/2025\n- Al-Ameen Medical Company with ACROS GmbH & Co. KG (Germany), Reg. No. 2025/00652\n- Fort Dimension Medical Company with Stryz Medical GmbH (Germany), Reg. No. 2025/00415\n- Gulf Care General Trading Company with First Unilass Middle East LLC (UAE), Reg. No. 00524/2025",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q38",
+          "question": "What is the registration number for the agency of Gulf Health with MedEquip (Germany)?",
+          "anchors": [],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q38",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 120,
+          "slot_guarded": 120,
+          "scope": [],
+          "top_k": 120,
+          "label": "primary",
+          "neighbor_window": 2
+        },
+        {
+          "event": "answer",
+          "run_id": "q38",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 120
+        }
+      ]
+    },
+    {
+      "question": "What is the duration of the Gulf Health agency with MedEquip (from and to)?",
+      "answer": "I can’t find any listing for an agency between “Gulf Health” and “MedEquip” in the provided context, so the duration (from/to) isn’t available here.",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q39",
+          "question": "What is the duration of the Gulf Health agency with MedEquip (from and to)?",
+          "anchors": [],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q39",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 120,
+          "slot_guarded": 120,
+          "scope": [],
+          "top_k": 120,
+          "label": "primary",
+          "neighbor_window": 2
+        },
+        {
+          "event": "answer",
+          "run_id": "q39",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 120
+        }
+      ]
+    },
+    {
+      "question": "What is the principal company and country for the Gulf Health agency with MedEquip?",
+      "answer": "I can’t find any entry in the provided context for a “Gulf Health” agency with “MedEquip,” so the principal company and country aren’t listed here. If you can share the agency registration number or the publication/date, I can look it up precisely.",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q40",
+          "question": "What is the principal company and country for the Gulf Health agency with MedEquip?",
+          "anchors": [],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q40",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 120,
+          "slot_guarded": 120,
+          "scope": [],
+          "top_k": 120,
+          "label": "primary",
+          "neighbor_window": 2
+        },
+        {
+          "event": "answer",
+          "run_id": "q40",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 120
+        }
+      ]
+    },
+    {
+      "question": "What is the closing date for the highway bridge rehabilitation tender?",
+      "answer": "I couldn’t find a tender titled “highway bridge rehabilitation” in the provided context, nor a closing date for it. If you can share the tender number or the issuing entity, I can locate the exact closing date.",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q41",
+          "question": "What is the closing date for the highway bridge rehabilitation tender?",
+          "anchors": [],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q41",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 120,
+          "slot_guarded": 120,
+          "scope": [],
+          "top_k": 120,
+          "label": "primary",
+          "neighbor_window": 1
+        },
+        {
+          "event": "answer",
+          "run_id": "q41",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 120
+        }
+      ]
+    },
+    {
+      "question": "What is the tender document price for the highway bridge rehabilitation tender?",
+      "answer": "I couldn’t find a “highway bridge rehabilitation” tender in the provided excerpts, and no tender with that title has a document purchase fee listed here. If you can share the tender number or the issuing entity, I can locate the exact tender document price.",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q42",
+          "question": "What is the tender document price for the highway bridge rehabilitation tender?",
+          "anchors": [],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q42",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 120,
+          "slot_guarded": 120,
+          "scope": [],
+          "top_k": 120,
+          "label": "primary",
+          "neighbor_window": 2
+        },
+        {
+          "event": "answer",
+          "run_id": "q42",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 120
+        }
+      ]
+    },
+    {
+      "question": "What is the preliminary bond value for the highway bridge rehabilitation tender?",
+      "answer": "I couldn’t find a “highway bridge rehabilitation” tender (or its exact title) in the provided excerpts, so the preliminary bond value isn’t specified here. If you can share the tender number or issuing entity, I can locate the exact bond amount.",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q43",
+          "question": "What is the preliminary bond value for the highway bridge rehabilitation tender?",
+          "anchors": [],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q43",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 120,
+          "slot_guarded": 120,
+          "scope": [],
+          "top_k": 120,
+          "label": "primary",
+          "neighbor_window": 2
+        },
+        {
+          "event": "answer",
+          "run_id": "q43",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 120
+        }
+      ]
+    },
+    {
+      "question": "What is the closing date for the smart water meters installation practice?",
+      "answer": "Not specified in the provided context. I couldn’t find a “smart water meters installation” practice here. If you share the practice number or issuing entity, I can locate the closing date.",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q44",
+          "question": "What is the closing date for the smart water meters installation practice?",
+          "anchors": [],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q44",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 120,
+          "slot_guarded": 120,
+          "scope": [],
+          "top_k": 120,
+          "label": "primary",
+          "neighbor_window": 2
+        },
+        {
+          "event": "answer",
+          "run_id": "q44",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 120
+        }
+      ]
+    },
+    {
+      "question": "What is the initial bond percentage for the smart water meters installation practice?",
+      "answer": "2% of the total bid value.",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q45",
+          "question": "What is the initial bond percentage for the smart water meters installation practice?",
+          "anchors": [],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q45",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 120,
+          "slot_guarded": 120,
+          "scope": [],
+          "top_k": 120,
+          "label": "primary",
+          "neighbor_window": 2
+        },
+        {
+          "event": "answer",
+          "run_id": "q45",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 120
+        }
+      ]
+    },
+    {
+      "question": "What is the number of envelopes required for the smart water meters installation practice?",
+      "answer": "Two sealed envelopes (one technical and one financial).",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q46",
+          "question": "What is the number of envelopes required for the smart water meters installation practice?",
+          "anchors": [],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q46",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 120,
+          "slot_guarded": 120,
+          "scope": [],
+          "top_k": 120,
+          "label": "primary",
+          "neighbor_window": 2
+        },
+        {
+          "event": "answer",
+          "run_id": "q46",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 120
+        }
+      ]
+    },
+    {
+      "question": "What is the corrected bid closing time for the municipal solid waste collection vehicles tender?",
+      "answer": "1:00 PM (13:00) local time.",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q47",
+          "question": "What is the corrected bid closing time for the municipal solid waste collection vehicles tender?",
+          "anchors": [],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q47",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 120,
+          "slot_guarded": 120,
+          "scope": [],
+          "top_k": 120,
+          "label": "primary",
+          "neighbor_window": 1
+        },
+        {
+          "event": "answer",
+          "run_id": "q47",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 120
+        }
+      ]
+    },
+    {
+      "question": "What is the corrected submission method for the municipal solid waste collection vehicles tender?",
+      "answer": "Technical and financial offer (two-envelope submission).",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q48",
+          "question": "What is the corrected submission method for the municipal solid waste collection vehicles tender?",
+          "anchors": [],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q48",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 120,
+          "slot_guarded": 120,
+          "scope": [],
+          "top_k": 120,
+          "label": "primary",
+          "neighbor_window": 1
+        },
+        {
+          "event": "answer",
+          "run_id": "q48",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 120
+        }
+      ]
+    },
+    {
+      "question": "What is the filing fee for an appeal in a civil commercial case?",
+      "answer": "The provided context does not state the filing fee for an appeal in a civil commercial case. You would need to consult the Ministry of Justice’s judicial fee schedule (Court Fees Law and its bylaws) or ask the court registry for the current appeal filing fee.",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q49",
+          "question": "What is the filing fee for an appeal in a civil commercial case?",
+          "anchors": [],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q49",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 120,
+          "slot_guarded": 120,
+          "scope": [],
+          "top_k": 120,
+          "label": "primary",
+          "neighbor_window": 2
+        },
+        {
+          "event": "answer",
+          "run_id": "q49",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 120
+        }
+      ]
+    }
+  ]
+}

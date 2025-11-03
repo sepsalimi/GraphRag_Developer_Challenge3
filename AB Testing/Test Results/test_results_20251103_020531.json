@@ -1,0 +1,647 @@
+{
+  "saved_at": "2025-11-03T02:06:01",
+  "expected_file": "/mnt/c/Users/sepeh/OneDrive/Documents/Git/GraphRag_Developer_Challenge3/AB Testing/answer_key_short.json",
+  "answers_file": "/mnt/c/Users/sepeh/OneDrive/Documents/Git/GraphRag_Developer_Challenge3/AB Testing/Output Answers/answers_20251103_020531.json",
+  "config": {
+    "top_k": 90,
+    "MMR_k": 40,
+    "MMR_LAMBDA": 0.4,
+    "ALWAYS_KEEP_TOP": 5,
+    "neighbor_window": 1,
+    "CARD_FIRST_ENABLED": true,
+    "ALLOW_DIRECT_ANSWER": true
+  },
+  "overall": {
+    "evaluated": 12.0,
+    "average_f1": 0.57625,
+    "average_f1_percent": 57.62500000000001
+  },
+  "questions": [
+    {
+      "question": "What is the time period to submit an objection for company registration changes?",
+      "expected": "Within thirty (30) days from the date of publication. [1]\n\nReferences\n1. Kuwait Official Gazette 2025-05-11, Lines 15661–15661.",
+      "answer": "- 30 days from the date of publication: for most company registration changes handled by the Partnerships Department (e.g., amendment of legal entity, dissolution and liquidation). Objections are filed at the General Court (المحكمة الكلية)/Court of First Instance.\n\n- 15 days from the date of publication: for conversions of an individual (sole-proprietor) license into a company (or similar filings with the Companies Department/Commercial Licenses Department). These typically require a written objection accompanied by a debt instrument submitted to the relevant department.",
+      "f1": 0.667,
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q0",
+          "question": "What is the time period to submit an objection for company registration changes?",
+          "anchors": [],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q0",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 90,
+          "slot_guarded": 90,
+          "scope": [],
+          "top_k": 90,
+          "label": "primary",
+          "neighbor_window": 2
+        },
+        {
+          "event": "answer",
+          "run_id": "q0",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 90
+        }
+      ],
+      "logs": [
+        "gate=pass scope=- anchors=0",
+        "retrieval[primary] scope=- pool=300 hits=300 final=90 mmr=True",
+        "answer source=rag fallback=False retrieved=90"
+      ]
+    },
+    {
+      "question": "Where should objections to company registration be submitted?",
+      "expected": "To the General Court (<Arabic>المحكمة الكلية</Arabic>). [1]\n\nReferences\n1. Kuwait Official Gazette 2025-05-11, Lines 15607–15607.",
+      "answer": "To the General Court (Court of First Instance – المحكمة الكلية).",
+      "f1": 0.667,
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q1",
+          "question": "Where should objections to company registration be submitted?",
+          "anchors": [],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q1",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 90,
+          "slot_guarded": 90,
+          "scope": [],
+          "top_k": 90,
+          "label": "primary",
+          "neighbor_window": 2
+        },
+        {
+          "event": "answer",
+          "run_id": "q1",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 90
+        }
+      ],
+      "logs": [
+        "gate=pass scope=- anchors=0",
+        "retrieval[primary] scope=- pool=300 hits=300 final=90 mmr=True",
+        "answer source=rag fallback=False retrieved=90"
+      ]
+    },
+    {
+      "question": "What types of legal entities are mentioned in company registration announcements?",
+      "expected": "Limited Liability Company, One-Person Company (شركة الشخص الواحد), Joint Stock Company, and Partnership [1][2].\n\nReferences\n1. Kuwait Official Gazette 2025-04-27, Lines 1799-1899.\n2. Kuwait Official Gazette 2025-04-27, Lines 5228-5327.",
+      "answer": "- One-Person Company (Single Person Company, SPC)\n- Limited Liability Company (LLC)\n- General Partnership\n- Simple Limited Partnership\n- Joint-Stock Company (JSC)\n- Closed Joint-Stock Company (Closed JSC)\n- Individual Establishment / Sole Proprietorship (as “individual license”/establishment converted into a company)",
+      "f1": 0.923,
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q2",
+          "question": "What types of legal entities are mentioned in company registration announcements?",
+          "anchors": [],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q2",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 90,
+          "slot_guarded": 90,
+          "scope": [],
+          "top_k": 90,
+          "label": "primary",
+          "neighbor_window": 2
+        },
+        {
+          "event": "answer",
+          "run_id": "q2",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 90
+        }
+      ],
+      "logs": [
+        "gate=pass scope=- anchors=0",
+        "retrieval[primary] scope=- pool=300 hits=300 final=90 mmr=True",
+        "answer source=rag fallback=False retrieved=90"
+      ]
+    },
+    {
+      "question": "What happens to joint partner obligations when an objection is filed for company registration?",
+      "expected": "The submission of an objection results in the continued obligation of joint partners in the case of a general partnership or a simple limited partnership until the objection is resolved by the court [1].\n\nReferences\n1. Kuwait Official Gazette 2025-04-27, Lines 5228-5327.",
+      "answer": "Filing an objection keeps the joint partners’ obligations in force—only in the case of a general partnership or a simple limited partnership—toward the creditor until the objection is decided by a final court judgment.",
+      "f1": 0.857,
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q3",
+          "question": "What happens to joint partner obligations when an objection is filed for company registration?",
+          "anchors": [],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q3",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 90,
+          "slot_guarded": 90,
+          "scope": [],
+          "top_k": 90,
+          "label": "primary",
+          "neighbor_window": 2
+        },
+        {
+          "event": "answer",
+          "run_id": "q3",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 90
+        }
+      ],
+      "logs": [
+        "gate=pass scope=- anchors=0",
+        "retrieval[primary] scope=- pool=300 hits=300 final=90 mmr=True",
+        "answer source=rag fallback=False retrieved=90"
+      ]
+    },
+    {
+      "question": "What is the bid closing time for Practice No. 1-2026/2025?",
+      "expected": "1:00 PM on Sunday, 4/5/2025. [1]\n\nReferences\n1. Kuwait Official Gazette 2025-04-13, Lines 760–761.",
+      "answer": "1:00 PM on Sunday, 4/5/2025.",
+      "f1": 1.0,
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q4",
+          "question": "What is the bid closing time for Practice No. 1-2026/2025?",
+          "anchors": [
+            "1-2026/2025"
+          ],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q4",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 90,
+          "slot_guarded": 90,
+          "scope": [],
+          "top_k": 90,
+          "label": "primary",
+          "neighbor_window": 2
+        },
+        {
+          "event": "answer",
+          "run_id": "q4",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 90
+        }
+      ],
+      "logs": [
+        "gate=pass scope=- anchors=1",
+        "retrieval[primary] scope=- pool=300 hits=300 final=90 mmr=True",
+        "answer source=rag fallback=False retrieved=90"
+      ]
+    },
+    {
+      "question": "What is the closing date of the Sports Medicine Center X-ray tender?",
+      "expected": "2025-07-20. [1]\n\nReferences\n1. Kuwait Official Gazette 2025-04-20, Lines 3222–3225.",
+      "answer": "June 15, 2025.",
+      "f1": 0.0,
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q5",
+          "question": "What is the closing date of the Sports Medicine Center X-ray tender?",
+          "anchors": [],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q5",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 90,
+          "slot_guarded": 90,
+          "scope": [],
+          "top_k": 90,
+          "label": "primary",
+          "neighbor_window": 1
+        },
+        {
+          "event": "answer",
+          "run_id": "q5",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 90
+        }
+      ],
+      "logs": [
+        "gate=pass scope=- anchors=0",
+        "retrieval[primary] scope=- pool=300 hits=300 final=90 mmr=True",
+        "answer source=rag fallback=False retrieved=90"
+      ]
+    },
+    {
+      "question": "What is the amount for the Sports Medicine Center X-ray tender?",
+      "expected": "2,000 K.D. (valid for 90 days). [1]\n\nReferences\n1. Kuwait Official Gazette 2025-04-20, Lines 3222–3225.",
+      "answer": "300 Kuwaiti Dinars.",
+      "f1": 0.0,
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q6",
+          "question": "What is the amount for the Sports Medicine Center X-ray tender?",
+          "anchors": [],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q6",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 90,
+          "slot_guarded": 90,
+          "scope": [],
+          "top_k": 90,
+          "label": "primary",
+          "neighbor_window": 1
+        },
+        {
+          "event": "answer",
+          "run_id": "q6",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 90
+        }
+      ],
+      "logs": [
+        "gate=pass scope=- anchors=0",
+        "retrieval[primary] scope=- pool=300 hits=300 final=90 mmr=True",
+        "answer source=rag fallback=False retrieved=90"
+      ]
+    },
+    {
+      "question": "What is the closing date for the oil company well-testing tender?",
+      "expected": "14/07/2025. [1]\n\nReferences\n1. Kuwait Official Gazette 2025-04-27, Lines 13586–13590.",
+      "answer": "19 May 2025 (by 1:00 PM local time via the K‑Tendering portal) for Tender No. 2125611‑RFP “Well Testing and Associated Services (Local).”",
+      "f1": 0.0,
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q7",
+          "question": "What is the closing date for the oil company well-testing tender?",
+          "anchors": [],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q7",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 90,
+          "slot_guarded": 90,
+          "scope": [],
+          "top_k": 90,
+          "label": "primary",
+          "neighbor_window": 1
+        },
+        {
+          "event": "answer",
+          "run_id": "q7",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 90
+        }
+      ],
+      "logs": [
+        "gate=pass scope=- anchors=0",
+        "retrieval[primary] scope=- pool=300 hits=300 final=90 mmr=True",
+        "answer source=rag fallback=False retrieved=90"
+      ]
+    },
+    {
+      "question": "What is the preliminary bond value for the oil company well-testing tender?",
+      "expected": "K.D. 300,000. [1]\n\nReferences\n1. Kuwait Official Gazette 2025-04-27, Lines 13586–13590.",
+      "answer": "300,000 KD",
+      "f1": 0.8,
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q8",
+          "question": "What is the preliminary bond value for the oil company well-testing tender?",
+          "anchors": [],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q8",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 90,
+          "slot_guarded": 90,
+          "scope": [],
+          "top_k": 90,
+          "label": "primary",
+          "neighbor_window": 2
+        },
+        {
+          "event": "answer",
+          "run_id": "q8",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 90
+        }
+      ],
+      "logs": [
+        "gate=pass scope=- anchors=0",
+        "retrieval[primary] scope=- pool=300 hits=300 final=90 mmr=True",
+        "answer source=rag fallback=False retrieved=90"
+      ]
+    },
+    {
+      "question": "How long must bids remain valid in the late-April Amiri Diwan auction?",
+      "expected": "Ninety (90) days. [1]\n\nReferences\n1. Kuwait Official Gazette 2025-04-27, Lines 1961–1961.",
+      "answer": "90 days from the closing date.",
+      "f1": 0.667,
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q9",
+          "question": "How long must bids remain valid in the late-April Amiri Diwan auction?",
+          "anchors": [],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q9",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 90,
+          "slot_guarded": 90,
+          "scope": [],
+          "top_k": 90,
+          "label": "primary",
+          "neighbor_window": 1
+        },
+        {
+          "event": "answer",
+          "run_id": "q9",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 90
+        }
+      ],
+      "logs": [
+        "gate=pass scope=- anchors=0",
+        "retrieval[primary] scope=- pool=300 hits=300 final=90 mmr=True",
+        "answer source=rag fallback=False retrieved=90"
+      ]
+    },
+    {
+      "question": "What is the minimum initial bond percentage in the late-April Amiri Diwan auction?",
+      "expected": "Not less than 2% of the bid value. [1]\n\nReferences\n1. Kuwait Official Gazette 2025-04-27, Lines 1956–1956.",
+      "answer": "2% of the bid value.",
+      "f1": 0.667,
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q10",
+          "question": "What is the minimum initial bond percentage in the late-April Amiri Diwan auction?",
+          "anchors": [],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q10",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 90,
+          "slot_guarded": 90,
+          "scope": [],
+          "top_k": 90,
+          "label": "primary",
+          "neighbor_window": 2
+        },
+        {
+          "event": "answer",
+          "run_id": "q10",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 90
+        }
+      ],
+      "logs": [
+        "gate=pass scope=- anchors=0",
+        "retrieval[primary] scope=- pool=300 hits=300 final=90 mmr=True",
+        "answer source=rag fallback=False retrieved=90"
+      ]
+    },
+    {
+      "question": "According to the latest correction, which company name is confirmed for the rig site preparation tender?",
+      "expected": "According to the latest supplement, the correct company name is FUTURE SERVICES GENERAL TRADING AND CONTRACTING COMPANY W.L.L. [1]\n\nReferences\n1. Kuwait Official Gazette 2025-05-04 (Supplement), Lines 15490–15492.",
+      "answer": "FUTURE SERVICES GENERAL TRADING AND CONTRACTING COMPANY W.L.L.",
+      "f1": 0.667,
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q11",
+          "question": "According to the latest correction, which company name is confirmed for the rig site preparation tender?",
+          "anchors": [],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q11",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 90,
+          "slot_guarded": 90,
+          "scope": [],
+          "top_k": 90,
+          "label": "primary",
+          "neighbor_window": 1
+        },
+        {
+          "event": "answer",
+          "run_id": "q11",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 90
+        }
+      ],
+      "logs": [
+        "gate=pass scope=- anchors=0",
+        "retrieval[primary] scope=- pool=300 hits=300 final=90 mmr=True",
+        "answer source=rag fallback=False retrieved=90"
+      ]
+    }
+  ]
+}

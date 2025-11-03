@@ -1,4 +1,5 @@
 import os
+import re
 from pathlib import Path
 from typing import Callable, Dict, Optional, Sequence
 
@@ -8,7 +9,7 @@ from neo4j_graphrag.generation import GraphRAG
 from neo4j_graphrag.llm import OpenAILLM
 from dotenv import load_dotenv
 
-from .AnchorUtils import extract_anchors, wants_slots
+from .AnchorUtils import extract_anchors, wants_slots, norm_digits
 from .Citations import build_references, format_with_citations
 from .GetNeighbor import wrap_with_neighbors
 from .HybridRAG import HybridRetrievalPipeline, HybridRetrievalConfig  # type: ignore[import]
@@ -91,6 +92,34 @@ HYBRID_PIPELINE = HybridRetrievalPipeline(
     _reranker,
     config=HYBRID_CONFIG,
 )
+
+# -----------------------------
+# Anchor helpers
+# -----------------------------
+
+
+def _normalize_anchor(a: str) -> str:
+    a = norm_digits(a or "").strip()
+    a = re.sub(r"\s*([/-])\s*", r"\1", a)
+    a = re.sub(r"\s+", " ", a)
+    return a.upper()
+
+
+def _docs_for_anchors(values):
+    vals = [_normalize_anchor(v) for v in values if v]
+    if not vals:
+        return []
+    with driver.session(database=NEO4J_DATABASE) as s:
+        rows = s.run(
+            """
+            UNWIND $vals AS v
+            MATCH (a:Anchor {value: v})<-[:HAS_ANCHOR]-(d:Document)
+            RETURN DISTINCT d.document_key AS dk
+            """,
+            {"vals": vals},
+        ).data()
+    return [r["dk"] for r in rows]
+
 
 # Load catalog once at startup (no-op if already loaded)
 try:
@@ -235,8 +264,14 @@ def query_graph_rag(
     elif boost_terms and _env_bool("ALWAYS_BOOST_ANCHORS", True):
         query_text = f"{query_text}\n\n" + " ".join(str(t) for t in boost_terms)
 
+    anchors_in_q = extract_anchors(query_text)
+    if anchors_in_q:
+        anchor_scope = _docs_for_anchors(anchors_in_q)
+        if anchor_scope:
+            scope_files = sorted(set((scope_files or []) + anchor_scope))
+
     qt = (query_text or "").lower()
-    anchors_present = bool(extract_anchors(query_text))
+    anchors_present = bool(anchors_in_q)
     wants_money, wants_percent, wants_date = wants_slots(query_text)
     wants_time = any(k in qt for k in ["time", "1:", "pm", "am"])
 
