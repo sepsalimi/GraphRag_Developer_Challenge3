@@ -1,13 +1,18 @@
 import os
 import json
 import time
+import sys
+import shutil
+import warnings
 from pathlib import Path
 import re
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime
 from dotenv import load_dotenv
+from tqdm.auto import tqdm
 
 from RAG.GraphRAG import query_graph_rag
+from RAG.normalize import normalize_answer_text
 
 # Load environment variables from .env at repo root
 load_dotenv()
@@ -17,70 +22,20 @@ timezone = os.getenv('TZ')
 os.environ["TZ"] = timezone
 time.tzset()
 
-
-def _normalize_answer_text(answer: str, question: str) -> str:
-    if not isinstance(answer, str):
-        return answer
-    s = answer.strip()
-    q = (question or "").lower()
-    # currency forms → KD N
-    s = re.sub(r"\bKWD\b", "KD", s, flags=re.IGNORECASE)
-    s = re.sub(r"\bK\.?D\.?\b", "KD", s, flags=re.IGNORECASE)
-    s = re.sub(r"\bKD\b", "KD", s, flags=re.IGNORECASE)
-    # normalize 'KD N' regardless of order
-    s = re.sub(r"(?i)\b(?:KWD|KD|K\.?D\.?)\s*(\d[\d,]*(?:\.\d+)?)\b", r"KD \1", s)
-    s = re.sub(r"(?i)\b(\d[\d,]*(?:\.\d+)?)\s*(?:KWD|KD|K\.?D\.?)\b", r"KD \1", s)
-    s = s.replace("KD.", "KD")
-    # if numeric only and fee/bond context → prefix KD
-    if re.fullmatch(r"\d[\d,]*(?:\.\d+)?", s) and any(w in q for w in ["fee", "document", "bond", "guarantee", "price", "cost"]):
-        s = f"KD {s}"
-
-    # days normalization when question asks duration/validity
-    if re.fullmatch(r"\d+", s) and any(w in q for w in ["valid", "validity", "period", "days", "how long"]):
-        s = f"{s} days"
-    s = re.sub(r"\b(\d+)\s*day\b", r"\1 days", s, flags=re.IGNORECASE)
-
-    # date normalization to YYYY-MM-DD for common patterns
-    def _to_iso_date(txt: str) -> str:
-        t = txt.strip()
-        # strip trailing parenthetical
-        t = re.sub(r"\s*\([^)]*\)\s*$", "", t)
-        # YYYY-MM-DD or YYYY/MM/DD or YYYY.MM.DD → YYYY-MM-DD
-        m = re.fullmatch(r"(\d{4})[-/.](\d{2})[-/.](\d{2})", t)
-        if m:
-            return f"{m.group(1)}-{m.group(2)}-{m.group(3)}"
-        # DD-MM-YYYY or DD/MM/YYYY
-        m = re.fullmatch(r"(\d{2})[-/](\d{2})[-/](\d{4})", t)
-        if m:
-            return f"{m.group(3)}-{m.group(2)}-{m.group(1)}"
-        # Month DD, YYYY
-        m = re.fullmatch(r"(January|February|March|April|May|June|July|August|September|October|November|December)\s+(\d{1,2}),\s*(\d{4})", t, flags=re.IGNORECASE)
-        if m:
-            month_map = {m_name: f"{i:02d}" for i, m_name in enumerate(["January","February","March","April","May","June","July","August","September","October","November","December"], start=1)}
-            mm = month_map.get(m.group(1).capitalize())
-            dd = f"{int(m.group(2)):02d}"
-            return f"{m.group(3)}-{mm}-{dd}"
-        # DD Month YYYY
-        m = re.fullmatch(r"(\d{1,2})\s+(January|February|March|April|May|June|July|August|September|October|November|December)\s+(\d{4})", t, flags=re.IGNORECASE)
-        if m:
-            month_map = {m_name: f"{i:02d}" for i, m_name in enumerate(["January","February","March","April","May","June","July","August","September","October","November","December"], start=1)}
-            mm = month_map.get(m.group(2).capitalize())
-            dd = f"{int(m.group(1)):02d}"
-            return f"{m.group(3)}-{mm}-{dd}"
-        return txt
-
-    if any(w in q for w in ["date", "closing", "deadline"]):
-        s = _to_iso_date(s)
-
-    if "المحكمة الكلية" not in s:
-        s = re.sub(r"General Court(?:\s*\(Court of First Instance\))?", "General Court (المحكمة الكلية)", s, flags=re.IGNORECASE)
-    return s
+# Suppress noisy DeprecationWarnings from the Neo4j GraphRAG retriever to keep tqdm output clean
+warnings.filterwarnings(
+    "ignore",
+    message="The default returned 'id' field in the search results will be removed.",
+    category=DeprecationWarning,
+    module="neo4j_graphrag.retrievers.vector",
+)
 
 def batch_query_graph_rag(
     input_question_file: str,
     max_workers: int = 1,
     top_k: int = None,
-    neighbor_window: int = 1
+    neighbor_window: int = 1,
+    show_progress: bool = False,
 ):
     """
     Process multiple queries in parallel using threading.
@@ -90,6 +45,7 @@ def batch_query_graph_rag(
         max_workers: Number of worker threads (defaults to min(16, cpu_count * 2) if not provided)
         top_k: Optional top_k parameter for query_graph_rag (uses default if not provided)
         neighbor_window: Adjacent-chunk window per hit (0 disables; 1 includes i±1)
+        show_progress: If True, display a tqdm progress bar as queries complete
     
     Returns:
         List of dictionaries with "question" and "answer" fields
@@ -163,36 +119,77 @@ def batch_query_graph_rag(
     
     # Process queries in parallel
     results = []
+    total_questions = len(questions)
+
+    progress_bar = None
+    progress_params = None
+    if show_progress:
+        bar_format = '{l_bar}{bar}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}]'
+        try:
+            term_width = shutil.get_terminal_size().columns
+        except Exception:
+            term_width = 100
+        progress_params = dict(
+            total=total_questions,
+            desc=f"Batch queries (workers={max_workers})",
+            ncols=term_width,
+            bar_format=bar_format,
+            leave=False,
+        )
     
-    def process_query(question):
+    def process_query(item):
+        idx, question = item
         try:
             if top_k is not None:
-                answer = query_graph_rag(question, top_k=top_k, neighbor_window=neighbor_window)
+                answer = query_graph_rag(
+                    question,
+                    top_k=top_k,
+                    neighbor_window=neighbor_window,
+                    reference_seq_offset=idx,
+                )
             else:
-                answer = query_graph_rag(question, neighbor_window=neighbor_window)
-            return {"question": question, "answer": answer}
+                answer = query_graph_rag(
+                    question,
+                    neighbor_window=neighbor_window,
+                    reference_seq_offset=idx,
+                )
+            return {"index": idx, "question": question, "answer": answer}
         except Exception as e:
-            return {"question": question, "answer": f"Error: {str(e)}"}
+            return {"index": idx, "question": question, "answer": f"Error: {str(e)}"}
     
     with ThreadPoolExecutor(max_workers=max_workers) as executor:
         # Submit all queries
         future_to_question = {
-            executor.submit(process_query, question): question 
-            for question in questions
+            executor.submit(process_query, item): item
+            for item in enumerate(questions)
         }
-        
+
         # Collect results as they complete, maintaining order
-        question_to_result = {}
+        index_to_result = {}
         for future in as_completed(future_to_question):
             result = future.result()
-            question_to_result[result["question"]] = result
-        
-        # Reconstruct results in original order
-        results = [question_to_result[q] for q in questions]
+            index_to_result[result["index"]] = result
+            if progress_params is not None:
+                if progress_bar is None:
+                    progress_bar = tqdm(initial=1, **progress_params)
+                else:
+                    progress_bar.update(1)
+
+    if progress_bar is not None:
+        progress_bar.close()
+
+    # Reconstruct results in original order
+    results = [
+        {
+            "question": index_to_result[i]["question"],
+            "answer": index_to_result[i]["answer"],
+        }
+        for i in range(len(questions))
+    ]
     
     # Normalize answers before saving
     for r in results:
-        r["answer"] = _normalize_answer_text(r.get("answer"), r.get("question"))
+        r["answer"] = normalize_answer_text(r.get("answer"), r.get("question"))
 
     # Generate timestamp with timezone
     now = datetime.now()
@@ -224,8 +221,14 @@ def batch_query_graph_rag(
     with open(output_file, 'w', encoding='utf-8') as f:
         json.dump(output_data, f, indent=2, ensure_ascii=False)
     
-    print(f"Processed {len(results)} queries with {max_workers} workers")
-    print(f"Results saved to: {output_file}")
+    def _log(message: str) -> None:
+        if show_progress:
+            tqdm.write(message, file=sys.stderr)
+        else:
+            print(message)
+
+    _log(f"Processed {len(results)} queries with {max_workers} workers")
+    _log(f"Results saved to: {output_file}")
     
     return results
 

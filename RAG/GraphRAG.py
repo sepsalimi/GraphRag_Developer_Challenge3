@@ -13,6 +13,7 @@ from RAG.Citations import build_references, format_with_citations
 from RAG.GetNeighbor import wrap_with_neighbors
 from RAG.MMR import wrap_with_mmr
 from RAG.UseCatalog import load_catalog, card_first_gate
+from RAG.normalize import normalize_answer_text
 
 # Load environment variables from .env at repo root explicitly
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -73,12 +74,15 @@ def _get_field(obj, name):
         if not isinstance(text, str) and isinstance(obj, dict):
             text = obj.get("text")
         if isinstance(text, str):
-            if name in {"source", "document_key"}:
-                match = re.search(r"\[PUB=([^\]]+)\]", text)
+            if name == "file":
+                match = re.search(r"\[SRC=([^\]]+)\]", text)
                 if match:
                     return match.group(1)
-            if name == "file":
                 match = re.search(r"\[DOC=([^\]]+)\]", text)
+                if match:
+                    return match.group(1)
+            if name in {"source", "document_key"}:
+                match = re.search(r"\[PUB=([^\]]+)\]", text)
                 if match:
                     return match.group(1)
 
@@ -203,9 +207,9 @@ def _format_card_answer(answers, provenance) -> str:
 
         # Fees and bonds
         if has("tender_doc_fee_kd"):
-            sentences.append(f"Tender documents cost K.D. {kv('tender_doc_fee_kd')}.")
+            sentences.append(f"Tender documents cost {kv('tender_doc_fee_kd')} KD.")
         if has("initial_bond_value_kd"):
-            sentences.append(f"The initial bond is K.D. {kv('initial_bond_value_kd')}.")
+            sentences.append(f"The initial bond is {kv('initial_bond_value_kd')} KD.")
         if has("initial_bond_percent"):
             sentences.append(f"The initial bond is {kv('initial_bond_percent')}%.")
 
@@ -273,17 +277,24 @@ def _format_card_answer(answers, provenance) -> str:
         return "\n".join(parts) if parts else ""
 
 
-def query_graph_rag(query_text: str, top_k: int = _DEFAULT_top_k, neighbor_window: int = 1):
+def query_graph_rag(
+    query_text: str,
+    top_k: int = _DEFAULT_top_k,
+    neighbor_window: int = 1,
+    reference_seq_offset: int = 0,
+):
     """Query the GraphRAG system with a question."""
     # Card-first gate
     scope_files = None
+    original_question = query_text
     gate = card_first_gate(query_text, allow_direct_answer=True)
     provenance_refs = build_references(gate.get("provenance"))
     mode = gate.get("mode")
     # TODO What is Mode
     if mode == "answer":
         base_answer = _format_card_answer(gate.get("answers"), gate.get("provenance"))
-        return format_with_citations(base_answer, provenance_refs)
+        normalized = normalize_answer_text(base_answer, original_question)
+        return format_with_citations(normalized, provenance_refs, seq_offset=reference_seq_offset)
     if mode == "restrict":
         scope_files = gate.get("scope_files") or None
         # Incorporate boost terms (anchors, ids, authority) directly into the query to steer retrieval
@@ -332,4 +343,5 @@ def query_graph_rag(query_text: str, top_k: int = _DEFAULT_top_k, neighbor_windo
         if ref not in combined_refs:
             combined_refs.append(ref)
 
-    return format_with_citations(response.answer, combined_refs)
+    normalized_answer = normalize_answer_text(getattr(response, "answer", ""), original_question)
+    return format_with_citations(normalized_answer, combined_refs, seq_offset=reference_seq_offset)

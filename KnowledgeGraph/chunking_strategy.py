@@ -362,13 +362,25 @@ def _make_chunk(
     if body_text.strip():
         lines.append(body_text.strip())
     chunk_body = "\n".join(lines)
-    return {
+    page_start, page_end = _extract_page_bounds(chunk_body)
+    doc_page_start = document_meta.get("page_start")
+    doc_page_end = document_meta.get("page_end")
+    if page_start is None and doc_page_start is not None:
+        page_start = doc_page_start
+    if page_end is None and doc_page_end is not None:
+        page_end = doc_page_end
+    chunk: Dict[str, Any] = {
         "chunk_id": str(uuid.uuid4()),
         "publication_key": publication_meta["publication_key"],
         "document_key": document_meta["document_key"],
         "article_number": document_meta.get("article_number"),
         "text": chunk_body,
     }
+    if page_start is not None:
+        chunk["page_start"] = page_start
+    if page_end is not None:
+        chunk["page_end"] = page_end
+    return chunk
 
 
 def _build_header_prefix(
@@ -392,5 +404,29 @@ def _build_header_prefix(
     if section_title:
         doc_bits.append(f"[ARTICLE={section_title}]")
     return " ".join(parts + doc_bits)
+
+
+_PAGE_START_RX = re.compile(r"<page_start>(\d+)</page_start>")
+_PAGE_END_RX = re.compile(r"<page_end>(\d+)</page_end>")
+
+
+def _extract_page_bounds(text: str) -> Tuple[Optional[int], Optional[int]]:
+    """Return (page_start, page_end) if page markers are present."""
+
+    if not text:
+        return None, None
+
+    start_matches = [int(m.group(1)) for m in _PAGE_START_RX.finditer(text)]
+    end_matches = [int(m.group(1)) for m in _PAGE_END_RX.finditer(text)]
+
+    page_start = start_matches[0] if start_matches else (end_matches[0] if end_matches else None)
+    page_end = end_matches[-1] if end_matches else (start_matches[-1] if start_matches else None)
+
+    if page_start is not None and page_end is None:
+        page_end = page_start
+    if page_end is not None and page_start is None:
+        page_start = page_end
+
+    return page_start, page_end
 
 

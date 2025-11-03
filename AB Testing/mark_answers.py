@@ -1,12 +1,16 @@
 import os
+import sys
 import json
 import time
+import shutil
 from pathlib import Path
 from datetime import datetime
 from dotenv import load_dotenv
 from langchain_openai import ChatOpenAI
-from concurrent.futures import ThreadPoolExecutor
+from concurrent.futures import ThreadPoolExecutor, as_completed
+from tqdm.auto import tqdm
 
+# TODO Add comment parameter to save to test result file
 
 _F1_PROMPT = (
     "You are a strict grader. Compare the EXPECTED and ANSWER. "
@@ -18,7 +22,11 @@ _F1_PROMPT = (
 )
 
 
-def mark_answers(answer_key_path: str, max_workers: int = None) -> dict:
+def mark_answers(
+    answer_key_path: str,
+    max_workers: int = None,
+    show_progress: bool = False,
+) -> dict:
     # Load env and timezone
     load_dotenv()
     timezone = os.getenv("TZ", "America/New_York")
@@ -86,9 +94,38 @@ def mark_answers(answer_key_path: str, max_workers: int = None) -> dict:
     if max_workers is None:
         max_workers = min(16, (os.cpu_count() or 4) * 2)
 
-    with ThreadPoolExecutor(max_workers=max_workers) as ex:
-        futures = [ex.submit(_grade, e, a) for _, e, a in paired_questions]
-        f1_scores = [f.result() for f in futures]
+    f1_scores = [0.0] * n
+
+    progress_bar = None
+    if show_progress and n:
+        bar_format = '{l_bar}{bar}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}]'
+        try:
+            term_width = shutil.get_terminal_size().columns
+        except Exception:
+            term_width = 100
+        progress_bar = tqdm(
+            total=n,
+            desc=f"Marking answers (workers={max_workers})",
+            ncols=term_width,
+            bar_format=bar_format,
+            leave=False,
+            disable=(n == 0),
+        )
+
+    if n:
+        with ThreadPoolExecutor(max_workers=max_workers) as ex:
+            future_to_idx = {
+                ex.submit(_grade, expected, answer): idx
+                for idx, (_, expected, answer) in enumerate(paired_questions)
+            }
+            for future in as_completed(future_to_idx):
+                idx = future_to_idx[future]
+                f1_scores[idx] = future.result()
+                if progress_bar is not None:
+                    progress_bar.update(1)
+
+    if progress_bar is not None:
+        progress_bar.close()
     avg_f1 = sum(f1_scores) / n if n else 0.0
     avg_f1_percent = avg_f1 * 100.0
 
@@ -155,21 +192,32 @@ def mark_answers(answer_key_path: str, max_workers: int = None) -> dict:
         json.dump(results, f, indent=2, ensure_ascii=False)
 
     # Console summary
-    print("\n" + "="*60)
-    print("TEST RESULTS")
-    print("="*60)
-    print("\nConfiguration:")
-    print(f"  top_k: {run_config['top_k']}")
-    print(f"  MMR_k: {run_config['MMR_k']}")
-    print(f"  MMR_LAMBDA: {run_config['MMR_LAMBDA']}")
-    print(f"  ALWAYS_KEEP_TOP: {run_config['ALWAYS_KEEP_TOP']}")
-    print(f"  neighbor_window: {run_config['neighbor_window']}")
-    print("\nResults:")
-    print(f"  Average F1: {avg_f1_percent:.1f}% ({avg_f1:.3f})")
-    print("\nCard-first gate:")
-    print(f"  CARD_FIRST_ENABLED: {run_config['CARD_FIRST_ENABLED']}")
-    print(f"  ALLOW_DIRECT_ANSWER: {run_config['ALLOW_DIRECT_ANSWER']}")
-    print("="*60 + "\n")
+    def _log(message: str = "") -> None:
+        if show_progress:
+            tqdm.write(message)
+        else:
+            print(message)
+
+    _log()
+    _log("=" * 60)
+    _log("TEST RESULTS")
+    _log("=" * 60)
+    _log()
+    _log("Configuration:")
+    _log(f"  top_k: {run_config['top_k']}")
+    _log(f"  MMR_k: {run_config['MMR_k']}")
+    _log(f"  MMR_LAMBDA: {run_config['MMR_LAMBDA']}")
+    _log(f"  ALWAYS_KEEP_TOP: {run_config['ALWAYS_KEEP_TOP']}")
+    _log(f"  neighbor_window: {run_config['neighbor_window']}")
+    _log()
+    _log("Results:")
+    _log(f"  Average F1: {avg_f1_percent:.1f}% ({avg_f1:.3f})")
+    _log()
+    _log("Card-first gate:")
+    _log(f"  CARD_FIRST_ENABLED: {run_config['CARD_FIRST_ENABLED']}")
+    _log(f"  ALLOW_DIRECT_ANSWER: {run_config['ALLOW_DIRECT_ANSWER']}")
+    _log("=" * 60)
+    _log()
 
     return results
 
