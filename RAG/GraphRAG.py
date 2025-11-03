@@ -231,7 +231,9 @@ def query_graph_rag(
     if mode == "restrict":
         scope_files = gate.get("scope_files") or None
         if boost_terms:
-            query_text = f"{query_text} \n\n" + " ".join(str(t) for t in boost_terms)
+            query_text = f"{query_text}\n\n" + " ".join(str(t) for t in boost_terms)
+    elif boost_terms and _env_bool("ALWAYS_BOOST_ANCHORS", True):
+        query_text = f"{query_text}\n\n" + " ".join(str(t) for t in boost_terms)
 
     qt = (query_text or "").lower()
     anchors_present = bool(extract_anchors(query_text))

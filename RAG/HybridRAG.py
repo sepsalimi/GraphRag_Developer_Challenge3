@@ -1,16 +1,25 @@
 from __future__ import annotations
 
+import os
 from dataclasses import dataclass
 from typing import Callable, Dict, Iterable, List, Optional, Sequence, Tuple
 
 import neo4j
 from neo4j_graphrag.retrievers import HybridRetriever
-from neo4j_graphrag.retrievers.hybrid import HybridSearchRanker
+from neo4j_graphrag.retrievers.hybrid import HybridSearchRanker, SearchQueryParseError
 from neo4j_graphrag.types import RetrieverResult, RetrieverResultItem
 
 from RAG.AnchorUtils import filter_to_anchor_hits, preboost_results_by_anchors
 from RAG.AnchorUtils import enforce_slot_guard as _enforce_slot_guard
 from RAG.MMR import apply_mmr_list
+from RAG.Lucene import escape_fulltext_query
+
+
+def _env_bool(name: str, default: bool) -> bool:
+    val = os.getenv(name)
+    if val is None:
+        return default
+    return str(val).strip().lower() in {"1", "true", "yes", "on"}
 
 
 def _item_text(item: RetrieverResultItem) -> str:
@@ -156,18 +165,36 @@ class HybridRetrievalPipeline:
         scope: Optional[Sequence[str]] = None,
     ) -> Tuple[RetrieverResult, Dict[str, object]]:
         pool_k = self._pool_size(top_k)
-        result = self._hybrid.search(
-            query_text=query_text,
-            top_k=pool_k,
-            ranker=HybridSearchRanker.LINEAR,
-            alpha=self._config.alpha,
-        )
+        sanitize_enabled = _env_bool("LUCENE_ESCAPE_ENABLED", True)
+        query_fulltext = escape_fulltext_query(query_text) if sanitize_enabled else query_text
+        sanitized = query_fulltext != query_text
+        vector_fallback = False
+
+        try:
+            result = self._hybrid.search(
+                query_text=query_fulltext,
+                top_k=pool_k,
+                ranker=HybridSearchRanker.LINEAR,
+                alpha=self._config.alpha,
+            )
+        except SearchQueryParseError:
+            if not _env_bool("VECTOR_FALLBACK_ON_PARSE_ERROR", True):
+                raise
+            vector_fallback = True
+            query_vector = self._embedder.embed_query(query_text)
+            result = self._hybrid.search(
+                query_vector=query_vector,
+                top_k=pool_k,
+                ranker=HybridSearchRanker.NAIVE,
+            )
 
         diagnostics: Dict[str, object] = {
             "pool_top_k": pool_k,
             "hybrid_retrieved": len(result.items),
-            "ranker": HybridSearchRanker.LINEAR.value,
+            "ranker": (HybridSearchRanker.NAIVE.value if vector_fallback else HybridSearchRanker.LINEAR.value),
             "alpha": self._config.alpha,
+            "fulltext_sanitized": sanitized,
+            "vector_fallback": vector_fallback,
         }
 
         scoped_items, scope_applied = _filter_by_scope(result.items, scope or [])
