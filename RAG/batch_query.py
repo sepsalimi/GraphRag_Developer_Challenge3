@@ -76,7 +76,7 @@ def _normalize_answer_text(answer: str, question: str) -> str:
 
 def batch_query_graph_rag(
     input_question_file: str,
-    max_workers: int = None,
+    max_workers: int = 1,
     top_k: int = None,
     neighbor_window: int = 1
 ):

@@ -20,6 +20,7 @@ def _get_text(hit: Any) -> str:
     return ""
 
 
+# Embed funciton (e.g,)
 def _embed_docs(embedder, docs: List[str]) -> List[List[float]]:
     if hasattr(embedder, "embed_documents"):
         return embedder.embed_documents(docs)

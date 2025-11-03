@@ -8,6 +8,51 @@ def norm_digits(s: str) -> str:
     return (s or "").translate(_ARABIC_DIGITS)
 
 
+def _canon(s: str) -> str:
+    """Lowercase, normalize digits, and drop non-alphanumerics.
+
+    Helps match anchors that appear with variable spacing or punctuation,
+    such as "A/M/804" vs "A / M / 804".
+    """
+    import re
+    return re.sub(r"[^a-z0-9]", "", norm_digits(s or "").lower())
+
+
+def _anchor_present(doc_text_norm: str, anchor_text: str) -> bool:
+    """Return True if the anchor appears in the document, allowing flexible separators."""
+    import re
+    # Fast path: exact substring after digit normalization
+    a_norm = norm_digits(anchor_text or "").lower()
+    if a_norm and a_norm in doc_text_norm:
+        return True
+    # Canonical path: strip punctuation/whitespace and compare in canonical space
+    return _canon(anchor_text) in _canon(doc_text_norm)
+
+
+def _first_anchor_pos(doc_text_norm: str, anchor_text: str) -> int:
+    """Find first index of an anchor in the original normalized doc string.
+
+    Tries exact substring first; if not found, falls back to a regex that allows
+    optional spaces around separators like '/' and '-'. If still not found,
+    uses canonical containment without a reliable position.
+    """
+    import re
+    a_norm = norm_digits(anchor_text or "").lower()
+    if not a_norm:
+        return -1
+    p = doc_text_norm.find(a_norm)
+    if p != -1:
+        return p
+    # Build a tolerant regex for common separators
+    pattern = re.escape(a_norm)
+    pattern = pattern.replace("/", r"\s*/\s*").replace("-", r"\s*-\s*")
+    m = re.search(pattern, doc_text_norm, flags=re.IGNORECASE)
+    if m:
+        return m.start()
+    # Last resort: canonical containment (position unknown)
+    return -1
+
+
 RX_ANCHORS = [
     re.compile(r"\bRFP[\s/-]?\d+\b", re.IGNORECASE),
     re.compile(r"\b\d{6,7}[\s/-]?RFP\b", re.IGNORECASE),
@@ -54,7 +99,7 @@ def has_slot_near_anchor(query_text: str, text: str, anchors_norm: List[str], wa
     ql = norm_digits(query_text or "").lower()
     bond_in_query = ("bond" in ql) or ("security" in ql) or ("التأمين" in ql) or ("كفالة" in ql) or ("ضمان" in ql)
     for a in anchors_norm:
-        p = di.find(a)
+        p = _first_anchor_pos(di, a)
         if p == -1:
             continue
         lo = max(0, p - window_chars)
@@ -77,8 +122,9 @@ def filter_to_anchor_hits(query_text: str, results: List[Any], get_text: Callabl
     out = []
     for r in results:
         di = norm_digits(get_text(r)).lower()
-        if any(a in di for a in anchors_norm):
+        if any(_anchor_present(di, a) for a in anchors_norm):
             out.append(r)
+    # Soft gating: if none of the current results contain anchors, keep originals
     return out or results
 
 
@@ -135,7 +181,7 @@ def preboost_results_by_anchors(query_text: str, results: List[Any], get_text: C
         anchor_key = None
         di = docs_norm[idx]
         for a in anchors_norm:
-            if a and a in di:
+            if a and _anchor_present(di, a):
                 anchor_key = a
                 break
         return date_tuple, supp_idx, anchor_key
@@ -151,7 +197,7 @@ def preboost_results_by_anchors(query_text: str, results: List[Any], get_text: C
         for a in anchors_norm:
             if not a:
                 continue
-            p = di.find(a)
+            p = _first_anchor_pos(di, a)
             if p != -1:
                 s += 2
                 if hit_pos == -1 or p < hit_pos:

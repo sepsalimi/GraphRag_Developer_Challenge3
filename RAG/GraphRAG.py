@@ -282,6 +282,10 @@ def query_graph_rag(query_text: str, top_k: int = _DEFAULT_top_k, neighbor_windo
         return _format_card_answer(gate.get("answers"), gate.get("provenance"))
     if mode == "restrict":
         scope_files = gate.get("scope_files") or None
+        # Incorporate boost terms (anchors, ids, authority) directly into the query to steer retrieval
+        boost_terms = gate.get("boost_terms") or []
+        if boost_terms:
+            query_text = f"{query_text} \n\n" + " ".join(str(t) for t in boost_terms)
 
     # Light heuristic: widen neighbors for table-like fee/bond rows
     qt = (query_text or "").lower()
