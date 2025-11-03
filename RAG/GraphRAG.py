@@ -8,6 +8,8 @@ from neo4j_graphrag.llm import OpenAILLM
 from neo4j_graphrag.retrievers import VectorRetriever
 from neo4j_graphrag.types import RawSearchResult, RetrieverResult
 from dotenv import load_dotenv
+from RAG.AnchorUtils import extract_anchors, wants_slots
+from RAG.Citations import build_references, format_with_citations
 from RAG.GetNeighbor import wrap_with_neighbors
 from RAG.MMR import wrap_with_mmr
 from RAG.UseCatalog import load_catalog, card_first_gate
@@ -189,7 +191,7 @@ def _format_card_answer(answers, provenance) -> str:
 
         # Dates and times
         if has("closing_date") and has("closing_time"):
-            sentences.append(f"Closing date is {kv('closing_date')} at {kv('closing_time')}.")
+            sentences.append(f"Closing time is {kv('closing_time')} on {kv('closing_date')}.")
         elif has("closing_date"):
             sentences.append(f"Closing date is {kv('closing_date')}.")
         elif has("closing_time"):
@@ -276,10 +278,12 @@ def query_graph_rag(query_text: str, top_k: int = _DEFAULT_top_k, neighbor_windo
     # Card-first gate
     scope_files = None
     gate = card_first_gate(query_text, allow_direct_answer=True)
+    provenance_refs = build_references(gate.get("provenance"))
     mode = gate.get("mode")
     # TODO What is Mode
     if mode == "answer":
-        return _format_card_answer(gate.get("answers"), gate.get("provenance"))
+        base_answer = _format_card_answer(gate.get("answers"), gate.get("provenance"))
+        return format_with_citations(base_answer, provenance_refs)
     if mode == "restrict":
         scope_files = gate.get("scope_files") or None
         # Incorporate boost terms (anchors, ids, authority) directly into the query to steer retrieval
@@ -289,7 +293,10 @@ def query_graph_rag(query_text: str, top_k: int = _DEFAULT_top_k, neighbor_windo
 
     # Light heuristic: widen neighbors for table-like fee/bond rows
     qt = (query_text or "").lower()
-    
+    anchors_present = bool(extract_anchors(query_text))
+    wants_money, wants_percent, wants_date = wants_slots(query_text)
+    wants_time = any(k in qt for k in ["time", "1:", "pm", "am"])
+
     # TO DO: Evaluate this
     table_cues = [
         "table",
@@ -305,9 +312,24 @@ def query_graph_rag(query_text: str, top_k: int = _DEFAULT_top_k, neighbor_windo
         "practice",
     ]
     table_like = any(k in qt for k in table_cues) or "جدول" in qt # جدول  = table
-    if table_like and neighbor_window < 2:
+    if (table_like or (anchors_present and (wants_money or wants_percent or wants_date or wants_time))) and neighbor_window < 2:
         neighbor_window = 2
 
     rag = _make_rag(neighbor_window, scope_files=scope_files)
-    response = rag.search(query_text=query_text, retriever_config={"top_k": top_k})
-    return response.answer
+    response = rag.search(
+        query_text=query_text,
+        retriever_config={"top_k": top_k},
+        return_context=True,
+    )
+
+    retriever_result = getattr(response, "retriever_result", None)
+    retrieval_refs = build_references(getattr(retriever_result, "items", None))
+    if not retrieval_refs:
+        retrieval_refs = build_references(getattr(response, "context", None))
+
+    combined_refs = []
+    for ref in provenance_refs + retrieval_refs:
+        if ref not in combined_refs:
+            combined_refs.append(ref)
+
+    return format_with_citations(response.answer, combined_refs)

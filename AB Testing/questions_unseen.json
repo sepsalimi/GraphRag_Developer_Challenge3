@@ -1,0 +1,252 @@
+[
+    {
+    "question": "What is the bid submission deadline for the digital archiving system tender?",
+    "type": "objective",
+    "category": "factual"
+    },
+    {
+    "question": "What is the preliminary bond amount for the digital archiving system tender?",
+    "type": "objective",
+    "category": "factual"
+    },
+    {
+    "question": "What is the tender document fee for the digital archiving system tender?",
+    "type": "objective",
+    "category": "factual"
+    },
+    {
+    "question": "What bid validity period is required for the digital archiving system tender?",
+    "type": "objective",
+    "category": "factual"
+    },
+    {
+    "question": "Are alternative offers allowed in the digital archiving system tender?",
+    "type": "objective",
+    "category": "factual"
+    },
+    {
+    "question": "What is the closing time for the seaport container scanners practice?",
+    "type": "objective",
+    "category": "factual"
+    },
+    {
+    "question": "What is the initial security deposit percentage for the seaport container scanners practice?",
+    "type": "objective",
+    "category": "factual"
+    },
+    {
+    "question": "How many envelopes must be submitted for the seaport container scanners practice?",
+    "type": "objective",
+    "category": "factual"
+    },
+    {
+    "question": "Is a site visit mandatory for the seaport container scanners practice?",
+    "type": "objective",
+    "category": "factual"
+    },
+    {
+    "question": "What is the closing date for the streetlight LED retrofit project?",
+    "type": "objective",
+    "category": "factual"
+    },
+    {
+    "question": "What is the document purchase fee for the streetlight LED retrofit project?",
+    "type": "objective",
+    "category": "factual"
+    },
+    {
+    "question": "What is the corrected submission address for the streetlight LED retrofit project?",
+    "type": "objective",
+    "category": "factual"
+    },
+    {
+    "question": "What is the bid opening date for the streetlight LED retrofit project?",
+    "type": "objective",
+    "category": "factual"
+    },
+    {
+    "question": "What is the initial guarantee validity for the streetlight LED retrofit project?",
+    "type": "objective",
+    "category": "factual"
+    },
+    {
+    "question": "What is the closing date for the blood bank refrigeration units tender?",
+    "type": "objective",
+    "category": "factual"
+    },
+    {
+    "question": "What is the tender document price for the blood bank refrigeration units tender?",
+    "type": "objective",
+    "category": "factual"
+    },
+    {
+    "question": "What is the preliminary bond value for the blood bank refrigeration units tender?",
+    "type": "objective",
+    "category": "factual"
+    },
+    {
+    "question": "Is the blood bank refrigeration units tender indivisible?",
+    "type": "objective",
+    "category": "factual"
+    },
+    {
+    "question": "What is the submission method for the ministry data center firewall replacement practice?",
+    "type": "objective",
+    "category": "factual"
+    },
+    {
+    "question": "What is the closing time for the ministry data center firewall replacement practice?",
+    "type": "objective",
+    "category": "factual"
+    },
+    {
+    "question": "What is the initial bond percentage for the ministry data center firewall replacement practice?",
+    "type": "objective",
+    "category": "factual"
+    },
+    {
+    "question": "What is the document fee for the ministry data center firewall replacement practice?",
+    "type": "objective",
+    "category": "factual"
+    },
+    {
+    "question": "What is the corrected company name for the airport shuttle operations contract?",
+    "type": "objective",
+    "category": "factual"
+    },
+    {
+    "question": "What is the publication date of the notice correcting the airport shuttle operations contract?",
+    "type": "objective",
+    "category": "factual"
+    },
+    {
+    "question": "What is the objection period for amendments to commercial registration data?",
+    "type": "objective",
+    "category": "factual"
+    },
+    {
+    "question": "Which court receives objections to commercial registration amendments?",
+    "type": "objective",
+    "category": "factual"
+    },
+    {
+    "question": "What is the corrected legal form for Al-Nour Trading after restructuring?",
+    "type": "objective",
+    "category": "factual"
+    },
+    {
+    "question": "What is the corrected company name for the refinery maintenance framework agreement?",
+    "type": "objective",
+    "category": "factual"
+    },
+    {
+    "question": "What is the corrected closing date for the university e-learning platform tender?",
+    "type": "objective",
+    "category": "factual"
+    },
+    {
+    "question": "What is the document fee for the university e-learning platform tender?",
+    "type": "objective",
+    "category": "factual"
+    },
+    {
+    "question": "What is the preliminary bond amount for the university e-learning platform tender?",
+    "type": "objective",
+    "category": "factual"
+    },
+    {
+    "question": "Are alternative offers permitted in the university e-learning platform tender?",
+    "type": "objective",
+    "category": "factual"
+    },
+    {
+    "question": "What is the closing date for the port crane refurbishment practice?",
+    "type": "objective",
+    "category": "factual"
+    },
+    {
+    "question": "What is the initial security deposit percentage for the port crane refurbishment practice?",
+    "type": "objective",
+    "category": "factual"
+    },
+    {
+    "question": "What is the bid validity period for the port crane refurbishment practice?",
+    "type": "objective",
+    "category": "factual"
+    },
+    {
+    "question": "What is the fee to purchase auction conditions for the sale of surplus government vehicles?",
+    "type": "objective",
+    "category": "factual"
+    },
+    {
+    "question": "How long must bids remain valid in the sale of surplus government vehicles?",
+    "type": "objective",
+    "category": "factual"
+    },
+    {
+    "question": "Is the sale of surplus government vehicles divisible by lots?",
+    "type": "objective",
+    "category": "factual"
+    },
+    {
+    "question": "What is the registration number for the agency of Gulf Health with MedEquip (Germany)?",
+    "type": "objective",
+    "category": "factual"
+    },
+    {
+    "question": "What is the duration of the Gulf Health agency with MedEquip (from and to)?",
+    "type": "objective",
+    "category": "factual"
+    },
+    {
+    "question": "What is the principal company and country for the Gulf Health agency with MedEquip?",
+    "type": "objective",
+    "category": "factual"
+    },
+    {
+    "question": "What is the closing date for the highway bridge rehabilitation tender?",
+    "type": "objective",
+    "category": "factual"
+    },
+    {
+    "question": "What is the tender document price for the highway bridge rehabilitation tender?",
+    "type": "objective",
+    "category": "factual"
+    },
+    {
+    "question": "What is the preliminary bond value for the highway bridge rehabilitation tender?",
+    "type": "objective",
+    "category": "factual"
+    },
+    {
+    "question": "What is the closing date for the smart water meters installation practice?",
+    "type": "objective",
+    "category": "factual"
+    },
+    {
+    "question": "What is the initial bond percentage for the smart water meters installation practice?",
+    "type": "objective",
+    "category": "factual"
+    },
+    {
+    "question": "What is the number of envelopes required for the smart water meters installation practice?",
+    "type": "objective",
+    "category": "factual"
+    },
+    {
+    "question": "What is the corrected bid closing time for the municipal solid waste collection vehicles tender?",
+    "type": "objective",
+    "category": "factual"
+    },
+    {
+    "question": "What is the corrected submission method for the municipal solid waste collection vehicles tender?",
+    "type": "objective",
+    "category": "factual"
+    },
+    {
+    "question": "What is the filing fee for an appeal in a civil commercial case?",
+    "type": "objective",
+    "category": "factual"
+    }
+    ]

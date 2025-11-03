@@ -23,18 +23,17 @@ def _normalize_answer_text(answer: str, question: str) -> str:
         return answer
     s = answer.strip()
     q = (question or "").lower()
-    # currency forms → K.D. N
-    s = re.sub(r"\bKWD\b", "K.D.", s, flags=re.IGNORECASE)
-    s = re.sub(r"\bK\.?D\.?\b", "K.D.", s, flags=re.IGNORECASE)
-    s = re.sub(r"\bKD\b", "K.D.", s, flags=re.IGNORECASE)
-    # normalize 'K.D. N' regardless of order
-    s = re.sub(r"(?i)\b(?:KWD|KD|K\.?D\.?)\s*(\d+(?:\.\d+)?)\b", r"K.D. \1", s)
-    s = re.sub(r"(?i)\b(\d+(?:\.\d+)?)\s*(?:KWD|KD|K\.?D\.?)\b", r"K.D. \1", s)
-    # collapse double dots e.g., K.D.. -> K.D.
-    s = s.replace("K.D..", "K.D.")
-    # if numeric only and fee/bond context → prefix K.D.
-    if re.fullmatch(r"\d+(?:\.\d+)?", s) and any(w in q for w in ["fee", "document", "bond", "guarantee", "price", "cost"]):
-        s = f"K.D. {s}"
+    # currency forms → KD N
+    s = re.sub(r"\bKWD\b", "KD", s, flags=re.IGNORECASE)
+    s = re.sub(r"\bK\.?D\.?\b", "KD", s, flags=re.IGNORECASE)
+    s = re.sub(r"\bKD\b", "KD", s, flags=re.IGNORECASE)
+    # normalize 'KD N' regardless of order
+    s = re.sub(r"(?i)\b(?:KWD|KD|K\.?D\.?)\s*(\d[\d,]*(?:\.\d+)?)\b", r"KD \1", s)
+    s = re.sub(r"(?i)\b(\d[\d,]*(?:\.\d+)?)\s*(?:KWD|KD|K\.?D\.?)\b", r"KD \1", s)
+    s = s.replace("KD.", "KD")
+    # if numeric only and fee/bond context → prefix KD
+    if re.fullmatch(r"\d[\d,]*(?:\.\d+)?", s) and any(w in q for w in ["fee", "document", "bond", "guarantee", "price", "cost"]):
+        s = f"KD {s}"
 
     # days normalization when question asks duration/validity
     if re.fullmatch(r"\d+", s) and any(w in q for w in ["valid", "validity", "period", "days", "how long"]):
@@ -72,6 +71,9 @@ def _normalize_answer_text(answer: str, question: str) -> str:
 
     if any(w in q for w in ["date", "closing", "deadline"]):
         s = _to_iso_date(s)
+
+    if "المحكمة الكلية" not in s:
+        s = re.sub(r"General Court(?:\s*\(Court of First Instance\))?", "General Court (المحكمة الكلية)", s, flags=re.IGNORECASE)
     return s
 
 def batch_query_graph_rag(

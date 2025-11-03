@@ -56,8 +56,11 @@ def _first_anchor_pos(doc_text_norm: str, anchor_text: str) -> int:
 RX_ANCHORS = [
     re.compile(r"\bRFP[\s/-]?\d+\b", re.IGNORECASE),
     re.compile(r"\b\d{6,7}[\s/-]?RFP\b", re.IGNORECASE),
+    re.compile(r"\bA\s*/\s*M\s*/\s*\d+\b", re.IGNORECASE),
     re.compile(r"\bA/M/\d+\b", re.IGNORECASE),
+    re.compile(r"\b5D\s*[A-Z0-9]+\b", re.IGNORECASE),
     re.compile(r"\b5D[A-Z0-9]+\b", re.IGNORECASE),
+    re.compile(r"\b20\d{2}\s*/\s*00\d{2,3}\b", re.IGNORECASE),
     re.compile(r"\b\d{4}/\d{5}\b", re.IGNORECASE),
     re.compile(r"\b\d{4}/\d{4}/\d+\b", re.IGNORECASE),
 ]
@@ -67,7 +70,12 @@ def extract_anchors(text: str) -> List[str]:
     t = norm_digits(text or "")
     out: List[str] = []
     for rx in RX_ANCHORS:
-        out.extend(rx.findall(t))
+        for raw in rx.findall(t):
+            cleaned = re.sub(r"\s*/\s*", "/", raw)
+            cleaned = re.sub(r"\s*-\s*", "-", cleaned)
+            cleaned = re.sub(r"\s+", " ", cleaned).strip()
+            if cleaned:
+                out.append(cleaned)
     seen = set(); uniq: List[str] = []
     for a in out:
         k = a.upper()
@@ -80,6 +88,7 @@ RX_MONEY = re.compile(r"(?i)\b(?:kd|k\.?d\.?|دينار)\b.{0,150}?\b\d[\d,]*\b"
 RX_BOND = re.compile(r"(?i)(bond|security\s+deposit|initial\s+security|preliminary\s+bond|التأمين|كفالة|ضمان)")
 RX_PERCENT = re.compile(r"(?<!\d)\b\d{1,3}%\b")
 RX_DATE = re.compile(r"\b\d{4}[-/.]\d{2}[-/.]\d{2}\b|\b\d{1,2}[-/]\d{1,2}[-/]\d{2,4}\b")
+RX_TIME = re.compile(r"\b\d{1,2}:\d{2}\s*(?:AM|PM)?\b", re.IGNORECASE)
 
 
 def wants_slots(query_text: str) -> Tuple[bool, bool, bool]:
@@ -94,10 +103,11 @@ def wants_slots(query_text: str) -> Tuple[bool, bool, bool]:
     return wants_money, wants_percent, wants_date
 
 
-def has_slot_near_anchor(query_text: str, text: str, anchors_norm: List[str], wants: Tuple[bool, bool, bool], window_chars: int = 180) -> bool:
+def has_slot_near_anchor(query_text: str, text: str, anchors_norm: List[str], wants: Tuple[bool, bool, bool], window_chars: int = 150) -> bool:
     di = norm_digits(text or "").lower()
     ql = norm_digits(query_text or "").lower()
     bond_in_query = ("bond" in ql) or ("security" in ql) or ("التأمين" in ql) or ("كفالة" in ql) or ("ضمان" in ql)
+    wants_time = ("time" in ql) or bool(re.search(r"\b\d{1,2}:\d{2}\b", ql))
     for a in anchors_norm:
         p = _first_anchor_pos(di, a)
         if p == -1:
@@ -109,7 +119,8 @@ def has_slot_near_anchor(query_text: str, text: str, anchors_norm: List[str], wa
         money_ok = RX_MONEY.search(window) is not None
         if bond_in_query and wm:
             money_ok = money_ok and (RX_BOND.search(window) is not None)
-        if (wm and money_ok) or (wp and RX_PERCENT.search(window)) or (wd and RX_DATE.search(window)):
+        time_ok = RX_TIME.search(window) is not None if wants_time else False
+        if (wm and money_ok) or (wp and RX_PERCENT.search(window)) or (wd and RX_DATE.search(window)) or time_ok:
             return True
     return False
 
@@ -163,6 +174,7 @@ def preboost_results_by_anchors(query_text: str, results: List[Any], get_text: C
 
     ql = (norm_digits(query_text or "").lower())
     wants_money, wants_percent, wants_date = wants_slots(ql)
+    wants_time = ("time" in ql) or bool(re.search(r"\b\d{1,2}:\d{2}\b", ql))
 
     date_pattern = re.compile(r"\[date=([0-9]{4})-([0-9]{2})-([0-9]{2})\]", re.IGNORECASE)
     supp_pattern = re.compile(r"\[supp=([0-9]+)\]", re.IGNORECASE)
@@ -211,6 +223,8 @@ def preboost_results_by_anchors(query_text: str, results: List[Any], get_text: C
             if wants_percent and RX_PERCENT.search(window):
                 s += 3
             if wants_date and RX_DATE.search(window):
+                s += 3
+            if wants_time and RX_TIME.search(window):
                 s += 3
         return s
 

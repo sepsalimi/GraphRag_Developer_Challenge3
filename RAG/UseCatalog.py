@@ -86,12 +86,15 @@ _RX_TENDER = [
 ]
 
 _RX_PRACTICE = [
+    re.compile(r"\bA\s*/\s*M\s*/\s*\d+\b", re.IGNORECASE),
     re.compile(r"\bA/M/\d+\b", re.IGNORECASE),
     re.compile(r"\b\d-\d{4}/\d{4}\b", re.IGNORECASE),
+    re.compile(r"\b5D\s*[A-Z0-9]+\b", re.IGNORECASE),
     re.compile(r"\b5D[A-Z0-9]+\b", re.IGNORECASE),
 ]
 
 _RX_REGISTRATION = [
+    re.compile(r"\b20\d{2}\s*/\s*00\d{2,3}\b", re.IGNORECASE),
     re.compile(r"\b\d{4}/\d{5}\b", re.IGNORECASE),
 ]
 
@@ -133,10 +136,13 @@ def _extract_anchors(question: str) -> List[str]:
     seen: Set[str] = set()
     uniq: List[str] = []
     for a in anchors:
-        k = _norm_key(a)
+        cleaned = re.sub(r"\s*/\s*", "/", a)
+        cleaned = re.sub(r"\s*-\s*", "-", cleaned)
+        cleaned = re.sub(r"\s+", " ", cleaned).strip()
+        k = _norm_key(cleaned)
         if k not in seen:
             seen.add(k)
-            uniq.append(a)
+            uniq.append(cleaned)
     return uniq
 
 
