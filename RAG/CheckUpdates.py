@@ -123,7 +123,7 @@ def _fetch_anchor_updates(session, anchors: Sequence[Dict[str, str]], limit: int
                d.document_key AS document_key,
                d.status AS status,
                p.publication_date AS publication_date,
-               [row.text | row IN chosen] AS texts
+               [row IN chosen | row.text] AS texts
         """,
         {"anchors": anchors, "limit": limit},
     ).data()

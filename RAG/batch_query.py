@@ -45,6 +45,7 @@ def batch_query_graph_rag(
     neighbor_window: int = 1,
     show_progress: bool = False,
     include_events: bool | None = None,
+    resume: bool = False,
 ):
     """
     Process multiple queries in parallel using threading.
@@ -55,6 +56,8 @@ def batch_query_graph_rag(
         top_k: Optional top_k parameter for query_graph_rag (uses default if not provided)
         neighbor_window: Adjacent-chunk window per hit (0 disables; 1 includes i±1)
         show_progress: If True, display a tqdm progress bar as queries complete
+        resume: If True, persist results as they complete and resume from prior
+            progress when rerun
     
     Returns:
         List of dictionaries with "question" and "answer" fields. If include_events
@@ -124,28 +127,54 @@ def batch_query_graph_rag(
     if not questions:
         raise ValueError("No questions found in input file")
     
+    output_dir = project_root / "AB Testing" / "Output Answers"
+    output_dir.mkdir(parents=True, exist_ok=True)
+    resume_key = re.sub(r"[^A-Za-z0-9._-]+", "_", file_spec) or input_path.stem
+    resume_file = output_dir / f".resume_{resume_key}.jsonl"
+
+    index_to_result: dict[int, dict] = {}
+    completed_indices: set[int] = set()
+
+    if resume and resume_file.exists():
+        with open(resume_file, "r", encoding="utf-8") as existing:
+            for line in existing:
+                line = line.strip()
+                if not line:
+                    continue
+                try:
+                    data = json.loads(line)
+                except json.JSONDecodeError:
+                    continue
+                idx = data.get("index")
+                if idx is None:
+                    continue
+                index_to_result[idx] = data
+                completed_indices.add(idx)
+
+    total_questions = len(questions)
+
     # Set default max_workers if not provided
     if max_workers is None:
         max_workers = min(16, (os.cpu_count() or 4) * 2)
-    
-    # Process queries in parallel
-    results = []
-    total_questions = len(questions)
+
+    items_to_process = [
+        (idx, question) for idx, question in enumerate(questions) if idx not in completed_indices
+    ]
 
     progress_bar = None
-    progress_params = None
     if show_progress:
         bar_format = '{l_bar}{bar}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}]'
         try:
             term_width = shutil.get_terminal_size().columns
         except Exception:
             term_width = 100
-        progress_params = dict(
+        progress_bar = tqdm(
             total=total_questions,
             desc=f"Batch queries (workers={max_workers})",
             ncols=term_width,
             bar_format=bar_format,
             leave=False,
+            initial=min(len(index_to_result), total_questions),
         )
     
     def process_query(item):
@@ -175,23 +204,29 @@ def batch_query_graph_rag(
                 "events": events,
             }
     
-    with ThreadPoolExecutor(max_workers=max_workers) as executor:
-        # Submit all queries
-        future_to_question = {
-            executor.submit(process_query, item): item
-            for item in enumerate(questions)
-        }
+    resume_fh = None
+    try:
+        if resume and items_to_process:
+            resume_fh = resume_file.open("a", encoding="utf-8")
 
-        # Collect results as they complete, maintaining order
-        index_to_result = {}
-        for future in as_completed(future_to_question):
-            result = future.result()
-            index_to_result[result["index"]] = result
-            if progress_params is not None:
-                if progress_bar is None:
-                    progress_bar = tqdm(initial=1, **progress_params)
-                else:
-                    progress_bar.update(1)
+        if items_to_process:
+            with ThreadPoolExecutor(max_workers=max_workers) as executor:
+                future_to_question = {
+                    executor.submit(process_query, item): item
+                    for item in items_to_process
+                }
+
+                for future in as_completed(future_to_question):
+                    result = future.result()
+                    index_to_result[result["index"]] = result
+                    if resume_fh is not None:
+                        resume_fh.write(json.dumps(result, ensure_ascii=False) + "\n")
+                        resume_fh.flush()
+                    if progress_bar is not None:
+                        progress_bar.update(1)
+    finally:
+        if resume_fh is not None:
+            resume_fh.close()
 
     if progress_bar is not None:
         progress_bar.close()
@@ -205,7 +240,7 @@ def batch_query_graph_rag(
             "answer": index_to_result[i]["answer"],
             "events": index_to_result[i].get("events", []),
         }
-        for i in range(len(questions))
+        for i in range(total_questions)
     ]
     
     if not save_events:
@@ -239,10 +274,6 @@ def batch_query_graph_rag(
         "ALLOW_DIRECT_ANSWER": _env_bool("ALLOW_DIRECT_ANSWER", None),
     }
     
-    # Save results to output file
-    output_dir = project_root / "AB Testing" / "Output Answers"
-    output_dir.mkdir(parents=True, exist_ok=True)
-    
     output_file = output_dir / f"answers_{timestamp}.json"
     
     output_data = {
@@ -252,6 +283,9 @@ def batch_query_graph_rag(
     
     with open(output_file, 'w', encoding='utf-8') as f:
         json.dump(output_data, f, indent=2, ensure_ascii=False)
+
+    if resume and len(index_to_result) == total_questions and resume_file.exists():
+        resume_file.unlink()
     
     def _log(message: str) -> None:
         if show_progress:
