@@ -49,8 +49,25 @@ def _split_row(row: str) -> List[str]:
     return parts
 
 
+_ALIGN_RE = re.compile(r"^[:\-\s]+$")
+
+
+def _normalize_table_row(line: str) -> Optional[str]:
+    stripped = line.strip()
+    if not stripped:
+        return None
+    if stripped.startswith("|") and stripped.count("|") >= 2:
+        return stripped
+    idx = stripped.find("|")
+    if idx >= 0:
+        candidate = stripped[idx:].strip()
+        if candidate.startswith("|") and candidate.count("|") >= 2:
+            return candidate
+    return None
+
+
 def parse_markdown_tables(text: str) -> List[Table]:
-    """Extract GitHub-style Markdown tables from a blob of text."""
+    """Extract pipe-delimited tables, tolerating missing alignment rows."""
 
     if not text:
         return []
@@ -59,48 +76,49 @@ def parse_markdown_tables(text: str) -> List[Table]:
     tables: List[Table] = []
     i = 0
     while i < len(lines):
-        line = lines[i].strip()
-        if not (line.startswith("|") and line.count("|") >= 2):
+        normalized = _normalize_table_row(lines[i])
+        if not normalized:
             i += 1
             continue
 
-        if i + 1 >= len(lines):
-            i += 1
-            continue
-
-        align = lines[i + 1].strip()
-        if not (align.startswith("|") and re.fullmatch(r"\|[\s:-]+\|", align.replace(" ", ""))):
-            i += 1
-            continue
-
-        headers = _split_row(line)
-        data_lines: List[str] = []
-        j = i + 2
-        while j < len(lines):
-            row = lines[j].strip()
-            if not row.startswith("|"):
+        table_lines: List[str] = []
+        while i < len(lines):
+            candidate = _normalize_table_row(lines[i])
+            if not candidate:
                 break
-            data_lines.append(row)
-            j += 1
+            table_lines.append(candidate)
+            i += 1
 
-        if not headers or not data_lines:
-            i = j
+        if len(table_lines) < 2:
+            continue
+
+        header = _split_row(table_lines[0])
+        if not header:
+            continue
+
+        data_candidates = table_lines[1:]
+        if data_candidates and all(
+            all(_ALIGN_RE.match(cell.strip() or "") for cell in _split_row(line))
+            for line in data_candidates[:1]
+        ):
+            # Skip leading alignment row if present.
+            data_candidates = data_candidates[1:]
+
+        if not data_candidates:
             continue
 
         rows: List[Dict[str, str]] = []
-        for raw_row in data_lines:
+        for raw_row in data_candidates:
             values = _split_row(raw_row)
-            # Ensure we have the same number of columns as headers.
-            if len(values) < len(headers):
-                values.extend([""] * (len(headers) - len(values)))
+            if len(values) < len(header):
+                values.extend([""] * (len(header) - len(values)))
             row_dict = {
-                headers[idx].strip(): values[idx].strip()
-                for idx in range(len(headers))
+                header[idx].strip(): values[idx].strip()
+                for idx in range(len(header))
             }
             rows.append(row_dict)
 
-        tables.append(Table(headers=headers, rows=rows, raw="\n".join([line, align] + data_lines)))
-        i = j
+        tables.append(Table(headers=header, rows=rows, raw="\n".join(table_lines)))
 
     return tables
 
@@ -137,23 +155,16 @@ def _parse_money(value: str) -> Optional[int]:
         return None
 
 
-_CLOSING_HEADERS = {
-    "closing date",
-    "deadline",
-    "scheduled date for bid submission (closing date)",
-}
-_PRICE_HEADERS = {
-    "cost of tender documents",
-    "price",
-    "document price",
-    "tender document price",
-}
-_GUARANTEE_HEADERS = {
-    "value of preliminary bond",
-    "guarantee",
-    "initial security",
-    "value of provisional bond",
-}
+_NON_ALNUM_RE = re.compile(r"[^a-z0-9]+")
+
+
+def _normalize_header_key(header: str) -> str:
+    key = header.translate(_ARABIC_DIGITS).lower()
+    return _NON_ALNUM_RE.sub(" ", key).strip()
+
+
+def _contains_all(key: str, *terms: str) -> bool:
+    return all(term in key for term in terms)
 
 
 def extract_procurement_facts(tables: Iterable[Table]) -> Dict[str, Optional[Any]]:
@@ -170,16 +181,31 @@ def extract_procurement_facts(tables: Iterable[Table]) -> Dict[str, Optional[Any
             for header, value in row.items():
                 if not value:
                     continue
-                key = header.lower().strip()
-                if key in _CLOSING_HEADERS and facts["closing_date"] is None:
+                key_norm = _normalize_header_key(header)
+                if facts["closing_date"] is None and (
+                    _contains_all(key_norm, "closing", "date")
+                    or "deadline" in key_norm
+                    or _contains_all(key_norm, "bid", "submission")
+                ):
                     parsed = _parse_date(value)
                     if parsed:
                         facts["closing_date"] = parsed
-                elif key in _PRICE_HEADERS and facts["price_kd"] is None:
+                elif facts["price_kd"] is None and (
+                    "price" in key_norm
+                    or "fee" in key_norm
+                    or (
+                        "cost" in key_norm
+                        and ("document" in key_norm or "tender" in key_norm)
+                    )
+                ):
                     parsed_price = _parse_money(value)
                     if parsed_price is not None:
                         facts["price_kd"] = parsed_price
-                elif key in _GUARANTEE_HEADERS and facts["guarantee_kd"] is None:
+                elif facts["guarantee_kd"] is None and (
+                    "guarantee" in key_norm
+                    or "bond" in key_norm
+                    or "security" in key_norm
+                ):
                     parsed_bond = _parse_money(value)
                     if parsed_bond is not None:
                         facts["guarantee_kd"] = parsed_bond

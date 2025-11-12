@@ -45,19 +45,28 @@ def fetch_anchor_chunks(
         return []
 
     cypher = (
-        "UNWIND $values AS value "
-        "MATCH (a:Anchor {value: value})-[:LATEST]->(d:Document) "
-        "MATCH (d)-[:HAS_CHUNK]->(c:Chunk) "
-        "RETURN d.document_key AS document_key, "
-        "       c.chunk_index   AS chunk_index, "
-        "       c.text          AS text "
-        "ORDER BY coalesce(c.chunk_index, 0) ASC "
-        "LIMIT $limit"
+        """
+        UNWIND $values AS value
+        MATCH (a:Anchor {value: value})-[:LATEST]->(d:Document)
+        MATCH (d)-[:HAS_CHUNK]->(c:Chunk)
+        RETURN d.document_key AS document_key,
+               d.publication_key AS publication_key,
+               c.chunk_index   AS chunk_index,
+               c.text          AS text,
+               c.page_start    AS page_start,
+               c.page_end      AS page_end,
+               c.closing_date  AS closing_date,
+               c.price_kd      AS price_kd,
+               c.guarantee_kd  AS guarantee_kd,
+               c.table_kv      AS table_kv,
+               c.source        AS source
+        ORDER BY coalesce(c.chunk_index, 0) ASC
+        LIMIT $limit
+        """
     )
 
-    with driver.session() as session:
-        result = session.run(cypher, values=normalized, limit=int(limit))
-        return list(result.data())
+    records, _, _ = driver.execute_query(cypher, values=normalized, limit=int(limit))
+    return records
 
 
 __all__ = ["fetch_anchor_chunks"]

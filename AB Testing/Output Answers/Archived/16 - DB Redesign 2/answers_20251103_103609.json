@@ -1,0 +1,24 @@
+{
+  "config": {
+    "top_k": 100,
+    "MMR_k": 45,
+    "MMR_LAMBDA": 0.4,
+    "ALWAYS_KEEP_TOP": 5,
+    "neighbor_window": 2,
+    "HYBRID_ALPHA": 0.6,
+    "HYBRID_POOL_MULTIPLIER": 4.0,
+    "HYBRID_POOL_MAX": 300,
+    "HYBRID_APPLY_MMR": true,
+    "NEO4J_FULLTEXT_INDEX": "chunk_text_idx",
+    "COHERE_RERANK_ENABLED": true,
+    "COHERE_RERANK_MODEL": "rerank-v3.5",
+    "CARD_FIRST_ENABLED": true,
+    "ALLOW_DIRECT_ANSWER": true
+  },
+  "answers": [
+    {
+      "question": "What is the scheduled closing date for the Public Authority for Sport tender to purchase and maintain an X-ray machine for the Sports Medicine Center?",
+      "answer": "10:00 AM on Tuesday, 25 May 2025."
+    }
+  ]
+}

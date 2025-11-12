@@ -1,0 +1,351 @@
+{
+  "config": {
+    "top_k": 100,
+    "MMR_k": 45,
+    "MMR_LAMBDA": 0.4,
+    "ALWAYS_KEEP_TOP": 5,
+    "neighbor_window": 2,
+    "HYBRID_ALPHA": 0.6,
+    "HYBRID_POOL_MULTIPLIER": 4.0,
+    "HYBRID_POOL_MAX": 300,
+    "HYBRID_APPLY_MMR": true,
+    "NEO4J_FULLTEXT_INDEX": "chunk_text_idx",
+    "COHERE_RERANK_ENABLED": true,
+    "COHERE_RERANK_MODEL": "rerank-v3.5",
+    "CARD_FIRST_ENABLED": true,
+    "ALLOW_DIRECT_ANSWER": true
+  },
+  "answers": [
+    {
+      "question": "What is the scheduled closing date for the Public Authority for Sport tender to purchase and maintain an X-ray machine for the Sports Medicine Center?",
+      "answer": "10:00 AM on Tuesday, 25 May 2025.",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q0",
+          "question": "What is the scheduled closing date for the Public Authority for Sport tender to purchase and maintain an X-ray machine for the Sports Medicine Center?",
+          "anchors": [],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q0",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "anchor_primer_candidates": 0,
+          "union_total": 300,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 100,
+          "slot_guarded": 100,
+          "scope": [],
+          "top_k": 100,
+          "label": "primary",
+          "neighbor_window": 2
+        },
+        {
+          "event": "answer",
+          "run_id": "q0",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 100
+        }
+      ]
+    },
+    {
+      "question": "What is the agency registration number for R&B United General Trading Company’s agency with Octane Furniture (India)?",
+      "answer": "Not found in the provided context. The only R&B United entry here is reg. no. 2025/00590 for Remist Tianjin Medical Device (China), not Octane Furniture (India). If you share the announcement mentioning Octane Furniture, I can extract its registration number.",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q1",
+          "question": "What is the agency registration number for R&B United General Trading Company’s agency with Octane Furniture (India)?",
+          "anchors": [],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q1",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "anchor_primer_candidates": 0,
+          "union_total": 300,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 100,
+          "slot_guarded": 100,
+          "scope": [],
+          "top_k": 100,
+          "label": "primary",
+          "neighbor_window": 2
+        },
+        {
+          "event": "answer",
+          "run_id": "q1",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 100
+        }
+      ]
+    },
+    {
+      "question": "Under Decree-Law No. 61 of 2025, what additional period was granted for withdrawals authorized by Law No. 3 of 2016?",
+      "answer": "An additional two fiscal years.",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q2",
+          "question": "Under Decree-Law No. 61 of 2025, what additional period was granted for withdrawals authorized by Law No. 3 of 2016?",
+          "anchors": [],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q2",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "anchor_primer_candidates": 0,
+          "union_total": 300,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 100,
+          "slot_guarded": 100,
+          "scope": [],
+          "top_k": 100,
+          "label": "primary",
+          "neighbor_window": 2
+        },
+        {
+          "event": "answer",
+          "run_id": "q2",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 100
+        }
+      ]
+    },
+    {
+      "question": "For Practice No. 1-2026/2025 (Ministry of Awqaf and Islamic Affairs), what is the bid closing time and date?",
+      "answer": "1:00 PM on Sunday, 4 May 2025.",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q3",
+          "question": "For Practice No. 1-2026/2025 (Ministry of Awqaf and Islamic Affairs), what is the bid closing time and date?",
+          "anchors": [
+            "1-2026/2025"
+          ],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q3",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "anchor_primer_candidates": 0,
+          "union_total": 300,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 100,
+          "slot_guarded": 100,
+          "scope": [],
+          "top_k": 100,
+          "label": "primary",
+          "neighbor_window": 2
+        },
+        {
+          "event": "answer",
+          "run_id": "q3",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 100
+        }
+      ]
+    },
+    {
+      "question": "For National Medical Company’s agency with Top Glove (Malaysia), what is the duration (from and to dates)?",
+      "answer": "From 2025/02/10 to 2030/02/10.",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q4",
+          "question": "For National Medical Company’s agency with Top Glove (Malaysia), what is the duration (from and to dates)?",
+          "anchors": [],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q4",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "anchor_primer_candidates": 0,
+          "union_total": 300,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 100,
+          "slot_guarded": 100,
+          "scope": [],
+          "top_k": 100,
+          "label": "primary",
+          "neighbor_window": 2
+        },
+        {
+          "event": "answer",
+          "run_id": "q4",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 100
+        }
+      ]
+    },
+    {
+      "question": "In the Amiri Diwan auction announced on 27/4/2025, how long must a bid remain valid from the submission date?",
+      "answer": "90 days.",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q5",
+          "question": "In the Amiri Diwan auction announced on 27/4/2025, how long must a bid remain valid from the submission date?",
+          "anchors": [],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q5",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "anchor_primer_candidates": 0,
+          "union_total": 300,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 100,
+          "slot_guarded": 100,
+          "scope": [],
+          "top_k": 100,
+          "label": "primary",
+          "neighbor_window": 2
+        },
+        {
+          "event": "answer",
+          "run_id": "q5",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 100
+        }
+      ]
+    },
+    {
+      "question": "How long must a bid remain valid from the submission date?",
+      "answer": "90 days.",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q6",
+          "question": "How long must a bid remain valid from the submission date?",
+          "anchors": [],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q6",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "anchor_primer_candidates": 0,
+          "union_total": 300,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 100,
+          "slot_guarded": 100,
+          "scope": [],
+          "top_k": 100,
+          "label": "primary",
+          "neighbor_window": 2
+        },
+        {
+          "event": "answer",
+          "run_id": "q6",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 100
+        }
+      ]
+    }
+  ]
+}

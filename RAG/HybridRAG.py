@@ -110,6 +110,33 @@ def _ensure_metadata(item: RetrieverResultItem) -> RetrieverResultItem:
     return item
 
 
+def _has_structured_slot_evidence(
+    item: RetrieverResultItem, wants: Tuple[bool, bool, bool]
+) -> bool:
+    metadata = dict(getattr(item, "metadata", {}) or {})
+    wants_money, wants_percent, wants_date = wants
+
+    def _present(value: object) -> bool:
+        return value not in (None, "", [])
+
+    if wants_money and any(
+        _present(metadata.get(key))
+        for key in ("price_kd", "guarantee_kd", "fee_kd", "initial_bond_value_kd")
+    ):
+        return True
+    if wants_percent and any(
+        _present(metadata.get(key))
+        for key in ("initial_bond_percent", "guarantee_percent")
+    ):
+        return True
+    if wants_date and any(
+        _present(metadata.get(key))
+        for key in ("closing_date", "duration_to", "closing_period_text")
+    ):
+        return True
+    return False
+
+
 @dataclass
 class HybridRetrievalConfig:
     vector_index: str
@@ -258,9 +285,15 @@ class HybridRetrievalPipeline:
                     continue
                 metadata = {
                     "document_key": row.get("document_key"),
+                    "publication_key": row.get("publication_key"),
                     "chunk_index": row.get("chunk_index"),
                     "page_start": row.get("page_start"),
                     "page_end": row.get("page_end"),
+                    "closing_date": row.get("closing_date"),
+                    "price_kd": row.get("price_kd"),
+                    "guarantee_kd": row.get("guarantee_kd"),
+                    "table_kv": row.get("table_kv"),
+                    "source": row.get("source"),
                     "__source": "anchor_primer",
                 }
                 item = RetrieverResultItem(content=text_value, metadata=metadata)
@@ -371,8 +404,15 @@ class HybridRetrievalPipeline:
                 anchors_norm = [norm_digits(a).lower() for a in anchors]
                 evidence_found = any(
                     has_slot_near_anchor(query_text, _item_text(item), anchors_norm, wants)
+                    or _has_structured_slot_evidence(item, wants)
                     for item in guarded
                 )
+                if not evidence_found:
+                    evidence_found = any(
+                        has_slot_near_anchor(query_text, _item_text(item), anchors_norm, wants)
+                        or _has_structured_slot_evidence(item, wants)
+                        for item in ordered
+                    )
                 if not evidence_found:
                     guarded = []
 

@@ -1,0 +1,67 @@
+{
+  "config": {
+    "top_k": 100,
+    "MMR_k": 45,
+    "MMR_LAMBDA": 0.4,
+    "ALWAYS_KEEP_TOP": 5,
+    "neighbor_window": 2,
+    "HYBRID_ALPHA": 0.6,
+    "HYBRID_POOL_MULTIPLIER": 4.0,
+    "HYBRID_POOL_MAX": 300,
+    "HYBRID_APPLY_MMR": true,
+    "NEO4J_FULLTEXT_INDEX": "chunk_text_idx",
+    "COHERE_RERANK_ENABLED": true,
+    "COHERE_RERANK_MODEL": "rerank-v3.5",
+    "CARD_FIRST_ENABLED": true,
+    "ALLOW_DIRECT_ANSWER": true
+  },
+  "answers": [
+    {
+      "question": "What is the scheduled closing date for the Public Authority for Sport tender to purchase and maintain an X-ray machine for the Sports Medicine Center?",
+      "answer": "10:00 AM on Tuesday, 20-05-2025 (at the Public Authority for Sport).",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q0",
+          "question": "What is the scheduled closing date for the Public Authority for Sport tender to purchase and maintain an X-ray machine for the Sports Medicine Center?",
+          "anchors": [],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q0",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "anchor_primer_candidates": 0,
+          "union_total": 300,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 100,
+          "slot_guarded": 100,
+          "scope": [],
+          "top_k": 100,
+          "label": "primary",
+          "neighbor_window": 2
+        },
+        {
+          "event": "answer",
+          "run_id": "q0",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 100
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,3881 @@
+{
+  "config": {
+    "top_k": 100,
+    "MMR_k": 45,
+    "MMR_LAMBDA": 0.4,
+    "ALWAYS_KEEP_TOP": 5,
+    "neighbor_window": 1,
+    "HYBRID_ALPHA": 0.6,
+    "HYBRID_POOL_MULTIPLIER": 4.0,
+    "HYBRID_POOL_MAX": 300,
+    "HYBRID_APPLY_MMR": true,
+    "NEO4J_FULLTEXT_INDEX": "chunk_text_idx",
+    "COHERE_RERANK_ENABLED": true,
+    "COHERE_RERANK_MODEL": "rerank-v3.5",
+    "CARD_FIRST_ENABLED": true,
+    "ALLOW_DIRECT_ANSWER": true
+  },
+  "answers": [
+    {
+      "question": "What is the time period to submit an objection for company registration changes?",
+      "answer": "- Most company legal‑entity changes and dissolutions: 30 days from the date of publication to file an objection at the General Court (المحكمة الكلية).\n- Conversions of individual licenses or similar filings with the Companies/Commercial Licenses Department: 15 days from publication (usually with a written objection and debt instrument).",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q0",
+          "question": "What is the time period to submit an objection for company registration changes?",
+          "anchors": [],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q0",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "anchor_primer_candidates": 0,
+          "union_total": 300,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 100,
+          "slot_guarded": 100,
+          "scope": [],
+          "top_k": 100,
+          "label": "primary",
+          "neighbor_window": 2
+        },
+        {
+          "event": "answer",
+          "run_id": "q0",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 100
+        }
+      ]
+    },
+    {
+      "question": "Where should objections to company registration be submitted?",
+      "answer": "To the General Court (المحكمة الكلية).",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q1",
+          "question": "Where should objections to company registration be submitted?",
+          "anchors": [],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q1",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "anchor_primer_candidates": 0,
+          "union_total": 300,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 100,
+          "slot_guarded": 100,
+          "scope": [],
+          "top_k": 100,
+          "label": "primary",
+          "neighbor_window": 2
+        },
+        {
+          "event": "answer",
+          "run_id": "q1",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 100
+        }
+      ]
+    },
+    {
+      "question": "What types of legal entities are mentioned in company registration announcements?",
+      "answer": "- One-Person Company (Single Person Company, SPC)\n- Limited Liability Company (LLC)\n- General Partnership\n- Simple Limited Partnership (Limited Partnership)\n- Closed Joint-Stock Company / Kuwaiti Closed Shareholding Company (K.C.S.C.)",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q2",
+          "question": "What types of legal entities are mentioned in company registration announcements?",
+          "anchors": [],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q2",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "anchor_primer_candidates": 0,
+          "union_total": 300,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 100,
+          "slot_guarded": 100,
+          "scope": [],
+          "top_k": 100,
+          "label": "primary",
+          "neighbor_window": 2
+        },
+        {
+          "event": "answer",
+          "run_id": "q2",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 100
+        }
+      ]
+    },
+    {
+      "question": "What happens to joint partner obligations when an objection is filed for company registration?",
+      "answer": "Filing an objection keeps the jointly liable partners’ obligations in place—only for general partnerships and simple limited partnerships—until the court issues a final judgment on the objection.",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q3",
+          "question": "What happens to joint partner obligations when an objection is filed for company registration?",
+          "anchors": [],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q3",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "anchor_primer_candidates": 0,
+          "union_total": 300,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 100,
+          "slot_guarded": 100,
+          "scope": [],
+          "top_k": 100,
+          "label": "primary",
+          "neighbor_window": 2
+        },
+        {
+          "event": "answer",
+          "run_id": "q3",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 100
+        }
+      ]
+    },
+    {
+      "question": "What is the scheduled closing date for the Public Authority for Sport tender to purchase and maintain an X-ray machine for the Sports Medicine Center?",
+      "answer": "10:00 AM on Tuesday, 20-05-2025.",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q4",
+          "question": "What is the scheduled closing date for the Public Authority for Sport tender to purchase and maintain an X-ray machine for the Sports Medicine Center?",
+          "anchors": [],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q4",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "anchor_primer_candidates": 0,
+          "union_total": 300,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 100,
+          "slot_guarded": 100,
+          "scope": [],
+          "top_k": 100,
+          "label": "primary",
+          "neighbor_window": 1
+        },
+        {
+          "event": "answer",
+          "run_id": "q4",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 100
+        }
+      ]
+    },
+    {
+      "question": "What is the agency registration number for R&B United General Trading Company’s agency with Octane Furniture (India)?",
+      "answer": "Not found in the provided context. The only R&B United General Trading Company entry here shows agency registration number 2025/00590 with Remist Tianjin Medical Device Limited (China), not Octane Furniture (India).",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q5",
+          "question": "What is the agency registration number for R&B United General Trading Company’s agency with Octane Furniture (India)?",
+          "anchors": [],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q5",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "anchor_primer_candidates": 0,
+          "union_total": 300,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 100,
+          "slot_guarded": 100,
+          "scope": [],
+          "top_k": 100,
+          "label": "primary",
+          "neighbor_window": 2
+        },
+        {
+          "event": "answer",
+          "run_id": "q5",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 100
+        }
+      ]
+    },
+    {
+      "question": "Under Decree-Law No. 61 of 2025, what additional period was granted for withdrawals authorized by Law No. 3 of 2016?",
+      "answer": "An additional two fiscal years.",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q6",
+          "question": "Under Decree-Law No. 61 of 2025, what additional period was granted for withdrawals authorized by Law No. 3 of 2016?",
+          "anchors": [],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q6",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "anchor_primer_candidates": 0,
+          "union_total": 300,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 100,
+          "slot_guarded": 100,
+          "scope": [],
+          "top_k": 100,
+          "label": "primary",
+          "neighbor_window": 1
+        },
+        {
+          "event": "answer",
+          "run_id": "q6",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 100
+        }
+      ]
+    },
+    {
+      "question": "For Practice No. 1-2026/2025 (Ministry of Awqaf and Islamic Affairs), what is the bid closing time and date?",
+      "answer": "1:00 PM on Sunday, 4/5/2025",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q7",
+          "question": "For Practice No. 1-2026/2025 (Ministry of Awqaf and Islamic Affairs), what is the bid closing time and date?",
+          "anchors": [
+            "1-2026/2025"
+          ],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q7",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "anchor_primer_candidates": 0,
+          "union_total": 300,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 100,
+          "slot_guarded": 100,
+          "scope": [],
+          "top_k": 100,
+          "label": "primary",
+          "neighbor_window": 2
+        },
+        {
+          "event": "answer",
+          "run_id": "q7",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 100
+        }
+      ]
+    },
+    {
+      "question": "For National Medical Company’s agency with Top Glove (Malaysia), what is the duration (from and to dates)?",
+      "answer": "2025/02/10 to 2030/02/10",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q8",
+          "question": "For National Medical Company’s agency with Top Glove (Malaysia), what is the duration (from and to dates)?",
+          "anchors": [],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q8",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "anchor_primer_candidates": 0,
+          "union_total": 300,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 100,
+          "slot_guarded": 100,
+          "scope": [],
+          "top_k": 100,
+          "label": "primary",
+          "neighbor_window": 2
+        },
+        {
+          "event": "answer",
+          "run_id": "q8",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 100
+        }
+      ]
+    },
+    {
+      "question": "In the Amiri Diwan auction announced on 27/4/2025, how long must a bid remain valid from the submission date?",
+      "answer": "90 days. Note: the announcement specifies 90 days from the closing date (not from submission).",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q9",
+          "question": "In the Amiri Diwan auction announced on 27/4/2025, how long must a bid remain valid from the submission date?",
+          "anchors": [],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q9",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "anchor_primer_candidates": 0,
+          "union_total": 300,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 100,
+          "slot_guarded": 100,
+          "scope": [],
+          "top_k": 100,
+          "label": "primary",
+          "neighbor_window": 1
+        },
+        {
+          "event": "answer",
+          "run_id": "q9",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 100
+        }
+      ]
+    },
+    {
+      "question": "How long must a bid remain valid from the submission date?",
+      "answer": "90 days.",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q10",
+          "question": "How long must a bid remain valid from the submission date?",
+          "anchors": [],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q10",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "anchor_primer_candidates": 0,
+          "union_total": 300,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 100,
+          "slot_guarded": 100,
+          "scope": [],
+          "top_k": 100,
+          "label": "primary",
+          "neighbor_window": 1
+        },
+        {
+          "event": "answer",
+          "run_id": "q10",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 100
+        }
+      ]
+    },
+    {
+      "question": "For Kuwait Oil Company Tender No. 2125611-RFP (Well Testing and Associated Services), what is the value of the preliminary bond?",
+      "answer": "I can’t find the preliminary bond value in the provided excerpt. The “Tender Information and Requirements” table for Tender No. 2125611-RFP (Well Testing and Associated Services) is truncated here. Please share the remainder of that table or check the tender’s page on the K-Tendering Portal (ktendering.com.kw) to get the exact preliminary bond amount. [12]\n\nReferences\n12. 71-1736-0.",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q11",
+          "question": "For Kuwait Oil Company Tender No. 2125611-RFP (Well Testing and Associated Services), what is the value of the preliminary bond?",
+          "anchors": [
+            "2125611-RFP"
+          ],
+          "matched_ids": [
+            "2125611-RFP"
+          ],
+          "intents": [
+            "initial_bond_value_kd",
+            "initial_bond_percent"
+          ],
+          "record_id": "2125611-RFP",
+          "decision": "restrict",
+          "scope_candidates": [
+            "71-1736-0"
+          ],
+          "normalized_scope": [
+            "71-1736-0"
+          ],
+          "explicit_scope": [],
+          "alias_hits": {
+            "71-1736-0": [
+              "71-1736-0"
+            ]
+          },
+          "boost_terms": [
+            "2125611-RFP"
+          ]
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q11",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "anchor_primer_candidates": 0,
+          "union_total": 300,
+          "scope_applied": true,
+          "scope_hits": 29,
+          "anchor_hits": 2,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 2,
+          "ordered": 2,
+          "mmr_applied": true,
+          "final": 2,
+          "slot_guarded": 2,
+          "scope": [
+            "71-1736-0",
+            "71-1736-0:Notice:uncement/NoticeRegardingtheAdditionofCompaniestoTenderNo"
+          ],
+          "top_k": 100,
+          "label": "primary",
+          "neighbor_window": 2
+        },
+        {
+          "event": "answer",
+          "run_id": "q11",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 2
+        }
+      ]
+    },
+    {
+      "question": "In the Ministry of Health (Medical Stores Dept.) table, what fee is listed for Practice No. 5DX003?",
+      "answer": "75 KD [13]\n\nReferences\n13. 71-1737-0.",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q12",
+          "question": "In the Ministry of Health (Medical Stores Dept.) table, what fee is listed for Practice No. 5DX003?",
+          "anchors": [
+            "5DX003"
+          ],
+          "matched_ids": [
+            "5DX003"
+          ],
+          "intents": [
+            "duration_from",
+            "duration_to"
+          ],
+          "record_id": "5DX003",
+          "decision": "restrict",
+          "scope_candidates": [
+            "2025-05-04_en.md",
+            "71-1737-0"
+          ],
+          "normalized_scope": [
+            "2025-05-04_en.md"
+          ],
+          "explicit_scope": [
+            "2025-05-04_en.md"
+          ],
+          "alias_hits": {
+            "2025-05-04_en.md": [
+              "2025-05-04_en.md"
+            ],
+            "71-1737-0": [
+              "2025-05-04_en.md"
+            ]
+          },
+          "boost_terms": [
+            "5DX003",
+            "5DX003"
+          ]
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q12",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "anchor_primer_candidates": 0,
+          "union_total": 300,
+          "scope_applied": true,
+          "scope_hits": 50,
+          "anchor_hits": 1,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 1,
+          "ordered": 1,
+          "mmr_applied": true,
+          "final": 1,
+          "slot_guarded": 1,
+          "scope": [
+            "2025-05-04_en.md",
+            "71-1737-0:Announcement:uncementTheMinistryofHealth"
+          ],
+          "top_k": 100,
+          "label": "primary",
+          "neighbor_window": 2
+        },
+        {
+          "event": "answer",
+          "run_id": "q12",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 1
+        }
+      ]
+    },
+    {
+      "question": "For Al-Shifa Medical and Supplies Company’s agency registration, state the registration number and the duration (from and to).",
+      "answer": "- Registration No.: 2025/00574\n- Duration: 2024/12/20 to 2027/12/20",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q13",
+          "question": "For Al-Shifa Medical and Supplies Company’s agency registration, state the registration number and the duration (from and to).",
+          "anchors": [],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q13",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "anchor_primer_candidates": 0,
+          "union_total": 300,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 100,
+          "slot_guarded": 100,
+          "scope": [],
+          "top_k": 100,
+          "label": "primary",
+          "neighbor_window": 2
+        },
+        {
+          "event": "answer",
+          "run_id": "q13",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 100
+        }
+      ]
+    },
+    {
+      "question": "For Ministry of Health Practice No. 5DXK10 (Radiology consumables for Kuwait Cancer Control Hospital), what are the fee and the closing period stated?",
+      "answer": "- Fee: 75 KD\n- Closing period: 30 days from the announcement date (and more) [15]\n\nReferences\n15. 71-1737-0.",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q14",
+          "question": "For Ministry of Health Practice No. 5DXK10 (Radiology consumables for Kuwait Cancer Control Hospital), what are the fee and the closing period stated?",
+          "anchors": [
+            "5DXK10"
+          ],
+          "matched_ids": [
+            "5DXK10"
+          ],
+          "intents": [],
+          "record_id": "5DXK10",
+          "decision": "restrict",
+          "scope_candidates": [
+            "2025-05-04_en.md",
+            "71-1737-0"
+          ],
+          "normalized_scope": [
+            "2025-05-04_en.md"
+          ],
+          "explicit_scope": [
+            "2025-05-04_en.md"
+          ],
+          "alias_hits": {
+            "2025-05-04_en.md": [
+              "2025-05-04_en.md"
+            ],
+            "71-1737-0": [
+              "2025-05-04_en.md"
+            ]
+          },
+          "boost_terms": [
+            "5DXK10",
+            "5DXK10"
+          ]
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q14",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "anchor_primer_candidates": 0,
+          "union_total": 300,
+          "scope_applied": true,
+          "scope_hits": 94,
+          "anchor_hits": 1,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 1,
+          "ordered": 1,
+          "mmr_applied": true,
+          "final": 1,
+          "slot_guarded": 1,
+          "scope": [
+            "2025-05-04_en.md",
+            "71-1737-0:Announcement:uncementTheMinistryofHealth"
+          ],
+          "top_k": 100,
+          "label": "primary",
+          "neighbor_window": 2
+        },
+        {
+          "event": "answer",
+          "run_id": "q14",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 1
+        }
+      ]
+    },
+    {
+      "question": "According to CAPT Meeting No. 40/2025, within how many days must the concerned authority issue recommendations after tender documents are referred?",
+      "answer": "30 days from the date of referral.",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q15",
+          "question": "According to CAPT Meeting No. 40/2025, within how many days must the concerned authority issue recommendations after tender documents are referred?",
+          "anchors": [],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q15",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "anchor_primer_candidates": 0,
+          "union_total": 300,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 100,
+          "slot_guarded": 100,
+          "scope": [],
+          "top_k": 100,
+          "label": "primary",
+          "neighbor_window": 2
+        },
+        {
+          "event": "answer",
+          "run_id": "q15",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 100
+        }
+      ]
+    },
+    {
+      "question": "When an individual commercial license is converted into a general partnership, what form must an objection take and what happens if it is not submitted during the announcement period?",
+      "answer": "- Form: A written objection accompanied by a debt instrument, filed with the Companies Department.\n- Deadline: Within 15 days from the announcement’s publication.\n- If missed: The objection will not be taken into consideration.",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q16",
+          "question": "When an individual commercial license is converted into a general partnership, what form must an objection take and what happens if it is not submitted during the announcement period?",
+          "anchors": [],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q16",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "anchor_primer_candidates": 0,
+          "union_total": 300,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 100,
+          "slot_guarded": 100,
+          "scope": [],
+          "top_k": 100,
+          "label": "primary",
+          "neighbor_window": 1
+        },
+        {
+          "event": "answer",
+          "run_id": "q16",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 100
+        }
+      ]
+    },
+    {
+      "question": "For Kuwait Oil Company Tender No. 2125611-RFP, provide the closing date, the cost of tender documents, and the value of the preliminary bond.",
+      "answer": "I can’t find those details in the provided excerpt. The snippet notes a “Tender Information and Requirements” table, but the closing date, tender document cost, and preliminary bond value aren’t included here.\n\nPlease share the part of the notice containing that table, or check the K-Tendering Portal (ktendering.com.kw → RFQs/Tenders/Auctions → search “2125611-RFP” or the RFP title) to retrieve:\n- Closing date\n- Cost of tender documents\n- Preliminary bond value [18]\n\nReferences\n18. 71-1736-0.",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q17",
+          "question": "For Kuwait Oil Company Tender No. 2125611-RFP, provide the closing date, the cost of tender documents, and the value of the preliminary bond.",
+          "anchors": [
+            "2125611-RFP"
+          ],
+          "matched_ids": [
+            "2125611-RFP"
+          ],
+          "intents": [
+            "closing_date",
+            "initial_bond_value_kd",
+            "initial_bond_percent"
+          ],
+          "record_id": "2125611-RFP",
+          "decision": "restrict",
+          "scope_candidates": [
+            "71-1736-0"
+          ],
+          "normalized_scope": [
+            "71-1736-0"
+          ],
+          "explicit_scope": [],
+          "alias_hits": {
+            "71-1736-0": [
+              "71-1736-0"
+            ]
+          },
+          "boost_terms": [
+            "2125611-RFP"
+          ]
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q17",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "anchor_primer_candidates": 0,
+          "union_total": 300,
+          "scope_applied": true,
+          "scope_hits": 26,
+          "anchor_hits": 1,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 1,
+          "ordered": 1,
+          "mmr_applied": true,
+          "final": 1,
+          "slot_guarded": 1,
+          "scope": [
+            "71-1736-0",
+            "71-1736-0:Notice:uncement/NoticeRegardingtheAdditionofCompaniestoTenderNo"
+          ],
+          "top_k": 100,
+          "label": "primary",
+          "neighbor_window": 2
+        },
+        {
+          "event": "answer",
+          "run_id": "q17",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 1
+        }
+      ]
+    },
+    {
+      "question": "When a company is being dissolved and liquidated through the Partnerships Department, where must objections be submitted and within what time limit?",
+      "answer": "Objections must be filed with the General Court (المحكمة الكلية) within 30 days from the date the announcement is published.",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q18",
+          "question": "When a company is being dissolved and liquidated through the Partnerships Department, where must objections be submitted and within what time limit?",
+          "anchors": [],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q18",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "anchor_primer_candidates": 0,
+          "union_total": 300,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 100,
+          "slot_guarded": 100,
+          "scope": [],
+          "top_k": 100,
+          "label": "primary",
+          "neighbor_window": 1
+        },
+        {
+          "event": "answer",
+          "run_id": "q18",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 100
+        }
+      ]
+    },
+    {
+      "question": "For Amiri Diwan Practice A/M/804 (announced 11/5/2025), what initial security deposit percentage is required and name two other submission requirements stated?",
+      "answer": "- Initial security deposit: 2% of the bid value.\n- Other submission requirements (any two of the following):\n  - Submit the bid in a sealed envelope to the Tenders and Follow-up Department, Bayan Palace – Administrative Building – First Floor – Zone 7.\n  - Provide a certificate of compliance with the national labor percentage and a valid tax compliance certificate. [20]\n\nReferences\n20. 2025-05-11_en.md. L13261-L13261.",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q19",
+          "question": "For Amiri Diwan Practice A/M/804 (announced 11/5/2025), what initial security deposit percentage is required and name two other submission requirements stated?",
+          "anchors": [
+            "A/M/804"
+          ],
+          "matched_ids": [
+            "A/M/804"
+          ],
+          "intents": [],
+          "record_id": "A/M/804",
+          "decision": "restrict",
+          "scope_candidates": [
+            "2025-05-11_en.md"
+          ],
+          "normalized_scope": [
+            "2025-05-11_en.md"
+          ],
+          "explicit_scope": [
+            "2025-05-11_en.md"
+          ],
+          "alias_hits": {
+            "2025-05-11_en.md": [
+              "2025-05-11_en.md"
+            ]
+          },
+          "boost_terms": [
+            "A/M/804",
+            "A/M/804",
+            "Amiri Diwan"
+          ]
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q19",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "anchor_primer_candidates": 0,
+          "union_total": 300,
+          "scope_applied": true,
+          "scope_hits": 41,
+          "anchor_hits": 1,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 1,
+          "ordered": 1,
+          "mmr_applied": true,
+          "final": 1,
+          "slot_guarded": 1,
+          "scope": [
+            "2025-05-11_en.md",
+            "71-1738-0:Resolution:86/2025"
+          ],
+          "top_k": 100,
+          "label": "primary",
+          "neighbor_window": 2
+        },
+        {
+          "event": "answer",
+          "run_id": "q19",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 1
+        }
+      ]
+    },
+    {
+      "question": "According to the latest correction for RFP-2113556, on what date was the earlier (incorrect) announcement published?",
+      "answer": "2025-04-27",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q20",
+          "question": "According to the latest correction for RFP-2113556, on what date was the earlier (incorrect) announcement published?",
+          "anchors": [
+            "RFP-2113556"
+          ],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q20",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "anchor_primer_candidates": 0,
+          "union_total": 300,
+          "scope_applied": true,
+          "scope_hits": 12,
+          "anchor_hits": 1,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 1,
+          "ordered": 1,
+          "mmr_applied": true,
+          "final": 1,
+          "slot_guarded": 1,
+          "scope": [
+            "71-1736-0:Notice:uncement/NoticeRegardingtheAdditionofCompaniestoTenderNo",
+            "71-1737-0:Announcement:uncementTheInternalProcurementCommittee"
+          ],
+          "top_k": 100,
+          "label": "primary",
+          "neighbor_window": 2
+        },
+        {
+          "event": "answer",
+          "run_id": "q20",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 1
+        }
+      ]
+    },
+    {
+      "question": "According to the latest correction, what is the corrected legal entity in the Ministry of Commerce and Industry announcement that previously mis-stated it as a One-Person Company?",
+      "answer": "Limited Liability Company.",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q21",
+          "question": "According to the latest correction, what is the corrected legal entity in the Ministry of Commerce and Industry announcement that previously mis-stated it as a One-Person Company?",
+          "anchors": [],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q21",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "anchor_primer_candidates": 0,
+          "union_total": 300,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 100,
+          "slot_guarded": 100,
+          "scope": [],
+          "top_k": 100,
+          "label": "primary",
+          "neighbor_window": 1
+        },
+        {
+          "event": "answer",
+          "run_id": "q21",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 100
+        }
+      ]
+    },
+    {
+      "question": "Across the Amiri Diwan auction (27/4/2025) and Practice A/M/804 (11/5/2025), what consistent rule is stated regarding alternative offers?",
+      "answer": "Alternative offers are not permitted.\nProvenance: 2025-05-11_en.md:L13261-L13261 [23]\n\nReferences\n23. 2025-05-11_en.md. L13261-L13261.",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q22",
+          "question": "Across the Amiri Diwan auction (27/4/2025) and Practice A/M/804 (11/5/2025), what consistent rule is stated regarding alternative offers?",
+          "anchors": [
+            "A/M/804"
+          ],
+          "matched_ids": [
+            "A/M/804"
+          ],
+          "intents": [
+            "alternative_offers_allowed"
+          ],
+          "record_id": "A/M/804",
+          "decision": "answer",
+          "scope_candidates": [
+            "2025-05-11_en.md"
+          ],
+          "normalized_scope": [
+            "2025-05-11_en.md"
+          ]
+        },
+        {
+          "event": "card_answer",
+          "run_id": "q22",
+          "record_id": "A/M/804",
+          "decision": "answer"
+        },
+        {
+          "event": "answer",
+          "run_id": "q22",
+          "source": "card",
+          "fallback": false,
+          "retrieved": 0
+        }
+      ]
+    },
+    {
+      "question": "According to the latest correction, what is the correct company name listed for Tender RFP-2113556 (Rig Site Preparation for Drilling and Workover Wells)?",
+      "answer": "FUTURE SERVICES GENERAL TRADING AND CONTRACTING COMPANY W.L.L.",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q23",
+          "question": "According to the latest correction, what is the correct company name listed for Tender RFP-2113556 (Rig Site Preparation for Drilling and Workover Wells)?",
+          "anchors": [
+            "RFP-2113556"
+          ],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q23",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "anchor_primer_candidates": 0,
+          "union_total": 300,
+          "scope_applied": true,
+          "scope_hits": 45,
+          "anchor_hits": 2,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 2,
+          "ordered": 2,
+          "mmr_applied": true,
+          "final": 2,
+          "slot_guarded": 2,
+          "scope": [
+            "71-1736-0:Notice:uncement/NoticeRegardingtheAdditionofCompaniestoTenderNo",
+            "71-1737-0:Announcement:uncementTheInternalProcurementCommittee"
+          ],
+          "top_k": 100,
+          "label": "primary",
+          "neighbor_window": 2
+        },
+        {
+          "event": "answer",
+          "run_id": "q23",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 2
+        }
+      ]
+    },
+    {
+      "question": "How many fiscal years did Decree-Law No. 61 of 2025 extend the withdrawal period authorized by Law No. 3 of 2016?",
+      "answer": "Two fiscal years.",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q24",
+          "question": "How many fiscal years did Decree-Law No. 61 of 2025 extend the withdrawal period authorized by Law No. 3 of 2016?",
+          "anchors": [],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q24",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "anchor_primer_candidates": 0,
+          "union_total": 300,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 100,
+          "slot_guarded": 100,
+          "scope": [],
+          "top_k": 100,
+          "label": "primary",
+          "neighbor_window": 1
+        },
+        {
+          "event": "answer",
+          "run_id": "q24",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 100
+        }
+      ]
+    },
+    {
+      "question": "What is the bid closing time and date for Practice No. 1-2026/2025 (Ministry of Awqaf and Islamic Affairs)?",
+      "answer": "1:00 PM on Sunday, 4/5/2025.",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q25",
+          "question": "What is the bid closing time and date for Practice No. 1-2026/2025 (Ministry of Awqaf and Islamic Affairs)?",
+          "anchors": [
+            "1-2026/2025"
+          ],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q25",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "anchor_primer_candidates": 0,
+          "union_total": 300,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 100,
+          "slot_guarded": 100,
+          "scope": [],
+          "top_k": 100,
+          "label": "primary",
+          "neighbor_window": 2
+        },
+        {
+          "event": "answer",
+          "run_id": "q25",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 100
+        }
+      ]
+    },
+    {
+      "question": "What is the closing date for the Public Authority for Sport X-ray machine tender?",
+      "answer": "The closing date isn’t stated in the provided notice. The extract only gives a preliminary meeting at 10:00 AM on Monday, 05-05-2025.",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q26",
+          "question": "What is the closing date for the Public Authority for Sport X-ray machine tender?",
+          "anchors": [],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q26",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "anchor_primer_candidates": 0,
+          "union_total": 300,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 100,
+          "slot_guarded": 100,
+          "scope": [],
+          "top_k": 100,
+          "label": "primary",
+          "neighbor_window": 1
+        },
+        {
+          "event": "answer",
+          "run_id": "q26",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 100
+        }
+      ]
+    },
+    {
+      "question": "What guarantee amount is required for the Public Authority for Sport X-ray machine tender?",
+      "answer": "1,500 KD (valid for 90 days, in favor of the Public Authority for Sport).",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q27",
+          "question": "What guarantee amount is required for the Public Authority for Sport X-ray machine tender?",
+          "anchors": [],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q27",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "anchor_primer_candidates": 0,
+          "union_total": 300,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 100,
+          "slot_guarded": 100,
+          "scope": [],
+          "top_k": 100,
+          "label": "primary",
+          "neighbor_window": 1
+        },
+        {
+          "event": "answer",
+          "run_id": "q27",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 100
+        }
+      ]
+    },
+    {
+      "question": "What is the tender document price for the Public Authority for Sport X-ray machine tender?",
+      "answer": "75 Kuwaiti Dinars (K.D.)",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q28",
+          "question": "What is the tender document price for the Public Authority for Sport X-ray machine tender?",
+          "anchors": [],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q28",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "anchor_primer_candidates": 0,
+          "union_total": 300,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 100,
+          "slot_guarded": 100,
+          "scope": [],
+          "top_k": 100,
+          "label": "primary",
+          "neighbor_window": 2
+        },
+        {
+          "event": "answer",
+          "run_id": "q28",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 100
+        }
+      ]
+    },
+    {
+      "question": "What is the closing date for Kuwait Oil Company Tender No. 2125611-RFP?",
+      "answer": "The closing date is not stated in the provided excerpt. Please check the tender’s page on the K-Tendering Portal (https://www.ktendering.com.kw → RFQs/Tenders/Auctions → search “2125611-RFP”) for the official submission deadline. [30]\n\nReferences\n30. 71-1736-0.",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q29",
+          "question": "What is the closing date for Kuwait Oil Company Tender No. 2125611-RFP?",
+          "anchors": [
+            "2125611-RFP"
+          ],
+          "matched_ids": [
+            "2125611-RFP"
+          ],
+          "intents": [
+            "closing_date"
+          ],
+          "record_id": "2125611-RFP",
+          "decision": "restrict",
+          "scope_candidates": [
+            "71-1736-0"
+          ],
+          "normalized_scope": [
+            "71-1736-0"
+          ],
+          "explicit_scope": [],
+          "alias_hits": {
+            "71-1736-0": [
+              "71-1736-0"
+            ]
+          },
+          "boost_terms": [
+            "2125611-RFP"
+          ]
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q29",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "anchor_primer_candidates": 0,
+          "union_total": 300,
+          "scope_applied": true,
+          "scope_hits": 18,
+          "anchor_hits": 1,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 1,
+          "ordered": 1,
+          "mmr_applied": true,
+          "final": 1,
+          "slot_guarded": 1,
+          "scope": [
+            "71-1736-0",
+            "71-1736-0:Notice:uncement/NoticeRegardingtheAdditionofCompaniestoTenderNo"
+          ],
+          "top_k": 100,
+          "label": "primary",
+          "neighbor_window": 2
+        },
+        {
+          "event": "answer",
+          "run_id": "q29",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 1
+        }
+      ]
+    },
+    {
+      "question": "What is the preliminary bond value for Kuwait Oil Company Tender No. 2125611-RFP?",
+      "answer": "The provided context does not state the preliminary bond value for Tender No. 2125611-RFP. To find it, access the tender documents via the K-Tendering Portal (https://www.ktendering.com.kw → RFQs/Tenders/Auctions → search for 2125611-RFP) and check the “Tender Information and Requirements” table for the Preliminary Bond/Bank Guarantee amount. [31]\n\nReferences\n31. 71-1736-0.",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q30",
+          "question": "What is the preliminary bond value for Kuwait Oil Company Tender No. 2125611-RFP?",
+          "anchors": [
+            "2125611-RFP"
+          ],
+          "matched_ids": [
+            "2125611-RFP"
+          ],
+          "intents": [
+            "initial_bond_value_kd",
+            "initial_bond_percent"
+          ],
+          "record_id": "2125611-RFP",
+          "decision": "restrict",
+          "scope_candidates": [
+            "71-1736-0"
+          ],
+          "normalized_scope": [
+            "71-1736-0"
+          ],
+          "explicit_scope": [],
+          "alias_hits": {
+            "71-1736-0": [
+              "71-1736-0"
+            ]
+          },
+          "boost_terms": [
+            "2125611-RFP"
+          ]
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q30",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "anchor_primer_candidates": 0,
+          "union_total": 300,
+          "scope_applied": true,
+          "scope_hits": 24,
+          "anchor_hits": 1,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 1,
+          "ordered": 1,
+          "mmr_applied": true,
+          "final": 1,
+          "slot_guarded": 1,
+          "scope": [
+            "71-1736-0",
+            "71-1736-0:Notice:uncement/NoticeRegardingtheAdditionofCompaniestoTenderNo"
+          ],
+          "top_k": 100,
+          "label": "primary",
+          "neighbor_window": 2
+        },
+        {
+          "event": "answer",
+          "run_id": "q30",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 1
+        }
+      ]
+    },
+    {
+      "question": "What is the cost of the tender documents for Kuwait Oil Company Tender No. 2125611-RFP?",
+      "answer": "The provided context does not state the price of the tender documents for Tender No. 2125611-RFP. To find it, check the Tender Information and Requirements on the K-Tendering Portal: https://www.ktendering.com.kw (RFQs/Tenders/Auctions → search for “2125611-RFP” or “WELL TESTING AND ASSOCIATED SERVICES (LOCAL)”). [32]\n\nReferences\n32. 71-1736-0.",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q31",
+          "question": "What is the cost of the tender documents for Kuwait Oil Company Tender No. 2125611-RFP?",
+          "anchors": [
+            "2125611-RFP"
+          ],
+          "matched_ids": [
+            "2125611-RFP"
+          ],
+          "intents": [],
+          "record_id": "2125611-RFP",
+          "decision": "restrict",
+          "scope_candidates": [
+            "71-1736-0"
+          ],
+          "normalized_scope": [
+            "71-1736-0"
+          ],
+          "explicit_scope": [],
+          "alias_hits": {
+            "71-1736-0": [
+              "71-1736-0"
+            ]
+          },
+          "boost_terms": [
+            "2125611-RFP"
+          ]
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q31",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "anchor_primer_candidates": 0,
+          "union_total": 300,
+          "scope_applied": true,
+          "scope_hits": 30,
+          "anchor_hits": 1,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 1,
+          "ordered": 1,
+          "mmr_applied": true,
+          "final": 1,
+          "slot_guarded": 1,
+          "scope": [
+            "71-1736-0",
+            "71-1736-0:Notice:uncement/NoticeRegardingtheAdditionofCompaniestoTenderNo"
+          ],
+          "top_k": 100,
+          "label": "primary",
+          "neighbor_window": 2
+        },
+        {
+          "event": "answer",
+          "run_id": "q31",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 1
+        }
+      ]
+    },
+    {
+      "question": "For the Amiri Diwan tender announced on 27/4/2025, how long must the bid remain valid?",
+      "answer": "90 days from the closing date.",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q32",
+          "question": "For the Amiri Diwan tender announced on 27/4/2025, how long must the bid remain valid?",
+          "anchors": [],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q32",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "anchor_primer_candidates": 0,
+          "union_total": 300,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 100,
+          "slot_guarded": 100,
+          "scope": [],
+          "top_k": 100,
+          "label": "primary",
+          "neighbor_window": 1
+        },
+        {
+          "event": "answer",
+          "run_id": "q32",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 100
+        }
+      ]
+    },
+    {
+      "question": "For the Amiri Diwan tender announced on 27/4/2025, what is the minimum initial bond percentage?",
+      "answer": "2% of the bid value.",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q33",
+          "question": "For the Amiri Diwan tender announced on 27/4/2025, what is the minimum initial bond percentage?",
+          "anchors": [],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q33",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "anchor_primer_candidates": 0,
+          "union_total": 300,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 100,
+          "slot_guarded": 100,
+          "scope": [],
+          "top_k": 100,
+          "label": "primary",
+          "neighbor_window": 2
+        },
+        {
+          "event": "answer",
+          "run_id": "q33",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 100
+        }
+      ]
+    },
+    {
+      "question": "Are alternative offers permitted in the Amiri Diwan tender announced on 27/4/2025?",
+      "answer": "No. The Amiri Diwan announcement dated 27/4/2025 states the tender/auction is indivisible and alternative offers are not permitted.",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q34",
+          "question": "Are alternative offers permitted in the Amiri Diwan tender announced on 27/4/2025?",
+          "anchors": [],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q34",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "anchor_primer_candidates": 0,
+          "union_total": 300,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 100,
+          "slot_guarded": 100,
+          "scope": [],
+          "top_k": 100,
+          "label": "primary",
+          "neighbor_window": 1
+        },
+        {
+          "event": "answer",
+          "run_id": "q34",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 100
+        }
+      ]
+    },
+    {
+      "question": "What is the submission deadline time and date for Amiri Diwan Practice A/M/804?",
+      "answer": "Closing date is 2025-05-22.\nProvenance: 2025-05-11_en.md:L13261-L13261 [36]\n\nReferences\n36. 2025-05-11_en.md. L13261-L13261.",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q35",
+          "question": "What is the submission deadline time and date for Amiri Diwan Practice A/M/804?",
+          "anchors": [
+            "A/M/804"
+          ],
+          "matched_ids": [
+            "A/M/804"
+          ],
+          "intents": [
+            "closing_date"
+          ],
+          "record_id": "A/M/804",
+          "decision": "answer",
+          "scope_candidates": [
+            "2025-05-11_en.md"
+          ],
+          "normalized_scope": [
+            "2025-05-11_en.md"
+          ]
+        },
+        {
+          "event": "card_answer",
+          "run_id": "q35",
+          "record_id": "A/M/804",
+          "decision": "answer"
+        },
+        {
+          "event": "answer",
+          "run_id": "q35",
+          "source": "card",
+          "fallback": false,
+          "retrieved": 0
+        }
+      ]
+    },
+    {
+      "question": "What initial security deposit percentage is required for Amiri Diwan Practice A/M/804?",
+      "answer": "2% of the bid value. [37]\n\nReferences\n37. 2025-05-11_en.md. L13261-L13261.",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q36",
+          "question": "What initial security deposit percentage is required for Amiri Diwan Practice A/M/804?",
+          "anchors": [
+            "A/M/804"
+          ],
+          "matched_ids": [
+            "A/M/804"
+          ],
+          "intents": [],
+          "record_id": "A/M/804",
+          "decision": "restrict",
+          "scope_candidates": [
+            "2025-05-11_en.md"
+          ],
+          "normalized_scope": [
+            "2025-05-11_en.md"
+          ],
+          "explicit_scope": [
+            "2025-05-11_en.md"
+          ],
+          "alias_hits": {
+            "2025-05-11_en.md": [
+              "2025-05-11_en.md"
+            ]
+          },
+          "boost_terms": [
+            "A/M/804",
+            "A/M/804",
+            "Amiri Diwan"
+          ]
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q36",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "anchor_primer_candidates": 0,
+          "union_total": 300,
+          "scope_applied": true,
+          "scope_hits": 41,
+          "anchor_hits": 1,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 1,
+          "ordered": 1,
+          "mmr_applied": true,
+          "final": 1,
+          "slot_guarded": 1,
+          "scope": [
+            "2025-05-11_en.md",
+            "71-1738-0:Resolution:86/2025"
+          ],
+          "top_k": 100,
+          "label": "primary",
+          "neighbor_window": 2
+        },
+        {
+          "event": "answer",
+          "run_id": "q36",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 1
+        }
+      ]
+    },
+    {
+      "question": "What is the practice fee for Ministry of Health Practice No. 5DX003?",
+      "answer": "75 KD [38]\n\nReferences\n38. 71-1737-0.",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q37",
+          "question": "What is the practice fee for Ministry of Health Practice No. 5DX003?",
+          "anchors": [
+            "5DX003"
+          ],
+          "matched_ids": [
+            "5DX003"
+          ],
+          "intents": [],
+          "record_id": "5DX003",
+          "decision": "restrict",
+          "scope_candidates": [
+            "2025-05-04_en.md",
+            "71-1737-0"
+          ],
+          "normalized_scope": [
+            "2025-05-04_en.md"
+          ],
+          "explicit_scope": [
+            "2025-05-04_en.md"
+          ],
+          "alias_hits": {
+            "2025-05-04_en.md": [
+              "2025-05-04_en.md"
+            ],
+            "71-1737-0": [
+              "2025-05-04_en.md"
+            ]
+          },
+          "boost_terms": [
+            "5DX003",
+            "5DX003"
+          ]
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q37",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "anchor_primer_candidates": 0,
+          "union_total": 300,
+          "scope_applied": true,
+          "scope_hits": 49,
+          "anchor_hits": 1,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 1,
+          "ordered": 1,
+          "mmr_applied": true,
+          "final": 1,
+          "slot_guarded": 1,
+          "scope": [
+            "2025-05-04_en.md",
+            "71-1737-0:Announcement:uncementTheMinistryofHealth"
+          ],
+          "top_k": 100,
+          "label": "primary",
+          "neighbor_window": 2
+        },
+        {
+          "event": "answer",
+          "run_id": "q37",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 1
+        }
+      ]
+    },
+    {
+      "question": "What closing period is stated for Ministry of Health Practice No. 5DXK10?",
+      "answer": "30 days from the announcement date and more. [39]\n\nReferences\n39. 71-1737-0.",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q38",
+          "question": "What closing period is stated for Ministry of Health Practice No. 5DXK10?",
+          "anchors": [
+            "5DXK10"
+          ],
+          "matched_ids": [
+            "5DXK10"
+          ],
+          "intents": [],
+          "record_id": "5DXK10",
+          "decision": "restrict",
+          "scope_candidates": [
+            "2025-05-04_en.md",
+            "71-1737-0"
+          ],
+          "normalized_scope": [
+            "2025-05-04_en.md"
+          ],
+          "explicit_scope": [
+            "2025-05-04_en.md"
+          ],
+          "alias_hits": {
+            "2025-05-04_en.md": [
+              "2025-05-04_en.md"
+            ],
+            "71-1737-0": [
+              "2025-05-04_en.md"
+            ]
+          },
+          "boost_terms": [
+            "5DXK10",
+            "5DXK10"
+          ]
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q38",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "anchor_primer_candidates": 0,
+          "union_total": 300,
+          "scope_applied": true,
+          "scope_hits": 55,
+          "anchor_hits": 1,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 1,
+          "ordered": 1,
+          "mmr_applied": true,
+          "final": 1,
+          "slot_guarded": 1,
+          "scope": [
+            "2025-05-04_en.md",
+            "71-1737-0:Announcement:uncementTheMinistryofHealth"
+          ],
+          "top_k": 100,
+          "label": "primary",
+          "neighbor_window": 2
+        },
+        {
+          "event": "answer",
+          "run_id": "q38",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 1
+        }
+      ]
+    },
+    {
+      "question": "What is the registration number for the National Medical Company’s Top Glove agency?",
+      "answer": "2025/00549",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q39",
+          "question": "What is the registration number for the National Medical Company’s Top Glove agency?",
+          "anchors": [],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q39",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "anchor_primer_candidates": 0,
+          "union_total": 300,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 100,
+          "slot_guarded": 100,
+          "scope": [],
+          "top_k": 100,
+          "label": "primary",
+          "neighbor_window": 2
+        },
+        {
+          "event": "answer",
+          "run_id": "q39",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 100
+        }
+      ]
+    },
+    {
+      "question": "What is the agency registration number for R&B United General Trading Company (Remist Tianjin Medical Device)?",
+      "answer": "2025/00590",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q40",
+          "question": "What is the agency registration number for R&B United General Trading Company (Remist Tianjin Medical Device)?",
+          "anchors": [],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q40",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "anchor_primer_candidates": 0,
+          "union_total": 300,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 100,
+          "slot_guarded": 100,
+          "scope": [],
+          "top_k": 100,
+          "label": "primary",
+          "neighbor_window": 2
+        },
+        {
+          "event": "answer",
+          "run_id": "q40",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 100
+        }
+      ]
+    },
+    {
+      "question": "What is the duration of the National Medical Company’s Top Glove agency (from and to dates)?",
+      "answer": "From 2025/02/10 to 2030/02/10.",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q41",
+          "question": "What is the duration of the National Medical Company’s Top Glove agency (from and to dates)?",
+          "anchors": [],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q41",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "anchor_primer_candidates": 0,
+          "union_total": 300,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 100,
+          "slot_guarded": 100,
+          "scope": [],
+          "top_k": 100,
+          "label": "primary",
+          "neighbor_window": 2
+        },
+        {
+          "event": "answer",
+          "run_id": "q41",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 100
+        }
+      ]
+    },
+    {
+      "question": "What is the registration number for Al-Shifa Medical and Supplies Company’s E-Tips agency?",
+      "answer": "2025/00574",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q42",
+          "question": "What is the registration number for Al-Shifa Medical and Supplies Company’s E-Tips agency?",
+          "anchors": [],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q42",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "anchor_primer_candidates": 0,
+          "union_total": 300,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 100,
+          "slot_guarded": 100,
+          "scope": [],
+          "top_k": 100,
+          "label": "primary",
+          "neighbor_window": 2
+        },
+        {
+          "event": "answer",
+          "run_id": "q42",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 100
+        }
+      ]
+    },
+    {
+      "question": "What is the duration of Al-Shifa Medical and Supplies Company’s E-Tips agency (from and to dates)?",
+      "answer": "2024/12/20 to 2027/12/20",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q43",
+          "question": "What is the duration of Al-Shifa Medical and Supplies Company’s E-Tips agency (from and to dates)?",
+          "anchors": [],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q43",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "anchor_primer_candidates": 0,
+          "union_total": 300,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 100,
+          "slot_guarded": 100,
+          "scope": [],
+          "top_k": 100,
+          "label": "primary",
+          "neighbor_window": 2
+        },
+        {
+          "event": "answer",
+          "run_id": "q43",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 100
+        }
+      ]
+    },
+    {
+      "question": "According to the latest supplement, what is the correct company name for Tender RFP-2113556?",
+      "answer": "FUTURE SERVICES GENERAL TRADING AND CONTRACTING COMPANY W.L.L",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q44",
+          "question": "According to the latest supplement, what is the correct company name for Tender RFP-2113556?",
+          "anchors": [
+            "RFP-2113556"
+          ],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q44",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "anchor_primer_candidates": 0,
+          "union_total": 300,
+          "scope_applied": true,
+          "scope_hits": 19,
+          "anchor_hits": 2,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 2,
+          "ordered": 2,
+          "mmr_applied": true,
+          "final": 2,
+          "slot_guarded": 2,
+          "scope": [
+            "71-1736-0:Notice:uncement/NoticeRegardingtheAdditionofCompaniestoTenderNo",
+            "71-1737-0:Announcement:uncementTheInternalProcurementCommittee"
+          ],
+          "top_k": 100,
+          "label": "primary",
+          "neighbor_window": 2
+        },
+        {
+          "event": "answer",
+          "run_id": "q44",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 2
+        }
+      ]
+    },
+    {
+      "question": "According to the latest supplement, on what date was the earlier incorrect RFP-2113556 announcement published?",
+      "answer": "Sunday, 27/04/2025.",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q45",
+          "question": "According to the latest supplement, on what date was the earlier incorrect RFP-2113556 announcement published?",
+          "anchors": [
+            "RFP-2113556"
+          ],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q45",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "anchor_primer_candidates": 0,
+          "union_total": 300,
+          "scope_applied": true,
+          "scope_hits": 14,
+          "anchor_hits": 1,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 1,
+          "ordered": 1,
+          "mmr_applied": true,
+          "final": 1,
+          "slot_guarded": 1,
+          "scope": [
+            "71-1736-0:Notice:uncement/NoticeRegardingtheAdditionofCompaniestoTenderNo",
+            "71-1737-0:Announcement:uncementTheInternalProcurementCommittee"
+          ],
+          "top_k": 100,
+          "label": "primary",
+          "neighbor_window": 2
+        },
+        {
+          "event": "answer",
+          "run_id": "q45",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 1
+        }
+      ]
+    },
+    {
+      "question": "How many fiscal years was the withdrawal period extended by the 2025 decree-law?",
+      "answer": "Two fiscal years.",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q46",
+          "question": "How many fiscal years was the withdrawal period extended by the 2025 decree-law?",
+          "anchors": [],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q46",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "anchor_primer_candidates": 0,
+          "union_total": 300,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 100,
+          "slot_guarded": 100,
+          "scope": [],
+          "top_k": 100,
+          "label": "primary",
+          "neighbor_window": 1
+        },
+        {
+          "event": "answer",
+          "run_id": "q46",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 100
+        }
+      ]
+    },
+    {
+      "question": "What is the closing date of the Sports Medicine Center X-ray tender?",
+      "answer": "10:00 AM on Tuesday, 25-05-2025 (Public Authority for Sport)",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q47",
+          "question": "What is the closing date of the Sports Medicine Center X-ray tender?",
+          "anchors": [],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q47",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "anchor_primer_candidates": 0,
+          "union_total": 300,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 100,
+          "slot_guarded": 100,
+          "scope": [],
+          "top_k": 100,
+          "label": "primary",
+          "neighbor_window": 1
+        },
+        {
+          "event": "answer",
+          "run_id": "q47",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 100
+        }
+      ]
+    },
+    {
+      "question": "What is the required guarantee amount for the Sports Medicine Center X-ray tender?",
+      "answer": "65 KD",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q48",
+          "question": "What is the required guarantee amount for the Sports Medicine Center X-ray tender?",
+          "anchors": [],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q48",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "anchor_primer_candidates": 0,
+          "union_total": 300,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 100,
+          "slot_guarded": 100,
+          "scope": [],
+          "top_k": 100,
+          "label": "primary",
+          "neighbor_window": 1
+        },
+        {
+          "event": "answer",
+          "run_id": "q48",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 100
+        }
+      ]
+    },
+    {
+      "question": "How much does it cost to purchase the documents for the Sports Medicine Center X-ray tender?",
+      "answer": "100 KD",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q49",
+          "question": "How much does it cost to purchase the documents for the Sports Medicine Center X-ray tender?",
+          "anchors": [],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q49",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "anchor_primer_candidates": 0,
+          "union_total": 300,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 100,
+          "slot_guarded": 100,
+          "scope": [],
+          "top_k": 100,
+          "label": "primary",
+          "neighbor_window": 2
+        },
+        {
+          "event": "answer",
+          "run_id": "q49",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 100
+        }
+      ]
+    },
+    {
+      "question": "How long must bids remain valid in the Amiri Diwan tender announced in late April?",
+      "answer": "90 days from the closing date.",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q50",
+          "question": "How long must bids remain valid in the Amiri Diwan tender announced in late April?",
+          "anchors": [],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q50",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "anchor_primer_candidates": 0,
+          "union_total": 300,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 100,
+          "slot_guarded": 100,
+          "scope": [],
+          "top_k": 100,
+          "label": "primary",
+          "neighbor_window": 1
+        },
+        {
+          "event": "answer",
+          "run_id": "q50",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 100
+        }
+      ]
+    },
+    {
+      "question": "What is the minimum initial bond percentage required in the late-April Amiri Diwan tender?",
+      "answer": "2% of the bid value.",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q51",
+          "question": "What is the minimum initial bond percentage required in the late-April Amiri Diwan tender?",
+          "anchors": [],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q51",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "anchor_primer_candidates": 0,
+          "union_total": 300,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 100,
+          "slot_guarded": 100,
+          "scope": [],
+          "top_k": 100,
+          "label": "primary",
+          "neighbor_window": 2
+        },
+        {
+          "event": "answer",
+          "run_id": "q51",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 100
+        }
+      ]
+    },
+    {
+      "question": "Are alternative offers allowed in the late-April Amiri Diwan tender?",
+      "answer": "No. The late-April (Apr 27) Amiri Diwan tender/auction is indivisible, and alternative offers are not permitted.",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q52",
+          "question": "Are alternative offers allowed in the late-April Amiri Diwan tender?",
+          "anchors": [],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q52",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "anchor_primer_candidates": 0,
+          "union_total": 300,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 100,
+          "slot_guarded": 100,
+          "scope": [],
+          "top_k": 100,
+          "label": "primary",
+          "neighbor_window": 1
+        },
+        {
+          "event": "answer",
+          "run_id": "q52",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 100
+        }
+      ]
+    },
+    {
+      "question": "What is the practice fee for Ministry of Health Practice No. 5DX003?",
+      "answer": "75 Kuwaiti Dinars (KD) [54]\n\nReferences\n54. 71-1737-0.",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q53",
+          "question": "What is the practice fee for Ministry of Health Practice No. 5DX003?",
+          "anchors": [
+            "5DX003"
+          ],
+          "matched_ids": [
+            "5DX003"
+          ],
+          "intents": [],
+          "record_id": "5DX003",
+          "decision": "restrict",
+          "scope_candidates": [
+            "2025-05-04_en.md",
+            "71-1737-0"
+          ],
+          "normalized_scope": [
+            "2025-05-04_en.md"
+          ],
+          "explicit_scope": [
+            "2025-05-04_en.md"
+          ],
+          "alias_hits": {
+            "2025-05-04_en.md": [
+              "2025-05-04_en.md"
+            ],
+            "71-1737-0": [
+              "2025-05-04_en.md"
+            ]
+          },
+          "boost_terms": [
+            "5DX003",
+            "5DX003"
+          ]
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q53",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "anchor_primer_candidates": 0,
+          "union_total": 300,
+          "scope_applied": true,
+          "scope_hits": 49,
+          "anchor_hits": 1,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 1,
+          "ordered": 1,
+          "mmr_applied": true,
+          "final": 1,
+          "slot_guarded": 1,
+          "scope": [
+            "2025-05-04_en.md",
+            "71-1737-0:Announcement:uncementTheMinistryofHealth"
+          ],
+          "top_k": 100,
+          "label": "primary",
+          "neighbor_window": 2
+        },
+        {
+          "event": "answer",
+          "run_id": "q53",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 1
+        }
+      ]
+    },
+    {
+      "question": "What is the bid closing time for the Ministry of Awqaf Practice No. 1-2026/2025?",
+      "answer": "1:00 PM on Sunday, 4/5/2025.",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q54",
+          "question": "What is the bid closing time for the Ministry of Awqaf Practice No. 1-2026/2025?",
+          "anchors": [
+            "1-2026/2025"
+          ],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q54",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "anchor_primer_candidates": 0,
+          "union_total": 300,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 100,
+          "slot_guarded": 100,
+          "scope": [],
+          "top_k": 100,
+          "label": "primary",
+          "neighbor_window": 2
+        },
+        {
+          "event": "answer",
+          "run_id": "q54",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 100
+        }
+      ]
+    },
+    {
+      "question": "What is the closing date for Kuwait Oil Company Tender No. 2125611-RFP?",
+      "answer": "The closing date isn’t provided in the excerpted context. Please check the K‑Tendering Portal (https://www.ktendering.com.kw) listing for Tender No. 2125611‑RFP to view the official closing date. [56]\n\nReferences\n56. 71-1736-0.",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q55",
+          "question": "What is the closing date for Kuwait Oil Company Tender No. 2125611-RFP?",
+          "anchors": [
+            "2125611-RFP"
+          ],
+          "matched_ids": [
+            "2125611-RFP"
+          ],
+          "intents": [
+            "closing_date"
+          ],
+          "record_id": "2125611-RFP",
+          "decision": "restrict",
+          "scope_candidates": [
+            "71-1736-0"
+          ],
+          "normalized_scope": [
+            "71-1736-0"
+          ],
+          "explicit_scope": [],
+          "alias_hits": {
+            "71-1736-0": [
+              "71-1736-0"
+            ]
+          },
+          "boost_terms": [
+            "2125611-RFP"
+          ]
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q55",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "anchor_primer_candidates": 0,
+          "union_total": 300,
+          "scope_applied": true,
+          "scope_hits": 18,
+          "anchor_hits": 1,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 1,
+          "ordered": 1,
+          "mmr_applied": true,
+          "final": 1,
+          "slot_guarded": 1,
+          "scope": [
+            "71-1736-0",
+            "71-1736-0:Notice:uncement/NoticeRegardingtheAdditionofCompaniestoTenderNo"
+          ],
+          "top_k": 100,
+          "label": "primary",
+          "neighbor_window": 2
+        },
+        {
+          "event": "answer",
+          "run_id": "q55",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 1
+        }
+      ]
+    },
+    {
+      "question": "What preliminary bond value is set for Kuwait Oil Company Tender No. 2125611-RFP?",
+      "answer": "The provided excerpt does not state the preliminary bond value for Tender No. 2125611-RFP. You’ll need to check the “Tender Information and Requirements” table in the tender documents on the K-Tendering Portal:\n- https://www.ktendering.com.kw → RFQs/Tenders/Auctions (Open to all Suppliers) → search for “2125611-RFP” or the RFP title and open the tender details. [57]\n\nReferences\n57. 71-1736-0.",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q56",
+          "question": "What preliminary bond value is set for Kuwait Oil Company Tender No. 2125611-RFP?",
+          "anchors": [
+            "2125611-RFP"
+          ],
+          "matched_ids": [
+            "2125611-RFP"
+          ],
+          "intents": [
+            "initial_bond_value_kd",
+            "initial_bond_percent"
+          ],
+          "record_id": "2125611-RFP",
+          "decision": "restrict",
+          "scope_candidates": [
+            "71-1736-0"
+          ],
+          "normalized_scope": [
+            "71-1736-0"
+          ],
+          "explicit_scope": [],
+          "alias_hits": {
+            "71-1736-0": [
+              "71-1736-0"
+            ]
+          },
+          "boost_terms": [
+            "2125611-RFP"
+          ]
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q56",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "anchor_primer_candidates": 0,
+          "union_total": 300,
+          "scope_applied": true,
+          "scope_hits": 24,
+          "anchor_hits": 1,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 1,
+          "ordered": 1,
+          "mmr_applied": true,
+          "final": 1,
+          "slot_guarded": 1,
+          "scope": [
+            "71-1736-0",
+            "71-1736-0:Notice:uncement/NoticeRegardingtheAdditionofCompaniestoTenderNo"
+          ],
+          "top_k": 100,
+          "label": "primary",
+          "neighbor_window": 2
+        },
+        {
+          "event": "answer",
+          "run_id": "q56",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 1
+        }
+      ]
+    },
+    {
+      "question": "How much are the tender documents for Kuwait Oil Company Tender No. 2125611-RFP?",
+      "answer": "The provided excerpt does not state the tender document fee for 2125611-RFP. Please share the “Tender Information and Requirements” table from the notice, or check the K-Tendering Portal (ktendering.com.kw → RFQs/Tenders/Auctions → search 2125611-RFP) where the Tender Fee/Price is listed. [58]\n\nReferences\n58. 71-1736-0.",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q57",
+          "question": "How much are the tender documents for Kuwait Oil Company Tender No. 2125611-RFP?",
+          "anchors": [
+            "2125611-RFP"
+          ],
+          "matched_ids": [
+            "2125611-RFP"
+          ],
+          "intents": [],
+          "record_id": "2125611-RFP",
+          "decision": "restrict",
+          "scope_candidates": [
+            "71-1736-0"
+          ],
+          "normalized_scope": [
+            "71-1736-0"
+          ],
+          "explicit_scope": [],
+          "alias_hits": {
+            "71-1736-0": [
+              "71-1736-0"
+            ]
+          },
+          "boost_terms": [
+            "2125611-RFP"
+          ]
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q57",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "anchor_primer_candidates": 0,
+          "union_total": 300,
+          "scope_applied": true,
+          "scope_hits": 29,
+          "anchor_hits": 1,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 1,
+          "ordered": 1,
+          "mmr_applied": true,
+          "final": 1,
+          "slot_guarded": 1,
+          "scope": [
+            "71-1736-0",
+            "71-1736-0:Notice:uncement/NoticeRegardingtheAdditionofCompaniestoTenderNo"
+          ],
+          "top_k": 100,
+          "label": "primary",
+          "neighbor_window": 2
+        },
+        {
+          "event": "answer",
+          "run_id": "q57",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 1
+        }
+      ]
+    },
+    {
+      "question": "By what time on the due day must bids be submitted for Amiri Diwan Practice A/M/804?",
+      "answer": "1:30 PM [59]\n\nReferences\n59. 2025-05-11_en.md. L13261-L13261.",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q58",
+          "question": "By what time on the due day must bids be submitted for Amiri Diwan Practice A/M/804?",
+          "anchors": [
+            "A/M/804"
+          ],
+          "matched_ids": [
+            "A/M/804"
+          ],
+          "intents": [],
+          "record_id": "A/M/804",
+          "decision": "restrict",
+          "scope_candidates": [
+            "2025-05-11_en.md"
+          ],
+          "normalized_scope": [
+            "2025-05-11_en.md"
+          ],
+          "explicit_scope": [
+            "2025-05-11_en.md"
+          ],
+          "alias_hits": {
+            "2025-05-11_en.md": [
+              "2025-05-11_en.md"
+            ]
+          },
+          "boost_terms": [
+            "A/M/804",
+            "A/M/804",
+            "Amiri Diwan"
+          ]
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q58",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "anchor_primer_candidates": 0,
+          "union_total": 300,
+          "scope_applied": true,
+          "scope_hits": 51,
+          "anchor_hits": 1,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 1,
+          "ordered": 1,
+          "mmr_applied": true,
+          "final": 1,
+          "slot_guarded": 1,
+          "scope": [
+            "2025-05-11_en.md",
+            "71-1738-0:Resolution:86/2025"
+          ],
+          "top_k": 100,
+          "label": "primary",
+          "neighbor_window": 2
+        },
+        {
+          "event": "answer",
+          "run_id": "q58",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 1
+        }
+      ]
+    },
+    {
+      "question": "What initial security deposit percentage is required for Amiri Diwan Practice A/M/804?",
+      "answer": "2% of the bid value. [60]\n\nReferences\n60. 2025-05-11_en.md. L13261-L13261.",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q59",
+          "question": "What initial security deposit percentage is required for Amiri Diwan Practice A/M/804?",
+          "anchors": [
+            "A/M/804"
+          ],
+          "matched_ids": [
+            "A/M/804"
+          ],
+          "intents": [],
+          "record_id": "A/M/804",
+          "decision": "restrict",
+          "scope_candidates": [
+            "2025-05-11_en.md"
+          ],
+          "normalized_scope": [
+            "2025-05-11_en.md"
+          ],
+          "explicit_scope": [
+            "2025-05-11_en.md"
+          ],
+          "alias_hits": {
+            "2025-05-11_en.md": [
+              "2025-05-11_en.md"
+            ]
+          },
+          "boost_terms": [
+            "A/M/804",
+            "A/M/804",
+            "Amiri Diwan"
+          ]
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q59",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "anchor_primer_candidates": 0,
+          "union_total": 300,
+          "scope_applied": true,
+          "scope_hits": 41,
+          "anchor_hits": 1,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 1,
+          "ordered": 1,
+          "mmr_applied": true,
+          "final": 1,
+          "slot_guarded": 1,
+          "scope": [
+            "2025-05-11_en.md",
+            "71-1738-0:Resolution:86/2025"
+          ],
+          "top_k": 100,
+          "label": "primary",
+          "neighbor_window": 2
+        },
+        {
+          "event": "answer",
+          "run_id": "q59",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 1
+        }
+      ]
+    },
+    {
+      "question": "What closing period is stated for Ministry of Health Practice No. 5DXK10?",
+      "answer": "30 days from announcement date and more [61]\n\nReferences\n61. 71-1737-0.",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q60",
+          "question": "What closing period is stated for Ministry of Health Practice No. 5DXK10?",
+          "anchors": [
+            "5DXK10"
+          ],
+          "matched_ids": [
+            "5DXK10"
+          ],
+          "intents": [],
+          "record_id": "5DXK10",
+          "decision": "restrict",
+          "scope_candidates": [
+            "2025-05-04_en.md",
+            "71-1737-0"
+          ],
+          "normalized_scope": [
+            "2025-05-04_en.md"
+          ],
+          "explicit_scope": [
+            "2025-05-04_en.md"
+          ],
+          "alias_hits": {
+            "2025-05-04_en.md": [
+              "2025-05-04_en.md"
+            ],
+            "71-1737-0": [
+              "2025-05-04_en.md"
+            ]
+          },
+          "boost_terms": [
+            "5DXK10",
+            "5DXK10"
+          ]
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q60",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "anchor_primer_candidates": 0,
+          "union_total": 300,
+          "scope_applied": true,
+          "scope_hits": 55,
+          "anchor_hits": 1,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 1,
+          "ordered": 1,
+          "mmr_applied": true,
+          "final": 1,
+          "slot_guarded": 1,
+          "scope": [
+            "2025-05-04_en.md",
+            "71-1737-0:Announcement:uncementTheMinistryofHealth"
+          ],
+          "top_k": 100,
+          "label": "primary",
+          "neighbor_window": 2
+        },
+        {
+          "event": "answer",
+          "run_id": "q60",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 1
+        }
+      ]
+    },
+    {
+      "question": "What is the objection window for changes to a company’s registration?",
+      "answer": "- Most company registration changes (e.g., legal-entity amendments, dissolution/liquidation): 30 days from publication to file an objection with the General Court (المحكمة الكلية).\n- Conversions of an individual license into a company or certain registry actions (e.g., license/agency registrations): 15 days from publication to file a written objection with the relevant Ministry department (often with a debt instrument).",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q61",
+          "question": "What is the objection window for changes to a company’s registration?",
+          "anchors": [],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q61",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "anchor_primer_candidates": 0,
+          "union_total": 300,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 100,
+          "slot_guarded": 100,
+          "scope": [],
+          "top_k": 100,
+          "label": "primary",
+          "neighbor_window": 2
+        },
+        {
+          "event": "answer",
+          "run_id": "q61",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 100
+        }
+      ]
+    },
+    {
+      "question": "Where should objections on company registration changes be filed?",
+      "answer": "At the General Court (المحكمة الكلية).",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q62",
+          "question": "Where should objections on company registration changes be filed?",
+          "anchors": [],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q62",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "anchor_primer_candidates": 0,
+          "union_total": 300,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 100,
+          "slot_guarded": 100,
+          "scope": [],
+          "top_k": 100,
+          "label": "primary",
+          "neighbor_window": 2
+        },
+        {
+          "event": "answer",
+          "run_id": "q62",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 100
+        }
+      ]
+    },
+    {
+      "question": "Which types of legal entities are referenced in the company registration announcements?",
+      "answer": "- Limited Liability Company (LLC) — شركة ذات مسؤولية محدودة\n- One-Person Company (Single Person Company, SPC) — شركة الشخص الواحد\n- General Partnership — شركة تضامنية\n- Simple Limited Partnership — شركة توصية بسيطة\n- Closed Joint-Stock Company (K.C.S.C.) — شركة مساهمة مقفلة (ش.م.ك.م)",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q63",
+          "question": "Which types of legal entities are referenced in the company registration announcements?",
+          "anchors": [],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q63",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "anchor_primer_candidates": 0,
+          "union_total": 300,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 100,
+          "slot_guarded": 100,
+          "scope": [],
+          "top_k": 100,
+          "label": "primary",
+          "neighbor_window": 2
+        },
+        {
+          "event": "answer",
+          "run_id": "q63",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 100
+        }
+      ]
+    },
+    {
+      "question": "According to the latest correction, which company name is confirmed for the rig site preparation tender?",
+      "answer": "FUTURE SERVICES GENERAL TRADING AND CONTRACTING COMPANY W.L.L.",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q64",
+          "question": "According to the latest correction, which company name is confirmed for the rig site preparation tender?",
+          "anchors": [],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q64",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "anchor_primer_candidates": 0,
+          "union_total": 300,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 100,
+          "slot_guarded": 100,
+          "scope": [],
+          "top_k": 100,
+          "label": "primary",
+          "neighbor_window": 1
+        },
+        {
+          "event": "answer",
+          "run_id": "q64",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 100
+        }
+      ]
+    },
+    {
+      "question": "According to the latest correction, on what date was the earlier rig site preparation notice published?",
+      "answer": "Sunday, 27 April 2025.",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q65",
+          "question": "According to the latest correction, on what date was the earlier rig site preparation notice published?",
+          "anchors": [],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q65",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "anchor_primer_candidates": 0,
+          "union_total": 300,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 100,
+          "slot_guarded": 100,
+          "scope": [],
+          "top_k": 100,
+          "label": "primary",
+          "neighbor_window": 1
+        },
+        {
+          "event": "answer",
+          "run_id": "q65",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 100
+        }
+      ]
+    },
+    {
+      "question": "Across both the late-April Amiri Diwan tender and Practice A/M/804, are alternative offers allowed?",
+      "answer": "Alternative offers are not permitted.\nProvenance: 2025-05-11_en.md:L13261-L13261 [67]\n\nReferences\n67. 2025-05-11_en.md. L13261-L13261.",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q66",
+          "question": "Across both the late-April Amiri Diwan tender and Practice A/M/804, are alternative offers allowed?",
+          "anchors": [
+            "A/M/804"
+          ],
+          "matched_ids": [
+            "A/M/804"
+          ],
+          "intents": [
+            "alternative_offers_allowed"
+          ],
+          "record_id": "A/M/804",
+          "decision": "answer",
+          "scope_candidates": [
+            "2025-05-11_en.md"
+          ],
+          "normalized_scope": [
+            "2025-05-11_en.md"
+          ]
+        },
+        {
+          "event": "card_answer",
+          "run_id": "q66",
+          "record_id": "A/M/804",
+          "decision": "answer"
+        },
+        {
+          "event": "answer",
+          "run_id": "q66",
+          "source": "card",
+          "fallback": false,
+          "retrieved": 0
+        }
+      ]
+    },
+    {
+      "question": "What minimum initial bond percentage is stated across both the late-April Amiri Diwan tender and Practice A/M/804?",
+      "answer": "2% of the bid value. [68]\n\nReferences\n68. 2025-05-11_en.md. L13261-L13261.",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q67",
+          "question": "What minimum initial bond percentage is stated across both the late-April Amiri Diwan tender and Practice A/M/804?",
+          "anchors": [
+            "A/M/804"
+          ],
+          "matched_ids": [
+            "A/M/804"
+          ],
+          "intents": [
+            "initial_bond_value_kd",
+            "initial_bond_percent"
+          ],
+          "record_id": "A/M/804",
+          "decision": "restrict",
+          "scope_candidates": [
+            "2025-05-11_en.md"
+          ],
+          "normalized_scope": [
+            "2025-05-11_en.md"
+          ],
+          "explicit_scope": [
+            "2025-05-11_en.md"
+          ],
+          "alias_hits": {
+            "2025-05-11_en.md": [
+              "2025-05-11_en.md"
+            ]
+          },
+          "boost_terms": [
+            "A/M/804",
+            "A/M/804",
+            "Amiri Diwan"
+          ]
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q67",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "anchor_primer_candidates": 0,
+          "union_total": 300,
+          "scope_applied": true,
+          "scope_hits": 36,
+          "anchor_hits": 1,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 1,
+          "ordered": 1,
+          "mmr_applied": true,
+          "final": 1,
+          "slot_guarded": 1,
+          "scope": [
+            "2025-05-11_en.md",
+            "71-1738-0:Resolution:86/2025"
+          ],
+          "top_k": 100,
+          "label": "primary",
+          "neighbor_window": 2
+        },
+        {
+          "event": "answer",
+          "run_id": "q67",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 1
+        }
+      ]
+    },
+    {
+      "question": "What bid validity period is stated across both the late-April Amiri Diwan tender and Practice A/M/804?",
+      "answer": "Bids must remain valid for 90 days.\nProvenance: 2025-05-11_en.md:L13261-L13261 [69]\n\nReferences\n69. 2025-05-11_en.md. L13261-L13261.",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q68",
+          "question": "What bid validity period is stated across both the late-April Amiri Diwan tender and Practice A/M/804?",
+          "anchors": [
+            "A/M/804"
+          ],
+          "matched_ids": [
+            "A/M/804"
+          ],
+          "intents": [
+            "bid_validity_days"
+          ],
+          "record_id": "A/M/804",
+          "decision": "answer",
+          "scope_candidates": [
+            "2025-05-11_en.md"
+          ],
+          "normalized_scope": [
+            "2025-05-11_en.md"
+          ]
+        },
+        {
+          "event": "card_answer",
+          "run_id": "q68",
+          "record_id": "A/M/804",
+          "decision": "answer"
+        },
+        {
+          "event": "answer",
+          "run_id": "q68",
+          "source": "card",
+          "fallback": false,
+          "retrieved": 0
+        }
+      ]
+    },
+    {
+      "question": "What is the maximum duration of a commercial lease?",
+      "answer": "The provided context does not state a statutory maximum for commercial leases. It only shows that lease terms are set case by case (many government-site leases are offered for three years, e.g., shop/site licenses at the Communications Complex and Amiri Diwan tenders). If you need the legal maximum for a specific jurisdiction or law, please specify, and I can look for that rule.",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q69",
+          "question": "What is the maximum duration of a commercial lease?",
+          "anchors": [],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q69",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "anchor_primer_candidates": 0,
+          "union_total": 300,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 100,
+          "slot_guarded": 100,
+          "scope": [],
+          "top_k": 100,
+          "label": "primary",
+          "neighbor_window": 1
+        },
+        {
+          "event": "answer",
+          "run_id": "q69",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 100
+        }
+      ]
+    },
+    {
+      "question": "What is the filing fee for an appeal in civil court?",
+      "answer": "The provided context doesn’t specify a filing fee for an appeal in civil court. To get the exact amount, please consult the Ministry of Justice’s judicial fee schedule or ask the relevant court registry; it’s typically published in the Official Gazette (Al‑Kuwait Al‑Youm).",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q70",
+          "question": "What is the filing fee for an appeal in civil court?",
+          "anchors": [],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q70",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "anchor_primer_candidates": 0,
+          "union_total": 300,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 100,
+          "slot_guarded": 100,
+          "scope": [],
+          "top_k": 100,
+          "label": "primary",
+          "neighbor_window": 2
+        },
+        {
+          "event": "answer",
+          "run_id": "q70",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 100
+        }
+      ]
+    }
+  ]
+}

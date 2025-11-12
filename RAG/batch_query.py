@@ -46,6 +46,7 @@ def batch_query_graph_rag(
     show_progress: bool = False,
     include_events: bool | None = None,
     resume: bool = False,
+    show_input_spec: bool = True,
 ):
     """
     Process multiple queries in parallel using threading.
@@ -58,6 +59,9 @@ def batch_query_graph_rag(
         show_progress: If True, display a tqdm progress bar as queries complete
         resume: If True, persist results as they complete and resume from prior
             progress when rerun
+        show_input_spec: When True, echo the resolved question-file shorthand (for
+            example "@questions_long.json (1-10)") before running. Set to False to
+            suppress this line in notebook outputs.
     
     Returns:
         List of dictionaries with "question" and "answer" fields. If include_events
@@ -176,6 +180,23 @@ def batch_query_graph_rag(
             leave=False,
             initial=min(len(index_to_result), total_questions),
         )
+
+    def _log(message: str) -> None:
+        if not message:
+            return
+        if show_progress:
+            tqdm.write(message, file=sys.stderr)
+        else:
+            print(message)
+
+    if show_input_spec:
+        if shorthand_match and range_start is not None and range_end is not None:
+            label = f"@{file_part.strip()} ({range_start}-{range_end})"
+        elif file_spec:
+            label = file_spec
+        else:
+            label = str(input_path)
+        _log(label)
     
     def process_query(item):
         idx, question = item
@@ -287,12 +308,6 @@ def batch_query_graph_rag(
     if resume and len(index_to_result) == total_questions and resume_file.exists():
         resume_file.unlink()
     
-    def _log(message: str) -> None:
-        if show_progress:
-            tqdm.write(message, file=sys.stderr)
-        else:
-            print(message)
-
     _log(f"Processed {len(results)} queries with {max_workers} workers")
     _log(f"Results saved to: {output_file}")
     

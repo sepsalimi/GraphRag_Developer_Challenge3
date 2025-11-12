@@ -1,0 +1,64 @@
+{
+  "config": {
+    "top_k": 100,
+    "MMR_k": 45,
+    "MMR_LAMBDA": 0.4,
+    "ALWAYS_KEEP_TOP": 5,
+    "neighbor_window": 1,
+    "HYBRID_ALPHA": 0.6,
+    "HYBRID_POOL_MULTIPLIER": 4.0,
+    "HYBRID_POOL_MAX": 300,
+    "HYBRID_APPLY_MMR": true,
+    "NEO4J_FULLTEXT_INDEX": "chunk_text_idx",
+    "COHERE_RERANK_ENABLED": true,
+    "COHERE_RERANK_MODEL": "rerank-v3.5",
+    "CARD_FIRST_ENABLED": true,
+    "ALLOW_DIRECT_ANSWER": true
+  },
+  "answers": [
+    {
+      "question": "What is the fee for printing driving licenses for residents, as per Ministerial Decision No. 560 of 2025 from the Ministry of Interior?",
+      "answer": "10 Kuwaiti Dinars (K.D.)"
+    },
+    {
+      "question": "What is the base price for the public auction of the property located in Al-Jahra area, Block 3, Plot No. 105, as announced by the General Court?",
+      "answer": "387,000 KD (three hundred eighty-seven thousand Kuwaiti Dinars)."
+    },
+    {
+      "question": "What is the timeline for share entitlements regarding bonus shares for Warba Bank, from the share holding date to the bonus share distribution day?",
+      "answer": "- Last day to hold shares (entitlement/record date): Wednesday, April 23, 2025\n- Bonus shares distribution (credit) date: Monday, April 28, 2025"
+    },
+    {
+      "question": "How does the amendment to Article 46 of the United National Real Estate Company's Articles of Association impact the distribution of net profits, specifically regarding the statutory and optional reserves?",
+      "answer": "- Statutory reserve: Each year, at least 10% of net profits must be appropriated to the statutory reserve. The General Assembly may stop this deduction once the reserve exceeds half of the issued capital. The statutory reserve may only be used to cover company losses or to ensure a dividend of up to 5% of paid-up capital in years when profits are insufficient; any amounts used must be replenished when later profits allow.\n\n- Optional reserve: The Ordinary General Assembly, based on a Board proposal, may deduct up to 10% of net profits to form an optional reserve for purposes it determines, and it may cease this deduction by resolution."
+    },
+    {
+      "question": "Summarize the key conditions and procedural steps that companies must meet to participate in tenders announced by the Ministry of Health for medical supplies.",
+      "answer": "Key conditions and steps (Medical Warehouses Dept. – Medical Supplies/Drugs)\n\nEligibility\n- Be a local company registered in the Medical Warehouses Department suppliers’ register.\n- Be specialized in the medical field and hold an accredited certificate from the Kuwait Chamber of Commerce and Industry.\n\nProduct compliance\n- Attach a valid product registration certificate from the Department of Registration and Control of Medical Drugs (or proof of having submitted it).\n- Include a copy showing the manufacturer and the material are registered in the Medical Warehouses suppliers’ register (for Drug Control items).\n\nSamples\n- Provide samples for any new materials (first-time products or existing specs from a new manufacturer) for the concerned control (drugs/medical supplies).\n\nLabor compliance\n- Attach a valid National Labor Support percentage certificate.\n\nDocuments and fees\n- Obtain the practice/tender booklet from the Ministry of Health’s official website.\n- Pay the booklet fee through the website and attach proof of payment with the bid.\n- If submitting two separate offers, purchase two booklets with different receipts.\n\nBid preparation and submission\n- Place the price offer and all required practice documents in a sealed envelope.\n- Bids must remain valid for 90 days from the closing date.\n- Submit into the bid box at the Medical Warehouses Department by the closing date shown on the MoH website.\n\nNote on device tenders (Medical Engineering Department)\n- When a tender is run by the Medical Engineering Department (often for devices), participation is limited to companies registered with that Department; an authorization letter to purchase documents, payment of prescribed fees (cash/e-stamps), a National Labor Support certificate, and any preliminary guarantee stated in the tender documents are required; bids are also valid for 90 days and must be submitted in a sealed envelope to the Department’s bid box within the stated period."
+    },
+    {
+      "question": "What is the authorized capital of Imtiyazat Al-Sayer Holding Company?",
+      "answer": "2,400,000 KD (Two Million Four Hundred Thousand Kuwaiti Dinars)."
+    },
+    {
+      "question": "What is the document sale price for Tender No. PAHW/M/1351 for main transformer stations in South Sabah Al-Ahmad Residential Project?",
+      "answer": "5,000 Kuwaiti Dinars (K.D.)"
+    },
+    {
+      "question": "What are the steps for a company to register as an approved supplier in the suppliers' register at the State Audit Bureau?",
+      "answer": "Based on the State Audit Bureau’s announcement:\n\n- Go to www.sab.gov.kw > Electronic Services > For Companies > Registration, complete the online registration, then download/print the company details (registration) form.\n- Visit the State Audit Bureau in person: Financial Affairs Department – Budget Section, bringing the completed company details form.\n- Pay the registration fee of 5 KD (registration isn’t approved until the fee is paid).\n- Submit the payment receipt together with the completed registration form to the Supply/Procurement Section to be approved as a supplier for the current calendar year (renewable annually for the same 5 KD fee).\n- Monitor the SAB website for any updates. For inquiries: 24957346 (WhatsApp available)."
+    },
+    {
+      "question": "Under what conditions is a holding company jointly and severally liable for the debts of its subsidiary companies?",
+      "answer": "A holding company is jointly and severally liable for its subsidiary’s debts if all of the following are met (Article 61):\n\n- The subsidiary’s assets are insufficient to meet its obligations.\n- The holding company owns a stake that lets it control appointment of Board members/managers or the subsidiary’s management decisions.\n- The subsidiary took decisions or actions to serve the holding company’s interests that harmed the subsidiary or its creditors, and those actions were the primary cause of the subsidiary’s inability to pay.\n\nNote: Liability may also arise on another legal basis."
+    },
+    {
+      "question": "Synthesize the various rights and obligations of a shareholder in Imtiyazat Al-Sayer Holding Company as outlined in its Articles of Association.",
+      "answer": "Below is a concise synthesis of shareholder rights and obligations in Imtiyazat Al‑Sayer Holding Company as set out in its Articles of Association.\n\nShareholder rights\n- Dividends and bonus shares: Receive profits and any bonus shares declared for distribution. (Art. 24(1))\n- Participation in governance: Take part in company management through Board membership and by attending and deliberating at General Assembly meetings, in line with the Companies Law and the Articles; any agreement to the contrary is void. (Art. 24(2))\n- Information access: Obtain, at least 7 days before the General Assembly, the company’s financial statements for the elapsed period, the Board report, and the auditor’s report. (Art. 24(3))\n- Share dealings and pre‑emption: Dispose of owned shares and enjoy priority (pre‑emptive) rights to subscribe to new shares in capital increases. (Art. 24(4); capital increase mechanics below)\n- Liquidation proceeds: Receive a share of the company’s net assets upon liquidation after debts are settled. (Art. 24(5))\n- Equal treatment of shares: Each share entitles its holder, without discrimination, to an equal share in ownership of the company’s assets and in distributed profits. (Art. 16)\n- Share register: The company maintains a shareholder register recording ownership and related particulars. (Art. 17)\n\nShare transfers and capital increases\n- Transfer restrictions that may apply: The Articles may restrict a shareholder’s right to dispose of shares by one or both of:\n  - A pre‑emptive right for existing shareholders to buy the shares offered for sale; and/or\n  - Requiring Board approval of the buyer. Dispositions under Companies Law Art. 172 are excluded; listed companies are not subject to these restrictions. (Art. 11)\n- Procedure if pre‑emption applies: Before selling, the shareholder must notify the company of the sale terms. The transfer is ineffective until 10 days elapse without any shareholder requesting to purchase; any such purchase must be at the stated price. (Art. 12)\n- If Board approval is required and the buyer is rejected: The Board must have the company purchase the shares within 10 days at the price agreed by the selling shareholder. (Art. 13)\n- Capital increase subscriptions: If some shareholders do not exercise their priority rights, unsubscribed shares are allocated to shareholders who wish to subscribe; if demand exceeds supply, allocation is pro‑rata. Any remaining unsubscribed shares may be allocated to new shareholders; new shares not fully subscribed are cancelled by operation of law. (Art. 9; also capital increases generally per Companies Law)\n\nShareholder obligations\n- Payments on shares: Pay due installments on subscribed shares on time and compensate for any delay. (Obligations Art. 25(1))\n- Collection costs: Reimburse expenses the company incurs to collect unpaid installments; the company may execute against the shares to recover its rights. (Art. 25(2))\n- Compliance: Implement General Assembly resolutions. (Art. 25(3))\n- Duty not to harm: Refrain from any act that harms the company’s financial or moral interests and compensate for resulting damages. (Art. 25(4))\n- Acceptance of governing documents: Ownership of a share entails acceptance of the Articles of Incorporation, the Bylaws, and General Assembly resolutions. (Art. 15)"
+    },
+    {
+      "question": "What is the minimum fine for violating Article (35) of Decree-Law No. 67 of 1976?",
+      "answer": "I don’t have any excerpt here that states the penalty for violating Article (35) of Decree-Law No. 67 of 1976. The provided context mentions speeding reconciliation amounts under the Traffic Law and penalties in other laws, but not Article (35) of Decree-Law 67/1976. If you want, I can look up the official text to confirm the minimum fine."
+    }
+  ]
+}

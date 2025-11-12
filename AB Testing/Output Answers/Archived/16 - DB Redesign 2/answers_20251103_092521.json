@@ -1,0 +1,212 @@
+{
+  "config": {
+    "top_k": 100,
+    "MMR_k": 45,
+    "MMR_LAMBDA": 0.4,
+    "ALWAYS_KEEP_TOP": 5,
+    "neighbor_window": 2,
+    "HYBRID_ALPHA": 0.6,
+    "HYBRID_POOL_MULTIPLIER": 4.0,
+    "HYBRID_POOL_MAX": 300,
+    "HYBRID_APPLY_MMR": true,
+    "NEO4J_FULLTEXT_INDEX": "chunk_text_idx",
+    "COHERE_RERANK_ENABLED": true,
+    "COHERE_RERANK_MODEL": "rerank-v3.5",
+    "CARD_FIRST_ENABLED": true,
+    "ALLOW_DIRECT_ANSWER": true
+  },
+  "answers": [
+    {
+      "question": "According to the latest correction for RFP-2113556, on what date was the earlier (incorrect) announcement published?",
+      "answer": "December 1, 2024.",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q0",
+          "question": "According to the latest correction for RFP-2113556, on what date was the earlier (incorrect) announcement published?",
+          "anchors": [
+            "RFP-2113556"
+          ],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q0",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "anchor_primer_candidates": 0,
+          "union_total": 300,
+          "scope_applied": true,
+          "scope_hits": 9,
+          "anchor_hits": 1,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 1,
+          "ordered": 1,
+          "mmr_applied": true,
+          "final": 1,
+          "slot_guarded": 1,
+          "scope": [
+            "71-1736-0:Notice:uncement/NoticeRegardingtheAdditionofCompaniestoTenderNo",
+            "71-1737-0:Announcement:uncementTheInternalProcurementCommittee"
+          ],
+          "top_k": 100,
+          "label": "primary",
+          "neighbor_window": 2
+        },
+        {
+          "event": "answer",
+          "run_id": "q0",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 1
+        }
+      ]
+    },
+    {
+      "question": "According to the latest correction, what is the corrected legal entity in the Ministry of Commerce and Industry announcement that previously mis-stated it as a One-Person Company?",
+      "answer": "Limited Liability Company.",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q1",
+          "question": "According to the latest correction, what is the corrected legal entity in the Ministry of Commerce and Industry announcement that previously mis-stated it as a One-Person Company?",
+          "anchors": [],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q1",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "anchor_primer_candidates": 0,
+          "union_total": 300,
+          "scope_applied": false,
+          "scope_hits": 300,
+          "anchor_hits": 300,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 300,
+          "ordered": 300,
+          "mmr_applied": true,
+          "final": 100,
+          "slot_guarded": 100,
+          "scope": [],
+          "top_k": 100,
+          "label": "primary",
+          "neighbor_window": 2
+        },
+        {
+          "event": "answer",
+          "run_id": "q1",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 100
+        }
+      ]
+    },
+    {
+      "question": "Across the Amiri Diwan auction (27/4/2025) and Practice A/M/804 (11/5/2025), what consistent rule is stated regarding alternative offers?",
+      "answer": "Alternative offers are not permitted.\nProvenance: 2025-05-11_en.md:L13261-L13261 [3]\n\nReferences\n3. 2025-05-11_en.md. L13261-L13261.",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q2",
+          "question": "Across the Amiri Diwan auction (27/4/2025) and Practice A/M/804 (11/5/2025), what consistent rule is stated regarding alternative offers?",
+          "anchors": [
+            "A/M/804"
+          ],
+          "matched_ids": [
+            "A/M/804"
+          ],
+          "intents": [
+            "alternative_offers_allowed"
+          ],
+          "record_id": "A/M/804",
+          "decision": "answer",
+          "scope_candidates": [
+            "2025-05-11_en.md"
+          ],
+          "normalized_scope": [
+            "2025-05-11_en.md"
+          ]
+        },
+        {
+          "event": "card_answer",
+          "run_id": "q2",
+          "record_id": "A/M/804",
+          "decision": "answer"
+        },
+        {
+          "event": "answer",
+          "run_id": "q2",
+          "source": "card",
+          "fallback": false,
+          "retrieved": 0
+        }
+      ]
+    },
+    {
+      "question": "According to the latest correction, what is the correct company name listed for Tender RFP-2113556 (Rig Site Preparation for Drilling and Workover Wells)?",
+      "answer": "I can’t find the corrected company name in the provided excerpt. It mentions an addition of companies to Tender RFP-2113556 but does not list the names or the correction. Please share the correction notice text (or the part of the table with company names) so I can identify the correct name.",
+      "events": [
+        {
+          "event": "gate",
+          "run_id": "q3",
+          "question": "According to the latest correction, what is the correct company name listed for Tender RFP-2113556 (Rig Site Preparation for Drilling and Workover Wells)?",
+          "anchors": [
+            "RFP-2113556"
+          ],
+          "matched_ids": [],
+          "decision": "pass",
+          "reason": "no_match"
+        },
+        {
+          "event": "retrieval",
+          "run_id": "q3",
+          "pool_top_k": 300,
+          "hybrid_retrieved": 300,
+          "ranker": "linear",
+          "alpha": 0.6,
+          "fulltext_sanitized": true,
+          "vector_fallback": false,
+          "anchor_primer_candidates": 0,
+          "union_total": 300,
+          "scope_applied": true,
+          "scope_hits": 16,
+          "anchor_hits": 1,
+          "rerank_model": "rerank-v3.5",
+          "rerank_top": 1,
+          "ordered": 1,
+          "mmr_applied": true,
+          "final": 1,
+          "slot_guarded": 1,
+          "scope": [
+            "71-1736-0:Notice:uncement/NoticeRegardingtheAdditionofCompaniestoTenderNo",
+            "71-1737-0:Announcement:uncementTheInternalProcurementCommittee"
+          ],
+          "top_k": 100,
+          "label": "primary",
+          "neighbor_window": 2
+        },
+        {
+          "event": "answer",
+          "run_id": "q3",
+          "source": "rag",
+          "fallback": false,
+          "retrieved": 1
+        }
+      ]
+    }
+  ]
+}
