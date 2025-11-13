@@ -1,5 +1,14 @@
-from tqdm import tqdm
 from concurrent.futures import ThreadPoolExecutor
+from tqdm import tqdm
+
+
+def _infer_embedding_dim(model: str) -> int:
+    normalised = (model or "").lower()
+    if "large" in normalised:
+        return 3072
+    if "small" in normalised:
+        return 1536
+    return 1536
 
 
 # 1. Add main nodes without creating relationships
@@ -92,11 +101,16 @@ def create_vector_index(graph, index_name, dims=None):
         dims: Embedding dimensions. If None, uses OPENAI_EMBED_DIM env (default 1536).
     """
     import os
+
     if dims is None:
-        try:
-            dims = int(os.getenv("OPENAI_EMBED_DIM", "1536"))
-        except ValueError:
-            dims = 1536
+        raw_dim = os.getenv("OPENAI_EMBED_DIM")
+        if raw_dim:
+            try:
+                dims = int(raw_dim)
+            except ValueError:
+                dims = None
+        if dims is None:
+            dims = _infer_embedding_dim(os.getenv("OPENAI_EMBED_MODEL", "text-embedding-3-small"))
 
     vector_index_query = f"""
     CREATE VECTOR INDEX `{index_name}` IF NOT EXISTS

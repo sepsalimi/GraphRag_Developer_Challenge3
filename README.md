@@ -51,5 +51,7 @@ A Neo4j-backed GraphRAG pipeline: prepare data, build a knowledge graph with emb
 1) Start Neo4j: `docker compose up -d`
 2) Install dependencies: `poetry install` (uses `poetry.lock` for pinned versions)
 3) Create `.env` in project root (min): `NEO4J_URI`, `NEO4J_USERNAME`, `NEO4J_PASSWORD`, `NEO4J_FULLTEXT_INDEX`, `NEO4J_VECTOR_INDEX`, `OPENAI_API_KEY`, `OPENAI_MODEL`, `OPENAI_EMBED_MODEL`, and MMR settings (`MMR_k`, `MMR_LAMBDA`, `ALWAYS_KEEP_TOP`).
+   - `OPENAI_EMBED_MODEL` can be `text-embedding-3-large` (3072 dims) or `text-embedding-3-small` (1536 dims). If `OPENAI_EMBED_DIM` is omitted we infer the correct value automatically.
+   - Switching between embedding sizes? Drop `.rag/lightrag/` and recreate your Neo4j vector index so stored vectors match the new dimension.
 4) Ask questions: `python "Main Functions/main.ipynb or main.py"`
 5) Batch + score (typical): run batch via `RAG/batch_query.py`, then run `AB Testing/mark_answers.py` with the matching `answer_key_*.json`.

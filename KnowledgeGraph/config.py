@@ -9,6 +9,15 @@ from dotenv import load_dotenv
 from langchain_neo4j import Neo4jGraph
 
 
+def _infer_embedding_dim(model: str) -> int:
+    model = (model or "").lower()
+    if "large" in model:
+        return 3072
+    if "small" in model:
+        return 1536
+    return 1536
+
+
 def _backfill_chunk_index(graph: Neo4jGraph) -> None:
     """Ensure c.chunk_index exists on all Chunk nodes.
 
@@ -67,6 +76,16 @@ def load_neo4j_graph(env_path: str = None):
     OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
     OPENAI_ENDPOINT = os.getenv('OPENAI_BASE_URL') + '/embeddings' if os.getenv('OPENAI_BASE_URL') else None
     OPENAI_EMBED_MODEL = os.getenv('OPENAI_EMBED_MODEL', 'text-embedding-3-small')
+    raw_embed_dim = os.getenv('OPENAI_EMBED_DIM')
+    if raw_embed_dim:
+        try:
+            embed_dim = int(raw_embed_dim)
+        except ValueError:
+            embed_dim = _infer_embedding_dim(OPENAI_EMBED_MODEL)
+    else:
+        embed_dim = _infer_embedding_dim(OPENAI_EMBED_MODEL)
+        # Expose the computed dimension to downstream helpers (vector index creation, etc.)
+        os.environ['OPENAI_EMBED_DIM'] = str(embed_dim)
     
     # Initialize Neo4j graph object (GraphStore-compatible)
     graph = Neo4jGraph(
