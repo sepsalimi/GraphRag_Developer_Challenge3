@@ -1,0 +1,14 @@
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+name = "noderag-patched"
+version = "0.1.0"
+description = "Patched NodeRAG path dependency used within GraphRAG Developer Challenge."
+authors = []
+packages = [{ include = "NodeRAG" }]
+
+[tool.poetry.dependencies]
+python = ">=3.12,<3.14"
+
