@@ -14,8 +14,31 @@ def load_graph(cache_folder):
     with open(os.path.join(cache_folder, 'graph.pkl'), 'rb') as f:
         return pickle.load(f)
 
-def initialize_mapper(cache_folder, storage):
-    return Mapper([os.path.join(cache_folder, s) for s in storage])
+def initialize_mapper(cache_folder, storage_files):
+    existing_paths = []
+    missing_files = []
+    for filename in storage_files:
+        path = os.path.join(cache_folder, filename)
+        if os.path.exists(path):
+            existing_paths.append(path)
+        else:
+            missing_files.append(filename)
+
+    if missing_files:
+        console.print(
+            Text(
+                f"Skipping missing cache files: {', '.join(missing_files)}",
+                style="bold yellow",
+            )
+        )
+
+    if not existing_paths:
+        raise FileNotFoundError(
+            f"No cache parquet files were found under {cache_folder}. "
+            "Run the NodeRAG pipeline first so the visualizer has metadata to load."
+        )
+
+    return Mapper(existing_paths)
 
 def create_network():
     return Network(height='100vh', width='100vw', bgcolor='#222222', font_color='white')
@@ -24,17 +47,25 @@ def filter_nodes(graph,nodes_num=2000):
     
     page_rank = sparse_PPR(graph).PR()
     nodes = [node for node,score in page_rank[:nodes_num]]
-    subgraph = graph.subgraph(nodes).copy()
+    final_nodes = set(nodes)
+    subgraph = graph.subgraph(final_nodes).copy()
+    if len(subgraph) == 0:
+        console.print(Text("Graph is empty after filtering; nothing to visualize.", style="bold red"))
+        return subgraph, {node: score for node, score in page_rank}
     if not nx.is_connected(subgraph):
         console.print(f"subgraph is not connected")
         additional_nodes = set()
         for i in range(len(nodes)):
             for j in range(i+1,len(nodes)):
                 if not nx.has_path(subgraph,nodes[i],nodes[j]):
-                    path_length,path_nodes = nx.bidirectional_dijkstra(graph,nodes[i],nodes[j])
+                    try:
+                        _,path_nodes = nx.bidirectional_dijkstra(graph,nodes[i],nodes[j])
+                    except nx.NetworkXNoPath:
+                        continue
                     additional_nodes.update(set(path_nodes))
-        final_nodes = set(nodes) | additional_nodes
-        subgraph = graph.subgraph(final_nodes).copy()
+        if additional_nodes:
+            final_nodes.update(additional_nodes)
+            subgraph = graph.subgraph(final_nodes).copy()
                     
     console.print(f"final nodes: {len(final_nodes)}")
     weighted_nodes = {node:score for node,score in page_rank}
@@ -100,7 +131,15 @@ def visualize(main_folder,nodes_num=2000):
     cache_folder = os.path.join(main_folder, 'cache')
     graph = load_graph(cache_folder)
 
-    storage = ['attributes.parquet', 'entities.parquet', 'relationship.parquet', 'high_level_elements.parquet', 'semantic_units.parquet','text.parquet','high_level_elements_titles.parquet']
+    storage = [
+        'attributes.parquet',
+        'entities.parquet',
+        'relationship.parquet',
+        'high_level_elements.parquet',
+        'semantic_units.parquet',
+        'text.parquet',
+        'high_level_elements_titles.parquet',
+    ]
     mapper = initialize_mapper(cache_folder, storage)
 
     net = create_network()

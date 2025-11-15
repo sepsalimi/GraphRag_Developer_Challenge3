@@ -52,7 +52,7 @@ Options:
 Ensure `.env` contains at least:
 
 ```
-OPENAI_API_KEY=sk-...
+OPENAI_API_KEY=YOUR_OPENAI_API_KEY
 OPENAI_BASE_URL=...   # optional
 ```
 

@@ -7,12 +7,14 @@ import sys
 import types
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Dict, Iterable, List, Optional, Sequence
+from typing import Any, Dict, List
 
 import pandas as pd
+import yaml
 from dotenv import load_dotenv
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
+ENV_PATH = REPO_ROOT / ".env"
 VENDOR_NODE_RAG = REPO_ROOT / "vendor" / "NodeRAG"
 if VENDOR_NODE_RAG.exists():
     vendor_path = str(VENDOR_NODE_RAG)
@@ -39,33 +41,27 @@ from NodeRAG.build.Node import NodeRag, State
 from NodeRAG.config import NodeConfig
 from NodeRAG.storage.storage import storage
 
-from KnowledgeGraph.config import load_neo4j_graph
-
-ENV_PATH = REPO_ROOT / ".env"
-
 
 @dataclass
-class NodeRAGSettings:
+class NodeRagSettings:
     source_dir: Path
     work_dir: Path
-    embed_backend: str
-    hf_model: str
-    openai_embed_model: str
-    embed_dim: int
+    doc_type: str
+    language: str
     chunk_size: int
     chunk_overlap: int
     embedding_batch_size: int
-    doc_type: str
-    language: str
-    llm_model: Optional[str]
+    embed_dim: int
+    embed_backend: str
+    hf_model: str
+    openai_embed_model: str
+    llm_model: str
     llm_temperature: float
     llm_max_tokens: int
     llm_rate_limit: int
     disable_hnsw: bool
     disable_summary: bool
-    similarity_weight: float
-    accuracy_weight: float
-    reset_graph: bool
+    max_workers: int
 
 
 @dataclass
@@ -99,6 +95,13 @@ def _env_float(name: str, default: float) -> float:
         return default
 
 
+def _env_str(name: str, default: str) -> str:
+    raw = os.getenv(name)
+    if raw is None:
+        return default
+    return str(raw).strip()
+
+
 def _env_bool(name: str, default: bool) -> bool:
     raw = os.getenv(name)
     if raw is None:
@@ -113,133 +116,152 @@ def _resolve_path(value: str) -> Path:
     return path
 
 
-def _ensure_folder_structure(work_dir: Path) -> None:
-    for name in ("input", "cache", "info"):
-        (work_dir / name).mkdir(parents=True, exist_ok=True)
-
-
-def _load_settings() -> NodeRAGSettings:
+def _load_settings() -> NodeRagSettings:
     load_dotenv(ENV_PATH, override=False)
     load_dotenv(override=False)
-
-    source_dir = _resolve_path(os.getenv("NODERAG_SOURCE_DIR", "KnowledgeGraph/source_data"))
-    work_dir = _resolve_path(os.getenv("NODERAG_WORK_DIR", ".noderag"))
-    embed_backend = os.getenv("NODERAG_EMBED_BACKEND", "hf").strip().lower()
-    hf_model = os.getenv("NODERAG_HF_MODEL", "BAAI/bge-m3").strip()
-    openai_embed_model = os.getenv(
-        "NODERAG_OPENAI_EMBED_MODEL", os.getenv("OPENAI_EMBED_MODEL", "text-embedding-3-small")
-    ).strip()
-    embed_dim = _env_int("NODERAG_EMBED_DIM", 1024)
+    source_dir = _resolve_path(_env_str("NODERAG_SOURCE_DIR", "KnowledgeGraph/source_data"))
+    work_dir = _resolve_path(_env_str("NODERAG_WORK_DIR", ".noderag"))
+    doc_type = _env_str("NODERAG_DOC_TYPE", "mixed").lower()
+    language = _env_str("NODERAG_LANGUAGE", "English")
     chunk_size = _env_int("NODERAG_CHUNK_TARGET_TOKENS", 700)
     chunk_overlap = _env_int("NODERAG_CHUNK_OVERLAP_TOKENS", 50)
     embedding_batch_size = _env_int("NODERAG_EMBED_BATCH_SIZE", 32)
-    doc_type = os.getenv("NODERAG_DOC_TYPE", "mixed").strip().lower()
-    language = os.getenv("NODERAG_LANGUAGE", "English").strip()
-    llm_model = os.getenv("NODERAG_LLM_MODEL") or os.getenv("OPENAI_MODEL")
+    embed_dim = _env_int("NODERAG_EMBED_DIM", 1024)
+    embed_backend = _env_str("NODERAG_EMBED_BACKEND", "hf").lower()
+    hf_model = _env_str("NODERAG_HF_MODEL", "BAAI/bge-m3")
+    openai_embed_model = _env_str("NODERAG_OPENAI_EMBED_MODEL", _env_str("OPENAI_EMBED_MODEL", "text-embedding-3-small"))
+    llm_model = _env_str("NODERAG_LLM_MODEL", _env_str("OPENAI_MODEL", "")).strip()
+    if not llm_model:
+        raise RuntimeError("Set NODERAG_LLM_MODEL (or OPENAI_MODEL) before running NodeRAG.")
     llm_temperature = _env_float("NODERAG_LLM_TEMPERATURE", 0.0)
     llm_max_tokens = _env_int("NODERAG_LLM_MAX_TOKENS", 10000)
     llm_rate_limit = _env_int("NODERAG_LLM_RATE_LIMIT", 50)
     disable_hnsw = _env_bool("NODERAG_DISABLE_HNSW", True)
     disable_summary = _env_bool("NODERAG_DISABLE_SUMMARY", True)
-    similarity_weight = _env_float("NODERAG_SIMILARITY_WEIGHT", 1.0)
-    accuracy_weight = _env_float("NODERAG_ACCURACY_WEIGHT", 10.0)
-    reset_graph = _env_bool("NODERAG_RESET_GRAPH", True)
-
-    settings = NodeRAGSettings(
+    max_workers = _env_int("MAX_WORKERS", max(2, (os.cpu_count() or 4)))
+    return NodeRagSettings(
         source_dir=source_dir,
         work_dir=work_dir,
-        embed_backend=embed_backend,
-        hf_model=hf_model,
-        openai_embed_model=openai_embed_model,
-        embed_dim=embed_dim,
+        doc_type=doc_type,
+        language=language,
         chunk_size=chunk_size,
         chunk_overlap=chunk_overlap,
         embedding_batch_size=embedding_batch_size,
-        doc_type=doc_type,
-        language=language,
+        embed_dim=embed_dim,
+        embed_backend=embed_backend,
+        hf_model=hf_model,
+        openai_embed_model=openai_embed_model,
         llm_model=llm_model,
         llm_temperature=llm_temperature,
         llm_max_tokens=llm_max_tokens,
         llm_rate_limit=llm_rate_limit,
         disable_hnsw=disable_hnsw,
         disable_summary=disable_summary,
-        similarity_weight=similarity_weight,
-        accuracy_weight=accuracy_weight,
-        reset_graph=reset_graph,
+        max_workers=max_workers,
     )
-    _ensure_folder_structure(settings.work_dir)
-    return settings
 
 
-def _prepare_workdir(settings: NodeRAGSettings) -> None:
-    _ensure_folder_structure(settings.work_dir)
+def _ensure_subfolders(work_dir: Path, reset_cache: bool) -> None:
+    work_dir.mkdir(parents=True, exist_ok=True)
+    cache_dir = work_dir / "cache"
+    info_dir = work_dir / "info"
+    input_dir = work_dir / "input"
+    if reset_cache:
+        shutil.rmtree(cache_dir, ignore_errors=True)
+        shutil.rmtree(info_dir, ignore_errors=True)
+    cache_dir.mkdir(parents=True, exist_ok=True)
+    info_dir.mkdir(parents=True, exist_ok=True)
+    input_dir.mkdir(parents=True, exist_ok=True)
+
+
+def _sync_source_files(settings: NodeRagSettings, *, resync: bool) -> None:
     input_dir = settings.work_dir / "input"
-    for existing in input_dir.glob("*"):
-        if existing.is_file():
-            existing.unlink()
-    patterns: List[str]
+    input_dir.mkdir(parents=True, exist_ok=True)
+    if resync:
+        for existing in input_dir.glob("*"):
+            if existing.is_file():
+                existing.unlink()
     if settings.doc_type == "mixed":
-        patterns = ["*.md", "*.txt"]
+        patterns: List[str] = ["*.md", "*.txt"]
     else:
         suffix = settings.doc_type.lstrip(".")
         patterns = [f"*.{suffix}"]
+    copied = 0
     for pattern in patterns:
         for file in settings.source_dir.glob(pattern):
             if file.is_file():
-                shutil.copy2(file, input_dir / file.name)
+                dest = input_dir / file.name
+                if not dest.exists() or resync:
+                    shutil.copy2(file, dest)
+                    copied += 1
+    if copied:
+        print(f"Copied {copied} files into {input_dir}")
 
 
-def _build_config_dict(settings: NodeRAGSettings) -> Dict[str, Any]:
-    config_section: Dict[str, Any] = {
-        "main_folder": str(settings.work_dir),
-        "language": settings.language,
-        "chunk_size": settings.chunk_size,
-        "chunk_overlap": settings.chunk_overlap,
-        "embedding_batch_size": settings.embedding_batch_size,
-        "dim": settings.embed_dim,
-        "docu_type": settings.doc_type,
-        "similarity_weight": settings.similarity_weight,
-        "accuracy_weight": settings.accuracy_weight,
-        "max_workers": _env_int("MAX_WORKERS", max(2, (os.cpu_count() or 4)))
-    }
-    model_config: Dict[str, Any] = {
-        "service_provider": "openai",
-        "model_name": settings.llm_model,
-        "api_keys": os.getenv("OPENAI_API_KEY"),
-        "temperature": settings.llm_temperature,
-        "max_tokens": settings.llm_max_tokens,
-        "rate_limit": settings.llm_rate_limit,
-    }
-    if not model_config["model_name"]:
-        raise RuntimeError("NODERAG_LLM_MODEL or OPENAI_MODEL must be configured.")
-
-    if settings.embed_backend == "openai":
-        embedding_config = {
-            "service_provider": "openai_embedding",
-            "embedding_model_name": settings.openai_embed_model,
-            "api_keys": os.getenv("OPENAI_API_KEY"),
+def _ensure_node_config_yaml(settings: NodeRagSettings) -> Path:
+    config_path = settings.work_dir / "Node_config.yaml"
+    NodeConfig.create_config_file(str(settings.work_dir))
+    if config_path.exists():
+        with config_path.open("r", encoding="utf-8") as fh:
+            data = yaml.safe_load(fh) or {}
+    else:
+        data = {}
+    config_section = data.setdefault("config", {})
+    config_section.update(
+        {
+            "main_folder": str(settings.work_dir),
+            "language": settings.language,
+            "chunk_size": settings.chunk_size,
+            "chunk_overlap": settings.chunk_overlap,
+            "embedding_batch_size": settings.embedding_batch_size,
+            "dim": settings.embed_dim,
+            "docu_type": settings.doc_type,
+            "max_workers": settings.max_workers,
+        }
+    )
+    model_config = data.setdefault("model_config", {})
+    model_config.update(
+        {
+            "service_provider": "openai",
+            "model_name": settings.llm_model,
+            "temperature": settings.llm_temperature,
+            "max_tokens": settings.llm_max_tokens,
             "rate_limit": settings.llm_rate_limit,
         }
-    elif settings.embed_backend == "hf":
-        embedding_config = {
-            "service_provider": "hf_embedding",
-            "model_name": settings.hf_model,
-            "batch_size": settings.embedding_batch_size,
-        }
+    )
+    # Keep secrets in .env rather than persisting them to disk.
+    model_config.pop("api_keys", None)
+    embedding_config = data.setdefault("embedding_config", {})
+    if settings.embed_backend == "hf":
+        embedding_config.update(
+            {
+                "service_provider": "hf_embedding",
+                "model_name": settings.hf_model,
+                "batch_size": settings.embedding_batch_size,
+            }
+        )
     else:
-        raise ValueError(f"Unsupported embedding backend: {settings.embed_backend}")
+        embedding_config.update(
+            {
+                "service_provider": "openai_embedding",
+                "embedding_model_name": settings.openai_embed_model,
+                "rate_limit": settings.llm_rate_limit,
+            }
+        )
+        embedding_config.pop("api_keys", None)
+    with config_path.open("w", encoding="utf-8") as fh:
+        yaml.safe_dump(data, fh, sort_keys=False)
+    return config_path
 
-    return {
-        "config": config_section,
-        "model_config": model_config,
-        "embedding_config": embedding_config,
-    }
 
-
-def _run_pipeline(settings: NodeRAGSettings, config_dict: Dict[str, Any]) -> NodeConfig:
+def _build_node_config(settings: NodeRagSettings) -> NodeConfig:
+    _ensure_node_config_yaml(settings)
     NodeConfig._instance = None
-    node_config = NodeConfig(config_dict)
-    runner = NodeRag(node_config, web_ui=True)
+    return NodeConfig.from_main_folder(str(settings.work_dir))
+
+
+def _run_pipeline(settings: NodeRagSettings, node_config: NodeConfig, *, show_progress: bool) -> None:
+    runner = NodeRag(node_config, web_ui=show_progress)
     skip_states = set()
     if settings.disable_hnsw:
         skip_states.add(State.HNSW_PIPELINE)
@@ -260,7 +282,6 @@ def _run_pipeline(settings: NodeRAGSettings, config_dict: Dict[str, Any]) -> Nod
         loop.run_until_complete(runner._run_async())
     else:
         runner.run()
-    return node_config
 
 
 def _safe_read_parquet(path: Path) -> pd.DataFrame:
@@ -272,7 +293,7 @@ def _safe_read_parquet(path: Path) -> pd.DataFrame:
 def _convert_embeddings(df: pd.DataFrame) -> Dict[str, List[float]]:
     if df.empty:
         return {}
-    embeddings: Dict[str, List[float]] = {}
+    result: Dict[str, List[float]] = {}
     for record in df.to_dict("records"):
         hash_id = record.get("hash_id")
         vector = record.get("embedding")
@@ -282,8 +303,8 @@ def _convert_embeddings(df: pd.DataFrame) -> Dict[str, List[float]]:
             continue
         if hasattr(vector, "tolist"):
             vector = vector.tolist()
-        embeddings[str(hash_id)] = [float(x) for x in vector]
-    return embeddings
+        result[str(hash_id)] = [float(x) for x in vector]
+    return result
 
 
 def _load_outputs(node_config: NodeConfig) -> PipelineOutputs:
@@ -295,8 +316,11 @@ def _load_outputs(node_config: NodeConfig) -> PipelineOutputs:
     embeddings = _convert_embeddings(_safe_read_parquet(Path(node_config.embedding)))
     graph = None
     graph_path = Path(node_config.graph_path)
+    base_graph_path = Path(getattr(node_config, "base_graph_path", graph_path))
     if graph_path.exists():
         graph = storage.load_pickle(graph_path)
+    elif base_graph_path.exists():
+        graph = storage.load_pickle(base_graph_path)
     return PipelineOutputs(
         documents=documents,
         text_units=text_units,
@@ -308,365 +332,76 @@ def _load_outputs(node_config: NodeConfig) -> PipelineOutputs:
     )
 
 
-def _chunked(items: Iterable[Dict[str, Any]], size: int = 200) -> Iterable[List[Dict[str, Any]]]:
-    batch: List[Dict[str, Any]] = []
-    for item in items:
-        batch.append(item)
-        if len(batch) >= size:
-            yield batch
-            batch = []
-    if batch:
-        yield batch
-
-
-def _clean_props(props: Dict[str, Any]) -> Dict[str, Any]:
-    cleaned = {}
-    for k, v in props.items():
-        if v is None:
-            continue
-        if isinstance(v, str) and v == "":
-            continue
-        if isinstance(v, list) and len(v) == 0:
-            continue
-        if isinstance(v, dict) and len(v) == 0:
-            continue
-        cleaned[k] = v
-    return cleaned
-
-
-def _ingest_outputs(
-    outputs: PipelineOutputs,
-    graph_db,
-    settings: NodeRAGSettings,
+def run_noderag(
     *,
-    reset_graph: bool,
-) -> Dict[str, int]:
-    if reset_graph:
-        graph_db.query(
-            """
-            MATCH (n)
-            WHERE n:NR_Document OR n:NR_Passage OR n:NR_Entity OR n:NR_Relationship
-            DETACH DELETE n
-            """
-        )
-        try:
-            graph_db.query("DROP INDEX `NR_Passage` IF EXISTS")
-        except Exception:
-            pass
-
-    doc_rows: List[Dict[str, Any]] = []
-    for record in outputs.documents.to_dict("records"):
-        doc_hash = record.get("doc_hash_id")
-        if not doc_hash:
-            continue
-        props = _clean_props(
-            {
-                "document_id": record.get("doc_id") or record.get("doc_hash_id"),
-                "source_path": record.get("path"),
-                "text_id": record.get("text_id"),
-                "text_hash_id": record.get("text_hash_id"),
-            }
-        )
-        doc_rows.append({"doc_hash_id": str(doc_hash), "props": props})
-    for batch in _chunked(doc_rows):
-        graph_db.query(
-            """
-            UNWIND $rows AS row
-            MERGE (d:NR_Document {doc_hash_id: row.doc_hash_id})
-            SET d += row.props
-            """,
-            params={"rows": batch},
-        )
-
-    text_lookup: Dict[str, Dict[str, Any]] = {
-        str(rec.get("hash_id")): rec for rec in outputs.text_units.to_dict("records") if rec.get("hash_id")
-    }
-
-    passage_nodes: List[Dict[str, Any]] = []
-    passage_doc_edges: List[Dict[str, Any]] = []
-    for record in outputs.semantic_units.to_dict("records"):
-        hash_id = record.get("hash_id")
-        if not hash_id:
-            continue
-        text_info = text_lookup.get(str(record.get("text_hash_id")), {})
-        doc_hash_id = text_info.get("doc_hash_id")
-        embedding = outputs.embeddings.get(str(hash_id))
-        props = _clean_props(
-            {
-                "human_readable_id": record.get("human_readable_id"),
-                "context": record.get("context"),
-                "text_hash_id": record.get("text_hash_id"),
-                "document_hash_id": doc_hash_id,
-                "document_id": text_info.get("doc_id"),
-                "weight": record.get("weight"),
-                "embedding": embedding,
-            }
-        )
-        passage_nodes.append({"hash_id": str(hash_id), "props": props})
-        if doc_hash_id:
-            passage_doc_edges.append(
-                {"hash_id": str(hash_id), "doc_hash_id": str(doc_hash_id)}
-            )
-    for batch in _chunked(passage_nodes):
-        graph_db.query(
-            """
-            UNWIND $rows AS row
-            MERGE (p:NR_Passage {hash_id: row.hash_id})
-            SET p += row.props
-            """,
-            params={"rows": batch},
-        )
-    for batch in _chunked(passage_doc_edges):
-        graph_db.query(
-            """
-            UNWIND $rows AS row
-            MATCH (p:NR_Passage {hash_id: row.hash_id})
-            MATCH (d:NR_Document {doc_hash_id: row.doc_hash_id})
-            MERGE (p)-[:FROM_DOCUMENT]->(d)
-            """,
-            params={"rows": batch},
-        )
-
-    entity_nodes: List[Dict[str, Any]] = []
-    for record in outputs.entities.to_dict("records"):
-        hash_id = record.get("hash_id")
-        if not hash_id:
-            continue
-        props = _clean_props(
-            {
-                "name": record.get("context"),
-                "text_hash_id": record.get("text_hash_id"),
-                "weight": record.get("weight"),
-            }
-        )
-        entity_nodes.append({"hash_id": str(hash_id), "props": props})
-    for batch in _chunked(entity_nodes):
-        graph_db.query(
-            """
-            UNWIND $rows AS row
-            MERGE (e:NR_Entity {hash_id: row.hash_id})
-            SET e += row.props
-            """,
-            params={"rows": batch},
-        )
-
-    relationship_lookup: Dict[str, Dict[str, Any]] = {
-        str(rec.get("hash_id")): rec for rec in outputs.relationships.to_dict("records") if rec.get("hash_id")
-    }
-    relationship_nodes: List[Dict[str, Any]] = []
-    for rel_id, record in relationship_lookup.items():
-        props = _clean_props(
-            {
-                "context": record.get("context"),
-                "weight": record.get("weight"),
-            }
-        )
-        relationship_nodes.append({"hash_id": rel_id, "props": props})
-    for batch in _chunked(relationship_nodes):
-        graph_db.query(
-            """
-            UNWIND $rows AS row
-            MERGE (r:NR_Relationship {hash_id: row.hash_id})
-            SET r += row.props
-            """,
-            params={"rows": batch},
-        )
-
-    mentions_edges: List[Dict[str, Any]] = []
-    if outputs.graph is not None:
-        seen_mentions = set()
-        for u, v, data in outputs.graph.edges(data=True):
-            u_type = outputs.graph.nodes[u].get("type")
-            v_type = outputs.graph.nodes[v].get("type")
-            weight = data.get("weight", 1)
-            if u_type == "semantic_unit" and v_type == "entity":
-                key = (str(u), str(v))
-                if key in seen_mentions:
-                    continue
-                seen_mentions.add(key)
-                mentions_edges.append({"hash_id": str(u), "entity_id": str(v), "weight": weight})
-            elif u_type == "entity" and v_type == "semantic_unit":
-                key = (str(v), str(u))
-                if key in seen_mentions:
-                    continue
-                seen_mentions.add(key)
-                mentions_edges.append({"hash_id": str(v), "entity_id": str(u), "weight": weight})
-    for batch in _chunked(mentions_edges):
-        graph_db.query(
-            """
-            UNWIND $rows AS row
-            MATCH (p:NR_Passage {hash_id: row.hash_id})
-            MATCH (e:NR_Entity {hash_id: row.entity_id})
-            MERGE (p)-[rel:MENTIONS]->(e)
-            SET rel.weight = coalesce(row.weight, 1)
-            """,
-            params={"rows": batch},
-        )
-
-    relationship_edges: List[Dict[str, Any]] = []
-    if outputs.graph is not None:
-        seen_rel_edges = set()
-        for node, data in outputs.graph.nodes(data=True):
-            if data.get("type") != "relationship":
-                continue
-            neighbors = list(outputs.graph.neighbors(node))
-            for neighbor in neighbors:
-                if outputs.graph.nodes[neighbor].get("type") != "entity":
-                    continue
-                key = (str(node), str(neighbor))
-                if key in seen_rel_edges:
-                    continue
-                seen_rel_edges.add(key)
-                weight = outputs.graph[node][neighbor].get("weight", 1)
-                relationship_edges.append(
-                    {
-                        "relationship_id": str(node),
-                        "entity_id": str(neighbor),
-                        "weight": weight,
-                    }
-                )
-    for batch in _chunked(relationship_edges):
-        graph_db.query(
-            """
-            UNWIND $rows AS row
-            MATCH (r:NR_Relationship {hash_id: row.relationship_id})
-            MATCH (e:NR_Entity {hash_id: row.entity_id})
-            MERGE (e)-[rel:INVOLVES]->(r)
-            SET rel.weight = coalesce(row.weight, 1)
-            """,
-            params={"rows": batch},
-        )
-
-    return {
-        "documents": int(outputs.documents.shape[0]),
-        "passages": int(outputs.semantic_units.shape[0]),
-        "entities": int(outputs.entities.shape[0]),
-        "relationships": int(outputs.relationships.shape[0]),
-    }
-
-
-def preprocess_and_ingest(
-    *,
-    graph=None,
     show_progress: bool = True,
-    reset_graph: Optional[bool] = None,
-) -> Dict[str, int]:
+    reset_cache: bool = False,
+    resync_input: bool = True,
+) -> PipelineOutputs:
     settings = _load_settings()
     if not settings.source_dir.exists():
         raise FileNotFoundError(f"Source directory not found: {settings.source_dir}")
-    _prepare_workdir(settings)
-    config_dict = _build_config_dict(settings)
-    node_config = _run_pipeline(settings, config_dict)
-    outputs = _load_outputs(node_config)
-    graph = graph or load_neo4j_graph()[0]
-    should_reset = settings.reset_graph if reset_graph is None else bool(reset_graph)
-    stats = _ingest_outputs(outputs, graph, settings, reset_graph=should_reset)
-    ensure_vector_index(graph=graph, config=settings)
-    return stats
+    _ensure_subfolders(settings.work_dir, reset_cache=reset_cache)
+    _sync_source_files(settings, resync=resync_input)
+    node_config = _build_node_config(settings)
+    _run_pipeline(settings, node_config, show_progress=show_progress)
+    return _load_outputs(node_config)
 
 
-def ensure_vector_index(*, graph=None, config: Optional[NodeRAGSettings] = None) -> None:
-    settings = config or _load_settings()
-    graph = graph or load_neo4j_graph()[0]
-    graph.query(
-        """
-        CREATE VECTOR INDEX `NR_Passage` IF NOT EXISTS
-        FOR (n:NR_Passage) ON (n.embedding)
-        OPTIONS { indexConfig: {
-            `vector.dimensions`: $dim,
-            `vector.similarity_function`: 'cosine'
-        }}
-        """,
-        params={"dim": int(settings.embed_dim)},
-    )
-
-
-def _embed_queries(queries: Sequence[str], settings: NodeRAGSettings) -> List[List[float]]:
-    if not queries:
-        return []
-    config_dict = _build_config_dict(settings)
-    NodeConfig._instance = None
-    node_config = NodeConfig(config_dict)
-    client = node_config.embedding_client
-    if client is None:
-        raise RuntimeError("Embedding client is not configured.")
-    vectors = client.request(list(queries))
-    return [[float(x) for x in vector] for vector in vectors]
-
-
-def _vector_search(graph, embedding: Sequence[float], *, top_k: int, settings: NodeRAGSettings) -> List[Dict[str, Any]]:
-    results = graph.query(
-        """
-        CALL db.index.vector.queryNodes('NR_Passage', $top_k, $embedding)
-        YIELD node, score
-        OPTIONAL MATCH (node)-[:FROM_DOCUMENT]->(doc:NR_Document)
-        OPTIONAL MATCH (node)-[:MENTIONS]->(ent:NR_Entity)
-        RETURN
-            node.hash_id AS passage_id,
-            node.context AS context,
-            node.weight AS weight,
-            doc.document_id AS document_id,
-            doc.doc_hash_id AS document_hash_id,
-            collect(DISTINCT ent.name) AS entities,
-            score
-        ORDER BY score DESC
-        """,
-        params={"top_k": int(top_k), "embedding": [float(x) for x in embedding]},
-    )
-    formatted: List[Dict[str, Any]] = []
-    for row in results:
-        formatted.append(
-            {
-                "passage_id": row.get("passage_id"),
-                "context": row.get("context"),
-                "weight": row.get("weight"),
-                "document_id": row.get("document_id"),
-                "document_hash_id": row.get("document_hash_id"),
-                "entities": row.get("entities") or [],
-                "score": row.get("score"),
-            }
-        )
-    return formatted
-
-
-def query_single(question: str, *, top_k: int = 5, graph=None) -> List[Dict[str, Any]]:
-    if not question or not question.strip():
-        raise ValueError("question must be a non-empty string")
+def load_cached_outputs() -> PipelineOutputs:
     settings = _load_settings()
-    vectors = _embed_queries([question], settings)
-    if not vectors:
-        return []
-    graph = graph or load_neo4j_graph()[0]
-    return _vector_search(graph, vectors[0], top_k=top_k, settings=settings)
+    _ensure_subfolders(settings.work_dir, reset_cache=False)
+    node_config = _build_node_config(settings)
+    return _load_outputs(node_config)
 
 
-def query_batch(input_path: str | Path, *, top_k: int = 5, graph=None) -> List[Dict[str, Any]]:
-    path = Path(input_path)
-    if not path.exists():
-        raise FileNotFoundError(path)
-    if path.suffix.lower() == ".csv":
-        df = pd.read_csv(path)
-        if "question" not in df.columns:
-            raise ValueError("CSV input must contain a 'question' column.")
-        questions = df["question"].dropna().astype(str).tolist()
-    else:
-        questions = [line.strip() for line in path.read_text(encoding="utf-8").splitlines() if line.strip()]
-    if not questions:
-        return []
+def summarize_outputs(outputs: PipelineOutputs) -> Dict[str, int]:
+    return {
+        "documents": int(outputs.documents.shape[0]),
+        "text_units": int(outputs.text_units.shape[0]),
+        "passages": int(outputs.semantic_units.shape[0]),
+        "entities": int(outputs.entities.shape[0]),
+        "relationships": int(outputs.relationships.shape[0]),
+        "embeddings": len(outputs.embeddings),
+    }
+
+
+def print_graph_overview(graph, *, top_k: int = 5) -> None:
+    if graph is None:
+        print("No graph available in the NodeRAG cache.")
+        return
+    node_types: Dict[str, int] = {}
+    for _, data in graph.nodes(data=True):
+        node_type = data.get("type", "unknown")
+        node_types[node_type] = node_types.get(node_type, 0) + 1
+    edge_types: Dict[str, int] = {}
+    for u, v, data in graph.edges(data=True):
+        label = f"{graph.nodes[u].get('type','?')} -> {graph.nodes[v].get('type','?')}"
+        edge_types[label] = edge_types.get(label, 0) + 1
+    print("Node counts by type:")
+    for node_type, count in sorted(node_types.items(), key=lambda kv: kv[1], reverse=True):
+        print(f"  {node_type}: {count}")
+    print("Edge counts by type:")
+    for edge_type, count in sorted(edge_types.items(), key=lambda kv: kv[1], reverse=True):
+        print(f"  {edge_type}: {count}")
+    if top_k > 0:
+        degrees = sorted(graph.degree, key=lambda kv: kv[1], reverse=True)[:top_k]
+        print(f"Top {top_k} nodes by degree:")
+        for node_id, degree in degrees:
+            node_type = graph.nodes[node_id].get("type", "unknown")
+            print(f"  {node_id} ({node_type}): degree {degree}")
+
+
+def get_cache_dir() -> Path:
     settings = _load_settings()
-    vectors = _embed_queries(questions, settings)
-    graph = graph or load_neo4j_graph()[0]
-    results: List[Dict[str, Any]] = []
-    for question, vector in zip(questions, vectors):
-        hits = _vector_search(graph, vector, top_k=top_k, settings=settings)
-        results.append({"question": question, "results": hits})
-    return results
+    return settings.work_dir / "cache"
 
 
 __all__ = [
-    "preprocess_and_ingest",
-    "ensure_vector_index",
-    "query_single",
-    "query_batch",
+    "get_cache_dir",
+    "load_cached_outputs",
+    "print_graph_overview",
+    "run_noderag",
+    "summarize_outputs",
 ]
 
